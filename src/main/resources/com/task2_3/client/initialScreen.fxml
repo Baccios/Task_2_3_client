@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="520.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.InitialScreenController">
+   <children>
+      <Label alignment="CENTER" prefHeight="35.0" prefWidth="235.0" text="AIR BOOKING ASSISTANT">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="220.0" />
+         </VBox.margin>
+      </Label>
+      <Button fx:id="accessButton" alignment="CENTER" onAction="#switchToOverallStats" prefHeight="43.0" prefWidth="202.0" text="ACCESS ">
+         <font>
+            <Font name="Aharoni Bold" size="22.0" />
+         </font>
+      </Button>
+      <HBox alignment="CENTER" prefHeight="46.0" prefWidth="385.0">
+         <VBox.margin>
+            <Insets bottom="100.0" />
+         </VBox.margin>
+         <children>
+            <Button fx:id="reservedAreaButton" onAction="#switchToAdminAuthentication" prefHeight="43.0" prefWidth="202.0" text="RESERVED AREA ">
+               <font>
+                  <Font name="Aharoni Bold" size="22.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+</VBox>

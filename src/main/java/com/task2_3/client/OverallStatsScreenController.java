@@ -2,8 +2,10 @@ package com.task2_3.client;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,6 +25,10 @@ public class OverallStatsScreenController implements Initializable {
     private TableView airlineTableView;
     @FXML
     private TableView airportTableView;
+    @FXML
+    private PieChart AirlinePiechart;
+    @FXML
+    private PieChart AirportPiechart;
     private ArrayList<Airline> airlineRows=new ArrayList<>();
     private ArrayList<Airport> airportRows=new ArrayList<>();
     private int selectedIndex;
@@ -40,17 +46,20 @@ public class OverallStatsScreenController implements Initializable {
 
 
     @FXML
-    private void switchToOverallStats() throws IOException {
-        Start.setRoot("signinScreen");
-    }
-    @FXML
     private void switchToInitialScreen() throws IOException {
         Start.setRoot("initialScreen");
+    }@FXML
+    private void switchToAirportScreen() throws IOException {
+        Start.setRoot("initialScreen");
+    }@FXML
+    private void switchToAirlineScreen() throws IOException {
+        Start.setRoot("initialScreen");
     }
+
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        TableColumn airportCol = new TableColumn("Airports");
+   /*     TableColumn airportCol = new TableColumn("Airports");
         airportCol.setCellValueFactory(
                 new PropertyValueFactory<AirportBean,String>("airport")
         );
@@ -74,7 +83,12 @@ public class OverallStatsScreenController implements Initializable {
                 if(selectedIndex<0)
                     return;
                 Start.airport=airportRows.get(selectedIndex);
-                switchToAirportScreen();
+                try{
+                    switchToAirportScreen();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         airlineTableView.setOnMouseClicked((MouseEvent event) -> {
@@ -84,11 +98,76 @@ public class OverallStatsScreenController implements Initializable {
                 if(selectedIndex<0)
                     return;
                 Start.airline=airlineRows.get(selectedIndex);
-                switchToAirlineScreen();
+                try{
+                    switchToAirlineScreen();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
             }
-        });
-        updateTables();
+        });*/
+   //TODO retrieve ranking of airports and airlines according to QoS and initialize airlinwRow and airportRow
+        //Only consider the 6 best elements.
+        ObservableList<PieChart.Data> AirlinepieChartData =
+                FXCollections.observableArrayList(
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 13),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 25),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 10),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 22),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30));
+        AirlinePiechart.setData(AirlinepieChartData);
+        ObservableList<PieChart.Data> AirportpieChartData =
+                FXCollections.observableArrayList(
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 13),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 25),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 10),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 22),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30),
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 13));
+
+        AirportPiechart.setData(AirportpieChartData);
+        for (final PieChart.Data data : AirportPiechart.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            System.out.println(String.valueOf(data.getPieValue()) + "%");
+                            for(Airport a:airportRows){
+                                if(a.name==String.valueOf(data.getPieValue())){
+                                    Start.airport=a;
+                                    try{
+                                        switchToAirportScreen();
+                                    }
+                                    catch(Exception ex){
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
+        AirlinePiechart.setData(AirportpieChartData);
+        for (final PieChart.Data data : AirlinePiechart.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            System.out.println(String.valueOf(data.getPieValue()) + "%");
+                            for(Airline a:airlineRows){
+                                if(a.name==String.valueOf(data.getPieValue())){
+                                    Start.airline=a;
+                                    try{
+                                        switchToAirlineScreen();
+                                    }
+                                    catch(Exception ex){
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
+    /*    updateTables();*/
     }
+    /*
     private void updateTables() {
         airlineRows.clear();
         airportRows.clear();
@@ -97,8 +176,9 @@ public class OverallStatsScreenController implements Initializable {
         //TODO execute query to retrieve rankings according to QOS and assign to observables airportbeans and airlinebeans
 
     }
-
-    private void getAirline(){
+*/
+    //Check if airline inputs are valid and access to statistics
+    private void getInputAirlineStatistics(){
         if(airlineInput.getText().equals("")){
             errorLabel.setText("You must insert something!");
             errorLabel.setVisible(true);
@@ -106,23 +186,30 @@ public class OverallStatsScreenController implements Initializable {
         }
         else {
         //TODO RETRIEVE LIST OF AIRLINES
+            Airline selectedAirline=null;
             if (selectedAirline == null) {
                 errorLabel.setText("Selected airline doesn't exist.");
                 errorLabel.setVisible(true);
                 return;
             }
-        //check if the user selects a non existing doctor
         Start.airline=selectedAirline;
-        switchToAirlineScreen();
+            try{
+                switchToAirlineScreen();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
-    private void getAirport(){
+    //Check if airport inputs are valid and access to statistics
+    private void getInputAirportStatistics(){
         if(airportInput.getText().equals("")){
             errorLabel.setText("You must insert something!");
             errorLabel.setVisible(true);
             return;
         }
         else {
+            Airline selectedAirport=null;
             //TODO RETRIEVE LIST OF AIRLINES
             if (selectedAirport == null) {
                 errorLabel.setText("Selected airport doesn't exist.");
@@ -131,7 +218,12 @@ public class OverallStatsScreenController implements Initializable {
             }
             //check if the user selects a non existing doctor
             Start.airline=selectedAirport;
-            switchToAirportScreen();
+            try{
+                switchToAirportScreen();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

@@ -68,7 +68,7 @@ public class Admin_Protocol_Client implements AutoCloseable {
      * @param user username
      * @param psw password
      * @return 0 if authentication was successful, 1 if credentials were wrong, 2 if admin is already logged,
-     * -1 if an unknown error occurred
+     * -1 if zan unknown error occurred
      */
     public int startAuthHandshake(String user, String psw) {
         String request = "Auth " + user + " " + psw;

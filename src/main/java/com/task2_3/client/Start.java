@@ -16,8 +16,8 @@ public class Start extends Application{
     public static Airport airport;
     public void start(Stage stage)throws IOException{
         scene = new Scene(loadFXML("initialScreen"));
-        stage.setWidth(640);
-        stage.setHeight(530);
+        stage.setWidth(840);
+        stage.setHeight(630);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

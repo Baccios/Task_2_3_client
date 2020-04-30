@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="472.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.OverallStatsScreenController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="755.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.OverallStatsScreenController">
     <children>
         <Label fx:id="labelScheduleDate" text="OVERALL STATISTICS" textAlignment="CENTER">
             <font>
-                <Font name="System Bold" size="18.0" />
+                <Font name="System Bold" size="23.0" />
             </font>
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin></Label>
-      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="TOP_CENTER" prefHeight="328.0" prefWidth="715.0">
          <children>
-            <TableView fx:id="airlineTableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="255.0" prefWidth="198.0">
-      </TableView>
-            <TableView fx:id="airportTableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="255.0" prefWidth="198.0">
-               <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </TableView>
+            <PieChart fx:id="AirlinePiechart" prefHeight="251.0" prefWidth="373.0" />
+            <PieChart fx:id="AirportPiechart" prefHeight="314.0" prefWidth="361.0" />
          </children>
+
       </HBox>
       <HBox alignment="CENTER" prefHeight="25.0" prefWidth="284.0">
          <children>
@@ -36,7 +32,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="airlineInput" prefHeight="25.0" prefWidth="124.0" />
+            <TextField fx:id="airlineInput" prefHeight="25.0" prefWidth="160.0" />
             <Button mnemonicParsing="false" onAction="#switchToInitialScreen" text="GO">
                <HBox.margin>
                   <Insets left="10.0" />
@@ -54,7 +50,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="airportInput" prefHeight="25.0" prefWidth="124.0" />
+            <TextField fx:id="airportInput" prefHeight="25.0" prefWidth="160.0" />
             <Button mnemonicParsing="false" onAction="#switchToInitialScreen" text="GO">
                <HBox.margin>
                   <Insets left="10.0" />
@@ -72,7 +68,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <TextField fx:id="destinationAirportInput" prefHeight="25.0" prefWidth="124.0" />
+            <TextField fx:id="destinationAirportInput" prefHeight="25.0" prefWidth="160.0" />
             <Button mnemonicParsing="false" onAction="#switchToInitialScreen" text="GO">
                <HBox.margin>
                   <Insets left="10.0" />

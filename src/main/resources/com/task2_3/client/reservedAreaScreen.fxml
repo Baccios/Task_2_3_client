@@ -18,61 +18,61 @@
             <VBox.margin>
                 <Insets />
             </VBox.margin></Label>
-      <ImageView fitHeight="56.0" fitWidth="64.0">
-         <image>
-            <Image url="@../../../Images/icons8-lock-64.png" />
-         </image>
-      </ImageView>
-      <Label text="Welcome to the reserved area. Select an operation:">
-         <font>
-            <Font size="15.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="20.0" />
-         </VBox.margin>
-      </Label>
-          <Button mnemonicParsing="false" onAction="#switchToInitialScreen" prefHeight="34.0" prefWidth="365.0" text="CHANGE ADMINISTRATOR CREDENTIALS">
-              <font>
-                  <Font name="Aharoni Bold" size="18.0" />
-              </font>
-          </Button>
-      <Button mnemonicParsing="false" onAction="#switchToInitialScreen" prefHeight="34.0" prefWidth="365.0" text="FORCE UPDATE">
-         <font>
-            <Font name="Aharoni Bold" size="18.0" />
-         </font>
-      </Button>
-      <Button mnemonicParsing="false" onAction="#switchToInitialScreen" prefHeight="34.0" prefWidth="365.0" text="FORCE SCRAPING">
-         <font>
-            <Font name="Aharoni Bold" size="18.0" />
-         </font>
-      </Button>
-      <Button mnemonicParsing="false" onAction="#switchToInitialScreen" prefHeight="34.0" prefWidth="365.0" text="SET STORAGE LIMIT">
-         <font>
-            <Font name="Aharoni Bold" size="18.0" />
-         </font>
-      </Button>
-      <Button mnemonicParsing="false" onAction="#switchToInitialScreen" prefHeight="34.0" prefWidth="365.0" text="SET SERVER REPLICA PARAMETERS">
-         <font>
-            <Font name="Aharoni Bold" size="18.0" />
-         </font>
-      </Button>
-      <Button mnemonicParsing="false" onAction="#switchToInitialScreen" prefHeight="34.0" prefWidth="365.0" text="SET STARTING YEAR">
-         <font>
-            <Font name="Aharoni Bold" size="18.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="30.0" />
-         </VBox.margin>
-      </Button>
-      <HBox prefHeight="24.0" prefWidth="715.0">
-         <children>
-                <Button onAction="#switchToInitialScreen" prefHeight="24.0" prefWidth="60.0" text="back">
+        <ImageView fitHeight="56.0" fitWidth="64.0">
+            <image>
+                <Image url="@../../../Images/icons8-lock-64.png" />
+            </image>
+        </ImageView>
+        <Label text="Welcome to the reserved area. Select an operation:">
+            <font>
+                <Font size="15.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#openChangeAdministratorCredentialsBox" prefHeight="34.0" prefWidth="365.0" text="CHANGE ADMINISTRATOR CREDENTIALS">
+            <font>
+                <Font name="Aharoni Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#openForceUpdateBox" prefHeight="34.0" prefWidth="365.0" text="FORCE UPDATE">
+            <font>
+                <Font name="Aharoni Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#openForceScrapingBox" prefHeight="34.0" prefWidth="365.0" text="FORCE SCRAPING">
+            <font>
+                <Font name="Aharoni Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#openSetLimitBox" prefHeight="34.0" prefWidth="365.0" text="SET STORAGE LIMIT">
+            <font>
+                <Font name="Aharoni Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#openSetReplicaParametersBox" prefHeight="34.0" prefWidth="365.0" text="SET SERVER REPLICA PARAMETERS">
+            <font>
+                <Font name="Aharoni Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#openSetStartingYearBox" prefHeight="34.0" prefWidth="365.0" text="SET STARTING YEAR">
+            <font>
+                <Font name="Aharoni Bold" size="18.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="30.0" />
+            </VBox.margin>
+        </Button>
+        <HBox prefHeight="24.0" prefWidth="715.0">
+            <children>
+                <Button onAction="#switchToAdminAuthenticationScreen" prefHeight="24.0" prefWidth="60.0" text="back">
                     <font>
                         <Font name="Aharoni Bold" size="11.0" />
                     </font>
                 </Button>
-         </children>
-      </HBox>
+            </children>
+        </HBox>
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

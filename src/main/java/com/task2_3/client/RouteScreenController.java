@@ -19,7 +19,7 @@ public class RouteScreenController implements Initializable {
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        TableColumn mostlikelyCauseDelay = new TableColumn("Airports");
+     /*   TableColumn mostlikelyCauseDelay = new TableColumn("Airports");
         airportCol.setCellValueFactory(
                 new PropertyValueFactory<String>("airport")
         );
@@ -35,7 +35,7 @@ public class RouteScreenController implements Initializable {
         airportTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         airportTableView.getColumns().addAll(airportCol);
         airlineTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        airlineTableView.getColumns().addAll(airlineCol);
+        airlineTableView.getColumns().addAll(airlineCol); */
     }
 
 }

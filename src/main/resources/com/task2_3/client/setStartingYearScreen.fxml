@@ -5,14 +5,13 @@
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="755.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.SetStartingYearScreenController">
     <children>
-        <Label text="Set replication level:">
+        <Label text="Set the starting year of stored data:">
             <font>
                 <Font size="18.0" />
             </font>
@@ -20,7 +19,7 @@
                 <Insets bottom="20.0" />
             </VBox.margin>
         </Label>
-        <TextField>
+        <TextField fx:id="yearInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="89.0">
             <contextMenu>
                 <ContextMenu>
                     <items>
@@ -29,29 +28,18 @@
                 </ContextMenu>
             </contextMenu>
         </TextField>
-        <RadioButton mnemonicParsing="false" text="1">
+        <Label fx:id="errorLabel" textFill="#ff0303" visible="false" />
+        <Button mnemonicParsing="false" onAction="#setStartingYear" prefHeight="31.0" prefWidth="64.0" text="OK">
             <font>
-                <Font size="16.0" />
-            </font>
-        </RadioButton>
-        <RadioButton mnemonicParsing="false" text="2">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </RadioButton>
-        <RadioButton mnemonicParsing="false" text="3">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </RadioButton>
-        <Label fx:id="errorLabel" prefHeight="17.0" prefWidth="37.0" textFill="#ff0303" visible="false" />
-        <Button mnemonicParsing="false" onAction="#setStartingYear" prefHeight="37.0" prefWidth="55.0" text="OK">
-            <font>
-                <Font size="18.0" />
+                <Font size="15.0" />
             </font>
             <VBox.margin>
                 <Insets top="20.0" />
             </VBox.margin></Button>
+        <Button mnemonicParsing="false" onAction="#switchToReservedAreaScreen" prefHeight="25.0" prefWidth="64.0" text="BACK">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

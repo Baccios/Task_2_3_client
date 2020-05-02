@@ -28,6 +28,9 @@ public class ChangeAdminCredentialsScreenController {
         // TODO OPEN SOCKET WITH SERVER AND SEND NEW CREDENTIALS
         //if request correctly handled:
         try {
+            userInput.setText("");
+            passwordInput.setText("");
+            errorLabel.setVisible(false);
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
             Scene scene=new Scene(fxmlLoader.load(),300, 150);
             Label confirmMessage=(Label) scene.lookup("#confirmMessage");
@@ -42,5 +45,9 @@ public class ChangeAdminCredentialsScreenController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    public void switchToReservedAreaScreen()throws IOException{
+        Start.setRoot("reservedAreaScreen");
     }
 }

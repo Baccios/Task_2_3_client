@@ -25,6 +25,8 @@ public class SetLimitScreenController {
         // TODO OPEN SOCKET WITH SERVER AND SEND parameter
         //if request correctly handled:
         try {
+            limitInput.setText("");
+            errorLabel.setVisible(false);
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
             Scene scene=new Scene(fxmlLoader.load(),300, 150);
             Label confirmMessage=(Label) scene.lookup("#confirmMessage");
@@ -39,5 +41,9 @@ public class SetLimitScreenController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    public void switchToReservedAreaScreen()throws IOException{
+        Start.setRoot("reservedAreaScreen");
     }
 }

@@ -9,31 +9,28 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ChangeAdminCredentialsScreenController {
+public class SetLimitScreenController {
+    @FXML
+    TextField limitInput;
+    @FXML
+    Label errorLabel;
 
     @FXML
-    private TextField userInput;
-    @FXML
-    private TextField passwordInput;
-    @FXML
-    private Label errorLabel;
-
-    @FXML
-    private void changeCredentials()throws IOException {
-        if(userInput.getText().equals("") ||passwordInput.getText().equals("")){
-            errorLabel.setText("All fields must be filled!");
+    public void setLimit(){
+        if(limitInput.getText().equals("")){
+            errorLabel.setText("Write something!");
             errorLabel.setVisible(true);
             return;
         }
-        // TODO OPEN SOCKET WITH SERVER AND SEND NEW CREDENTIALS
+        // TODO OPEN SOCKET WITH SERVER AND SEND parameter
         //if request correctly handled:
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
             Scene scene=new Scene(fxmlLoader.load(),300, 150);
             Label confirmMessage=(Label) scene.lookup("#confirmMessage");
-            confirmMessage.setText("Credentials successfully changed.");
+            confirmMessage.setText("New database size limit correctly set.");
             Stage stage = new Stage();
-    //        stage.setTitle("Change credentials");
+            //        stage.setTitle("Change credentials");
             stage.setScene(scene);
             stage.show();
             // Hide this current window (if this is what you want)

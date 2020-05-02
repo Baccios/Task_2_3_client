@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Task_2_3_client(1)" />
         <module name="Task_2_3_client" />
+        <module name="Task_2_3_client4" />
       </profile>
     </annotationProcessing>
   </component>

@@ -6,6 +6,6 @@ module com.aridaje {
     requires java.xml;
   //  requires java.xml.bind;
 
-    opens com.task2_3.client to javafx.fxml, org.hibernate.orm.core;
+    opens com.task2_3.client to javafx.fxml;
     exports com.task2_3.client;
 }

@@ -23,6 +23,8 @@ public class AdminAuthenticationScreenController {
             errorLabel.setVisible(true);
             return;
         }
+        //TODO create socket to send credentials to server verify correctness
+
         if(userInput.getText().equals("admin") && passwordInput.getText().equals("admin")){
             Start.setRoot("ReservedAreaScreen");
             return;

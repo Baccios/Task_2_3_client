@@ -21,9 +21,8 @@
       <HBox alignment="TOP_CENTER" prefHeight="328.0" prefWidth="715.0">
          <children>
             <PieChart fx:id="AirlinePiechart" prefHeight="251.0" prefWidth="373.0" />
-            <PieChart fx:id="AirportPiechart" prefHeight="314.0" prefWidth="361.0" />
+             <PieChart fx:id="AirportPiechart" prefHeight="314.0" prefWidth="361.0" />
          </children>
-
       </HBox>
       <HBox alignment="CENTER" prefHeight="25.0" prefWidth="284.0">
          <children>

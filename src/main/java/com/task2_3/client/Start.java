@@ -57,7 +57,7 @@ public class Start extends Application{
         client2.requestCheckout();
         client2.close();*/
 
-        Neo4jDBManager graph = Neo4jDBManager.getInstance();
+        /*Neo4jDBManager graph = Neo4jDBManager.getInstance();
         //graph.getAirport_byIataCode("DFW");
         Airline r = graph.getAirline_byIdentifier("OO");
         System.out.println("1");
@@ -67,7 +67,7 @@ public class Start extends Application{
         System.out.println("3");
         Airport ord2 = graph.getAirport_byIataCode("ORD");
         System.out.println("4");
-        System.out.println(ord.getStats().toString());
+        System.out.println(ord.getStats().toString());*/
         //graph.getRoute_byOriginAndDestinationIATACode("TYS", "ORD");
         //System.out.println(r.getStats().mostServedAirports.get(0).item.toString());
     }

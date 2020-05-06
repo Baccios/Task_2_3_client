@@ -29,6 +29,7 @@ public class OverallStatsScreenController implements Initializable {
     private PieChart AirlinePiechart;
     @FXML
     private PieChart AirportPiechart;
+
     private ArrayList<Airline> airlineRows=new ArrayList<>();
     private ArrayList<Airport> airportRows=new ArrayList<>();
     private int selectedIndex;
@@ -116,6 +117,7 @@ public class OverallStatsScreenController implements Initializable {
                         new PieChart.Data("aaaaaaaaaaaaaaaaaa", 22),
                         new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30));
         AirlinePiechart.setData(AirlinepieChartData);
+
         ObservableList<PieChart.Data> AirportpieChartData =
                 FXCollections.observableArrayList(
                         new PieChart.Data("aaaaaaaaaaaaaaaaaa", 13),
@@ -123,9 +125,9 @@ public class OverallStatsScreenController implements Initializable {
                         new PieChart.Data("aaaaaaaaaaaaaaaaaa", 10),
                         new PieChart.Data("aaaaaaaaaaaaaaaaaa", 22),
                         new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 13));
-
+                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30));
         AirportPiechart.setData(AirportpieChartData);
+
         for (final PieChart.Data data : AirportPiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {
@@ -145,7 +147,7 @@ public class OverallStatsScreenController implements Initializable {
                         }
                     });
         }
-        AirlinePiechart.setData(AirportpieChartData);
+
         for (final PieChart.Data data : AirlinePiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {

@@ -31,7 +31,7 @@ public class Start extends Application{
         return fxmlLoader.load();
     }
     public static void main (String[] args) {
-        launch();
+        //launch();
         /*    System.out.println("Hello my baby!");
         Admin_Protocol_Client client = new Admin_Protocol_Client("localhost",2020);
         client.startAuthHandshake("admin","ciaccio");
@@ -56,5 +56,19 @@ public class Start extends Application{
         client2.startAuthHandshake("admin","patacchio");
         client2.requestCheckout();
         client2.close();*/
+
+        Neo4jDBManager graph = Neo4jDBManager.getInstance();
+        //graph.getAirport_byIataCode("DFW");
+        Airline r = graph.getAirline_byIdentifier("OO");
+        System.out.println("1");
+        Airport ord = r.getStats().mostServedAirports.get(0).item;
+        System.out.println("2");
+        System.out.println(ord.getStats().toString());
+        System.out.println("3");
+        Airport ord2 = graph.getAirport_byIataCode("ORD");
+        System.out.println("4");
+        System.out.println(ord.getStats().toString());
+        //graph.getRoute_byOriginAndDestinationIATACode("TYS", "ORD");
+        //System.out.println(r.getStats().mostServedAirports.get(0).item.toString());
     }
 }

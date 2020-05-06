@@ -132,7 +132,7 @@ public class OverallStatsScreenController implements Initializable {
                         @Override public void handle(MouseEvent e) {
                             System.out.println(String.valueOf(data.getPieValue()) + "%");
                             for(Airport a:airportRows){
-                                if(a.name==String.valueOf(data.getPieValue())){
+                                if(a.getName()==String.valueOf(data.getPieValue())){
                                     Start.airport=a;
                                     try{
                                         switchToAirportScreen();
@@ -152,7 +152,7 @@ public class OverallStatsScreenController implements Initializable {
                         @Override public void handle(MouseEvent e) {
                             System.out.println(String.valueOf(data.getPieValue()) + "%");
                             for(Airline a:airlineRows){
-                                if(a.name==String.valueOf(data.getPieValue())){
+                                if(a.getName()==String.valueOf(data.getPieValue())){
                                     Start.airline=a;
                                     try{
                                         switchToAirlineScreen();

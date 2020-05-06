@@ -15,9 +15,29 @@ public class AirlineStatistics extends Statistics {
         this.mostServedAirports = new ArrayList<>(mostServedAirports);
     }
 
-    public  AirlineStatistics() {
-        super();
-        qosIndicator = -1;
-        mostServedAirports = null;
+    public AirlineStatistics(double cancellationProb, double fifteenDelayProb, double qosIndicator) {
+        super(cancellationProb, fifteenDelayProb);
+        this.qosIndicator = qosIndicator;
+        this.mostServedAirports = null;
+    }
+
+    public boolean isComplete(){
+        return (this.mostServedAirports != null);
+    }
+
+    public double getQosIndicator() {
+        return qosIndicator;
+    }
+
+    public void setQosIndicator(double qosIndicator) {
+        this.qosIndicator = qosIndicator;
+    }
+
+    public ArrayList<RankingItem<Airport>> getMostServedAirports() {
+        return mostServedAirports;
+    }
+
+    public void setMostServedAirports(ArrayList<RankingItem<Airport>> mostServedAirports) {
+        this.mostServedAirports = mostServedAirports;
     }
 }

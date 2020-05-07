@@ -348,7 +348,7 @@ public class Neo4jDBManager implements AutoCloseable {
 
     /*
     * This function retrieves hint to show to the user based on partial inputs. So for example
-    * an input origin = "char" can retrive the "Charlotte, NC" airport. It can takes in input String and
+    * an input origin = "char" can retrieve the "Charlotte, NC" airport. It can takes in input String and
     * Airport object:
     * <ul>
     *   <li>Strings: partial input of the User who has NOT YET selected an airport
@@ -513,14 +513,19 @@ public class Neo4jDBManager implements AutoCloseable {
         ArrayList<Route> tmpRoute = new ArrayList<>();
         Record tmpRouteRecord;
         Map tmpOriginMap;
+        Map tmpDestinationMap;
         while(res.hasNext()){
             tmpRouteRecord = res.next();
 
             System.out.println(tmpRouteRecord.toString());
 
             tmpOriginMap = tmpRouteRecord.values().get(0).asMap();
+            tmpDestinationMap = tmpRouteRecord.values().get(1).asMap();
 
-            //TODO
+            tmpRoute.add(new Route(
+                    new Airport(tmpOriginMap.get("IATA_code").toString()),
+                    new Airport(tmpDestinationMap.get("IATA_code").toString())
+            ));
         }
 
         return tmpRoute;

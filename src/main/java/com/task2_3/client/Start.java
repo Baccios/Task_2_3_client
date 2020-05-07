@@ -35,7 +35,7 @@ public class Start extends Application{
         return fxmlLoader.load();
     }
     public static void main (String[] args) {
-        //launch();
+        launch();
         /*    System.out.println("Hello my baby!");
         Admin_Protocol_Client client = new Admin_Protocol_Client("localhost",2020);
         client.startAuthHandshake("admin","ciaccio");

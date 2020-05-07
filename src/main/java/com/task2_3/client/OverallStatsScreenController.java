@@ -144,7 +144,7 @@ public class OverallStatsScreenController implements Initializable {
                         }
                     });
         }
-        AirlinePiechart.setData(AirportpieChartData);
+
         for (final PieChart.Data data : AirlinePiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {

@@ -29,7 +29,6 @@ public class OverallStatsScreenController implements Initializable {
     private PieChart AirlinePiechart;
     @FXML
     private PieChart AirportPiechart;
-
     private ArrayList<Airline> airlineRows=new ArrayList<>();
     private ArrayList<Airport> airportRows=new ArrayList<>();
     private int selectedIndex;
@@ -111,30 +110,28 @@ public class OverallStatsScreenController implements Initializable {
         //Only consider the 6 best elements.
         ObservableList<PieChart.Data> AirlinepieChartData =
                 FXCollections.observableArrayList(
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 13),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 25),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 10),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 22),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30));
+                        new PieChart.Data("aaaaaaaaaaa", 13),
+                        new PieChart.Data("aaaaaaaaaaa", 25),
+                        new PieChart.Data("aaaaaaaaaaa", 10),
+                        new PieChart.Data("aaaaaaaaaaa", 22),
+                        new PieChart.Data("aaaaaaaaaaa", 30));
         AirlinePiechart.setData(AirlinepieChartData);
-
         ObservableList<PieChart.Data> AirportpieChartData =
                 FXCollections.observableArrayList(
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 13),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 25),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 10),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 22),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30),
-                        new PieChart.Data("aaaaaaaaaaaaaaaaaa", 30));
+                        new PieChart.Data("aaaaaaaaaaa", 13),
+                        new PieChart.Data("aaaaaaaaaaa", 25),
+                        new PieChart.Data("aaaaaaaaaaa", 10),
+                        new PieChart.Data("aaaaaaaaaaa", 22),
+                        new PieChart.Data("aaaaaaaaaaa", 30),
+                        new PieChart.Data("aaaaaaaaaaa", 13));
         AirportPiechart.setData(AirportpieChartData);
-
         for (final PieChart.Data data : AirportPiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {
                         @Override public void handle(MouseEvent e) {
                             System.out.println(String.valueOf(data.getPieValue()) + "%");
                             for(Airport a:airportRows){
-                                if(a.getName()==String.valueOf(data.getPieValue())){
+                                if(a.getName().equals(String.valueOf(data.getPieValue()))){
                                     Start.airport=a;
                                     try{
                                         switchToAirportScreen();
@@ -147,14 +144,14 @@ public class OverallStatsScreenController implements Initializable {
                         }
                     });
         }
-
+        AirlinePiechart.setData(AirportpieChartData);
         for (final PieChart.Data data : AirlinePiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {
                         @Override public void handle(MouseEvent e) {
                             System.out.println(String.valueOf(data.getPieValue()) + "%");
                             for(Airline a:airlineRows){
-                                if(a.getName()==String.valueOf(data.getPieValue())){
+                                if(a.getName().equals(String.valueOf(data.getPieValue()))){
                                     Start.airline=a;
                                     try{
                                         switchToAirlineScreen();

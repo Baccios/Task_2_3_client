@@ -346,27 +346,35 @@ public class Neo4jDBManager implements AutoCloseable {
         }
     }
 
-/*
-    public ArrayList<Route> searchRoutes_byString(String originStr, String destinationStr){
-        String[] originSubstr = null;
-        String[] destinationSubstr = null;
-        if(originStr != null && !originStr.equals(""))
-            originSubstr = originStr.split(" ");
+    /*
+    * This function retrieves hint to show to the user based on partial inputs. So for example
+    * an input origin = "char" can retrive the "Charlotte, NC" airport. It can takes in input String and
+    * Airport object:
+    * <ul>
+    *   <li>Strings: partial input of the User who has NOT YET selected an airport
+    *   <li>Airport Object: when the user click an hint the choice is definitive, no smart-search is exploited.
+    *</ul>
+    *
+    * Note that the choices are correlated between each other. Even if the two input, i.e. <String, String>
+    * are two valid IATA_code, no hint is retrieved if there is no route between the two airport.
+    *
+    * WHEN THE USER HAS SELECTED BOTH AIRPORTS {@link #getRoute_byRoute(Route route)} HAS TO BE INVOKED
+    *
+    * @params origin Origin airport as String or Airport Object
+    * @params destination Destination airport as String or Airport Object
+    * */
 
-        if(destinationStr != null && !destinationStr.equals(""))
-            destinationSubstr = destinationStr.split(" ");
+    public ArrayList<Route> searchRoutes_byObject(Object origin, Object destination){
 
         try(Session session = driver.session()){
-            String[] finalOriginSubstr = originSubstr;
-            String[] finalDestinationSubstr = destinationSubstr;
             return session.readTransaction(tx -> {
-                ArrayList<Route> tmpRoute = searchRoute_byKeywords(tx, finalOriginSubstr, finalDestinationSubstr);
+                ArrayList<Route> tmpRoute = searchRoute_byKeywords(tx, origin, destination);
 
                 return tmpRoute;
             });
         }
     }
-*/
+
     private ArrayList<Airport> searchAirport_byKeywords(Transaction tx, String[] keywords){
         String searchAirportQuery = "match(a:Airport) with " +
                 "a.IATA_code+\" \"+a.name+\" \"+a.city+\" \"+a.state as cond, " +
@@ -426,41 +434,79 @@ public class Neo4jDBManager implements AutoCloseable {
 
         return tmpAirline;
     }
-/*
-    private ArrayList<Route> searchRoute_byKeywords(Transaction tx, String[] originKeyword, String[] destinationKeyword){
-        //TODO
+
+    private ArrayList<Route> searchRoute_byKeywords(Transaction tx, Object origin, Object destination){
+        String originStr = null;
+        Airport originAirport = null;
+        Airport destinationAirport = null;
+        String destinationStr = null;
+        String[] originKeyword = null;
+        String[] destinationKeyword = null;
+        Map<String, Object> params = new HashMap<>();
+
+        if(destination instanceof String){
+            destinationStr = (String) destination;
+            if(destinationStr != null && !destinationStr.equals(""))
+                destinationKeyword= destinationStr.split(" ");
+        }
+
         String searchRouteQuery = "match (d: Airport)<-[:DESTINATION]-(route: Route)-[:ORIGIN]->(o: Airport) with " +
                 "o.IATA_code+\" \"+o.name+\" \"+o.city+\" \"+o.state as originCond, " +
                 "d.IATA_code+\" \"+d.name+\" \"+d.city+\" \"+d.state as destinationCond, " +
                 "o as originAir, " +
                 "d as destinationAir where ";
 
-        if(originKeyword != null){
-            searchRouteQuery += "originCond =~ $origin_regexp ";
-            if(destinationKeyword != null) searchRouteQuery += "and ";
+        if(origin instanceof Airport){
+            searchRouteQuery += "originAir.IATA_code = $origin_iata_code ";
+            params.put("origin_iata_code", ((Airport) origin).getIATA_code());
+
+            if(origin != null) searchRouteQuery += "and ";
         }
-        if(destinationKeyword != null){
-            searchRouteQuery += "destinationCond =~ $destination_regexp ";
+        else if(origin instanceof String){
+            originStr = (String) origin;
+            if(originStr != null && !originStr.equals(""))
+                originKeyword = originStr.split(" ");
+
+            if(originKeyword != null){
+                searchRouteQuery += "originCond =~ $origin_regexp ";
+
+                String originRegExpr = "(?i).*";
+                for(String tmp: originKeyword){
+                    originRegExpr += "(?=.*"+ tmp +".*)";
+                }
+                originRegExpr += ".*";
+
+                params.put("origin_regexp", originRegExpr);
+
+                if(destination != null) searchRouteQuery += "and ";
+            }
+        }
+
+        if(destination instanceof Airport){
+            searchRouteQuery += "destinationAir.IATA_code = $destination_iata_code ";
+            params.put("destination_iata_code", ((Airport)destination).getIATA_code());
+        }
+        else if(destination instanceof String){
+            destinationStr = (String) destination;
+            if(destinationStr != null && !destinationStr.equals(""))
+                destinationKeyword = destinationStr.split(" ");
+
+            if(destinationKeyword != null){
+                searchRouteQuery += "destinationCond =~ $destination_regexp ";
+
+                String destinationRegExpr = "(?i).*";
+                for(String tmp: destinationKeyword){
+                    destinationRegExpr += "(?=.*" + tmp + ".*)";
+                }
+                destinationRegExpr += ".*";
+
+                params.put("destination_regexp", destinationRegExpr);
+            }
         }
 
         searchRouteQuery += "return properties(originAir), properties(destinationAir) limit 10";
 
-
-        String originRegExpr = "(?i).*";
-        for(String tmp: originKeyword){
-            originRegExpr += "(?=.*"+ tmp +".*)";
-        }
-        originRegExpr += ".*";
-
-        String destinationRegExpr = "(?i).*";
-        for(String tmp: destinationKeyword){
-            destinationRegExpr += "(?=.*" + tmp + ".*)";
-        }
-        destinationRegExpr += ".*";
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("origin_regexp", originRegExpr);
-        params.put("destination_regexp", destinationRegExpr);
+        System.out.println(searchRouteQuery);
 
         Result res = tx.run(searchRouteQuery, params);
 
@@ -479,7 +525,7 @@ public class Neo4jDBManager implements AutoCloseable {
 
         return tmpRoute;
     }
-*/
+
     private Result matchAirportNode_byIataCode(Transaction tx, String iataCode) {
         /*
         * Using properties(airport) it returns every property of the node

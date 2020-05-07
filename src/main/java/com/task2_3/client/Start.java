@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Start extends Application{
     public static Scene scene;
@@ -31,7 +32,7 @@ public class Start extends Application{
         return fxmlLoader.load();
     }
     public static void main (String[] args) {
-        launch();
+        //launch();
         /*    System.out.println("Hello my baby!");
         Admin_Protocol_Client client = new Admin_Protocol_Client("localhost",2020);
         client.startAuthHandshake("admin","ciaccio");
@@ -57,9 +58,14 @@ public class Start extends Application{
         client2.requestCheckout();
         client2.close();*/
 
-        /*Neo4jDBManager graph = Neo4jDBManager.getInstance();
+        Neo4jDBManager graph = Neo4jDBManager.getInstance();
+        ArrayList<Airport> tmpa = graph.searchAirports_byString("charlotte nc");
+        System.out.println(tmpa.toString());
+
+        ArrayList<Airline> tmp = graph.searchAirlines_byString("g4");
+        System.out.println(tmp.toString());
         //graph.getAirport_byIataCode("DFW");
-        Airline r = graph.getAirline_byIdentifier("OO");
+        /*Airline r = graph.getAirline_byIdentifier("OO");
         System.out.println("1");
         Airport ord = r.getStats().mostServedAirports.get(0).item;
         System.out.println("2");

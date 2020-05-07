@@ -302,8 +302,8 @@ public class Neo4jDBManager implements AutoCloseable {
     }
 
     private ArrayList<RankingItem<Airport>> fetchMostServedAirport_byAirline(Transaction tx, String identifier){
-        String mostServedAirlineQuery = "MATCH (airline:Airline)-[s:SERVES]->(airport:Airport) where airline.identifier=$identifier RETURN properties(airport), properties(s) order by s.percentage desc limit 10";
-        Result res = tx.run(mostServedAirlineQuery, parameters("identifier",identifier));
+        String mostServedAirportQuery = "MATCH (airline:Airline)-[s:SERVES]->(airport:Airport) where airline.identifier=$identifier RETURN properties(airport), properties(s) order by s.percentage desc limit 10";
+        Result res = tx.run(mostServedAirportQuery, parameters("identifier",identifier));
         return decompressMostServedAirport(res);
     }
 
@@ -311,7 +311,7 @@ public class Neo4jDBManager implements AutoCloseable {
         String mostServedAirlineQuery = "match (route:Route)-[:ORIGIN]->(origin:Airport)\n" +
                 "match (route)-[:DESTINATION]->(destination:Airport)\n" +
                 "match (route)-[s:SERVED_BY]->(airline:Airline)\n" +
-                "where origin.IATA_code = \"TYS\" and destination.IATA_code = \"ORD\"\n" +
+                "where origin.IATA_code = $origin_iata_code and destination.IATA_code = $destination_iata_code\n" +
                 "return properties(airline), properties(s)";
 
         Map<String, Object> params = new HashMap<>();
@@ -322,6 +322,164 @@ public class Neo4jDBManager implements AutoCloseable {
         return decompressMostServedAirline(res);
     }
 
+    public ArrayList<Airport> searchAirports_byString(String searchStr){
+        String[] searchSubstr = searchStr.split(" ");
+
+        try(Session session = driver.session()){
+            return session.readTransaction(tx -> {
+                ArrayList<Airport> tmpAirport = searchAirport_byKeywords(tx, searchSubstr);
+
+                return tmpAirport;
+            });
+        }
+    }
+
+    public ArrayList<Airline> searchAirlines_byString(String searchStr){
+        String[] searchSubstr = searchStr.split(" ");
+
+        try(Session session = driver.session()){
+            return session.readTransaction(tx -> {
+                ArrayList<Airline> tmpAirline = searchAirline_byKeywords(tx, searchSubstr);
+
+                return tmpAirline;
+            });
+        }
+    }
+
+/*
+    public ArrayList<Route> searchRoutes_byString(String originStr, String destinationStr){
+        String[] originSubstr = null;
+        String[] destinationSubstr = null;
+        if(originStr != null && !originStr.equals(""))
+            originSubstr = originStr.split(" ");
+
+        if(destinationStr != null && !destinationStr.equals(""))
+            destinationSubstr = destinationStr.split(" ");
+
+        try(Session session = driver.session()){
+            String[] finalOriginSubstr = originSubstr;
+            String[] finalDestinationSubstr = destinationSubstr;
+            return session.readTransaction(tx -> {
+                ArrayList<Route> tmpRoute = searchRoute_byKeywords(tx, finalOriginSubstr, finalDestinationSubstr);
+
+                return tmpRoute;
+            });
+        }
+    }
+*/
+    private ArrayList<Airport> searchAirport_byKeywords(Transaction tx, String[] keywords){
+        String searchAirportQuery = "match(a:Airport) with " +
+                "a.IATA_code+\" \"+a.name+\" \"+a.city+\" \"+a.state as cond, " +
+                "a.IATA_code as IATA_code, " +
+                "a.city as city, " +
+                "a.state as state, " +
+                "a.name as name " +
+                "where cond =~ $regexp_pattern " +
+                "return IATA_code, state, name, city " +
+                "limit 10";
+        String airportRegExpr = "(?i).*";
+        for(String tmp: keywords){
+            airportRegExpr += "(?=.*"+ tmp +".*)";
+        }
+        airportRegExpr += ".*";
+        Result res = tx.run(searchAirportQuery, parameters("regexp_pattern", airportRegExpr));
+
+        ArrayList<Airport> tmpAirport = new ArrayList<>();
+        Record rec;
+        while(res.hasNext()){
+            rec = res.single();
+            tmpAirport.add(new Airport(
+                    rec.get("IATA_code").asString(),
+                    rec.get("name").asString(),
+                    rec.get("city").asString(),
+                    rec.get("state").asString()
+            ));
+        }
+
+        return tmpAirport;
+    }
+
+    private ArrayList<Airline> searchAirline_byKeywords(Transaction tx, String[] keywords){
+        String searchAirlineQuery = "match(a:Airline) with " +
+                "a.name+\" \"+a.identifier as pattern, " +
+                "a.identifier as identifier, " +
+                "a.name as name " +
+                "where pattern =~ $regexp_pattern " +
+                "return identifier, name " +
+                "limit 10";
+        String airportRegExpr = "(?i).*";
+        for(String tmp: keywords){
+            airportRegExpr += "(?=.*"+ tmp +".*)";
+        }
+        airportRegExpr += ".*";
+        Result res = tx.run(searchAirlineQuery, parameters("regexp_pattern", airportRegExpr));
+
+        ArrayList<Airline> tmpAirline = new ArrayList<>();
+        Record rec;
+        while(res.hasNext()){
+            rec = res.single();
+            tmpAirline.add(new Airline(
+                    rec.get("identifier").asString(),
+                    rec.get("name").asString()
+                    ));
+        }
+
+        return tmpAirline;
+    }
+/*
+    private ArrayList<Route> searchRoute_byKeywords(Transaction tx, String[] originKeyword, String[] destinationKeyword){
+        //TODO
+        String searchRouteQuery = "match (d: Airport)<-[:DESTINATION]-(route: Route)-[:ORIGIN]->(o: Airport) with " +
+                "o.IATA_code+\" \"+o.name+\" \"+o.city+\" \"+o.state as originCond, " +
+                "d.IATA_code+\" \"+d.name+\" \"+d.city+\" \"+d.state as destinationCond, " +
+                "o as originAir, " +
+                "d as destinationAir where ";
+
+        if(originKeyword != null){
+            searchRouteQuery += "originCond =~ $origin_regexp ";
+            if(destinationKeyword != null) searchRouteQuery += "and ";
+        }
+        if(destinationKeyword != null){
+            searchRouteQuery += "destinationCond =~ $destination_regexp ";
+        }
+
+        searchRouteQuery += "return properties(originAir), properties(destinationAir) limit 10";
+
+
+        String originRegExpr = "(?i).*";
+        for(String tmp: originKeyword){
+            originRegExpr += "(?=.*"+ tmp +".*)";
+        }
+        originRegExpr += ".*";
+
+        String destinationRegExpr = "(?i).*";
+        for(String tmp: destinationKeyword){
+            destinationRegExpr += "(?=.*" + tmp + ".*)";
+        }
+        destinationRegExpr += ".*";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("origin_regexp", originRegExpr);
+        params.put("destination_regexp", destinationRegExpr);
+
+        Result res = tx.run(searchRouteQuery, params);
+
+        ArrayList<Route> tmpRoute = new ArrayList<>();
+        Record tmpRouteRecord;
+        Map tmpOriginMap;
+        while(res.hasNext()){
+            tmpRouteRecord = res.next();
+
+            System.out.println(tmpRouteRecord.toString());
+
+            tmpOriginMap = tmpRouteRecord.values().get(0).asMap();
+
+            //TODO
+        }
+
+        return tmpRoute;
+    }
+*/
     private Result matchAirportNode_byIataCode(Transaction tx, String iataCode) {
         /*
         * Using properties(airport) it returns every property of the node

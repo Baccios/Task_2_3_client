@@ -19,6 +19,14 @@ public class Airport {
         this.stats = null;
     }
 
+    public Airport(String IATA_code, String name, String city, String state) {
+        this.IATA_code = IATA_code;
+        this.name = name;
+        this.city = city;
+        this.state = state;
+        this.stats = null;
+    }
+
     public Airport(String IATA_code, String name, String city, String state, AirportStatistics stats) {
         this.IATA_code = IATA_code;
         this.name = name;

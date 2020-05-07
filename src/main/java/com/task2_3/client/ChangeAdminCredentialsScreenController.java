@@ -25,25 +25,28 @@ public class ChangeAdminCredentialsScreenController {
             errorLabel.setVisible(true);
             return;
         }
-        // TODO OPEN SOCKET WITH SERVER AND SEND NEW CREDENTIALS
-        //if request correctly handled:
-        try {
-            userInput.setText("");
-            passwordInput.setText("");
-            errorLabel.setVisible(false);
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
-            Scene scene=new Scene(fxmlLoader.load(),300, 150);
-            Label confirmMessage=(Label) scene.lookup("#confirmMessage");
-            confirmMessage.setText("Credentials successfully changed.");
-            Stage stage = new Stage();
-    //        stage.setTitle("Change credentials");
-            stage.setScene(scene);
-            stage.show();
-            // Hide this current window (if this is what you want)
-            //   ((Node)(event.getSource())).getScene().getWindow().hide();
+        if(Start.adminManager.requestCredentials(userInput.getText(),passwordInput.getText())==true){
+            try {
+                userInput.setText("");
+                passwordInput.setText("");
+                errorLabel.setVisible(false);
+                FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
+                Scene scene=new Scene(fxmlLoader.load(),300, 150);
+                Label confirmMessage=(Label) scene.lookup("#confirmMessage");
+                confirmMessage.setText("Credentials successfully changed.");
+                Stage stage = new Stage();
+        //        stage.setTitle("Change credentials");
+                stage.setScene(scene);
+                stage.show();
+                // Hide this current window (if this is what you want)
+                //   ((Node)(event.getSource())).getScene().getWindow().hide();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        else{
+            System.exit(1);
         }
     }
     @FXML

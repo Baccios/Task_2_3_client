@@ -23,24 +23,28 @@ public class SetReplicaParametersScreenController {
             errorLabel.setVisible(true);
             return;
         }
-        // TODO OPEN SOCKET WITH SERVER AND SEND parameter
-        //if request correctly handled:
-        try {
-            errorLabel.setVisible(false);
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
-            Scene scene=new Scene(fxmlLoader.load(),300, 150);
-            Label confirmMessage=(Label) scene.lookup("#confirmMessage");
-            confirmMessage.setText("Replication level correctly set.");
-            Stage stage = new Stage();
-            //        stage.setTitle("Change credentials");
-            stage.setScene(scene);
-            stage.show();
-            // Hide this current window (if this is what you want)
-            //   ((Node)(event.getSource())).getScene().getWindow().hide();
+        System.out.println((String)combobox.getValue());
+        System.out.println(combobox.getPromptText());
+        if(Start.adminManager.requestReplicas(Integer.parseInt((String)combobox.getValue()))){
+            try {
+                errorLabel.setVisible(false);
+                FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
+                Scene scene=new Scene(fxmlLoader.load(),300, 150);
+                Label confirmMessage=(Label) scene.lookup("#confirmMessage");
+                confirmMessage.setText("Replication level correctly set.");
+                Stage stage = new Stage();
+                //        stage.setTitle("Change credentials");
+                stage.setScene(scene);
+                stage.show();
+                // Hide this current window (if this is what you want)
+                //   ((Node)(event.getSource())).getScene().getWindow().hide();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        else
+            System.exit(1);
     }
     @FXML
     public void switchToReservedAreaScreen()throws IOException {

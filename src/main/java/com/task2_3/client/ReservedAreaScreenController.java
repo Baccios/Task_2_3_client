@@ -26,43 +26,46 @@ public class ReservedAreaScreenController {
     }
     @FXML
     private void switchToForceUpdateScreen() throws IOException {
-        //TODO open socket to send update request to server
-        //if request correctly handled:
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
-            Scene scene=new Scene(fxmlLoader.load(),300, 150);
-            Label confirmMessage=(Label) scene.lookup("#confirmMessage");
-            confirmMessage.setText("Database correctly updated.");
-            Stage stage = new Stage();
-     //       stage.setTitle("Change credentials");
-            stage.setScene(scene);
-            stage.show();
-            // Hide this current window (if this is what you want)
-            //   ((Node)(event.getSource())).getScene().getWindow().hide();
+        if(Start.adminManager.requestUpdate()){
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
+                Scene scene=new Scene(fxmlLoader.load(),300, 150);
+                Label confirmMessage=(Label) scene.lookup("#confirmMessage");
+                confirmMessage.setText("Database correctly updated.");
+                Stage stage = new Stage();
+         //       stage.setTitle("Change credentials");
+                stage.setScene(scene);
+                stage.show();
+                // Hide this current window (if this is what you want)
+                //   ((Node)(event.getSource())).getScene().getWindow().hide();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        else
+            System.exit(1);
     }
     @FXML
     private void switchToForceScrapingScreen() throws IOException {
-        //TODO open socket to send update request to server
-        //if request correctly handled:
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
-            Scene scene=new Scene(fxmlLoader.load(),300, 150);
-            Label confirmMessage=(Label) scene.lookup("#confirmMessage");
-            confirmMessage.setText("Scraping correctly requested.");
-            Stage stage = new Stage();
-            //       stage.setTitle("Change credentials");
-            stage.setScene(scene);
-            stage.show();
-            // Hide this current window (if this is what you want)
-            //   ((Node)(event.getSource())).getScene().getWindow().hide();
+        if(Start.adminManager.requestScrape()) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("confirmBox.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), 300, 150);
+                Label confirmMessage = (Label) scene.lookup("#confirmMessage");
+                confirmMessage.setText("Scraping correctly requested.");
+                Stage stage = new Stage();
+                //       stage.setTitle("Change credentials");
+                stage.setScene(scene);
+                stage.show();
+                // Hide this current window (if this is what you want)
+                //   ((Node)(event.getSource())).getScene().getWindow().hide();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        else
+            System.exit(1);
     }
     @FXML
     private void switchToSetLimitScreen() throws IOException {

@@ -23,15 +23,22 @@ public class AdminAuthenticationScreenController {
             errorLabel.setVisible(true);
             return;
         }
-        //TODO create socket to send credentials to server verify correctness
-
-        if(userInput.getText().equals("admin") && passwordInput.getText().equals("admin")){
+        int ret=Start.adminManager.startAuthHandshake(userInput.getText(),passwordInput.getText());
+        if(ret==0){
             Start.setRoot("ReservedAreaScreen");
             return;
         }
-        errorLabel.setText("Inserted credentials are wrong!");
-        errorLabel.setVisible(true);
-        return;
-
+        if(ret==1){
+            errorLabel.setText("Inserted credentials are wrong!");
+            errorLabel.setVisible(true);
+            return;
+        }
+        if(ret==2){
+            errorLabel.setText("Admin already logged");
+            errorLabel.setVisible(true);
+            return;
+        }
+        System.out.println("Unexpected error during autentication");
+        System.exit(1);
     }
 }

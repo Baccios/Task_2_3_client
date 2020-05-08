@@ -9,8 +9,6 @@ public class Airport {
     private String state;
     private AirportStatistics stats;
 
-    public Airport(){}
-
     public Airport(String IATA_code){
         this.IATA_code = IATA_code;
         this.name = null;

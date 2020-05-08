@@ -66,7 +66,7 @@
         </Button>
         <HBox prefHeight="24.0" prefWidth="715.0">
             <children>
-                <Button onAction="#switchToAdminAuthenticationScreen" prefHeight="24.0" prefWidth="60.0" text="back">
+                <Button onAction="#switchToInitialScreen" prefHeight="24.0" prefWidth="60.0" text="back">
                     <font>
                         <Font name="Aharoni Bold" size="11.0" />
                     </font>

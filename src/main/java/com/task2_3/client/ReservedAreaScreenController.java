@@ -17,8 +17,10 @@ import java.util.ResourceBundle;
 public class ReservedAreaScreenController {
 
     @FXML
-    private void switchToAdminAuthenticationScreen() throws IOException {
-        Start.setRoot("adminAuthenticationScreen");
+    private void switchToInitialScreen() throws IOException {
+        if(Start.adminManager.requestCheckout()==false)
+            System.exit(1);
+        Start.setRoot("initialScreen");
     }
     @FXML
     private void switchToChangeAdminCredentialsScreen() throws IOException {
@@ -33,7 +35,6 @@ public class ReservedAreaScreenController {
                 Label confirmMessage=(Label) scene.lookup("#confirmMessage");
                 confirmMessage.setText("Database correctly updated.");
                 Stage stage = new Stage();
-         //       stage.setTitle("Change credentials");
                 stage.setScene(scene);
                 stage.show();
                 // Hide this current window (if this is what you want)

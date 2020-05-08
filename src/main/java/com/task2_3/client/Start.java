@@ -18,7 +18,7 @@ public class Start extends Application{
     public static Airport airport;
 
     public void start(Stage stage)throws IOException{
-        adminManager=new Admin_Protocol_Client("localhost",1); //TODO insert correct server ip and port
+        adminManager=new Admin_Protocol_Client("localhost",2020); //TODO insert correct server ip and port
         scene = new Scene(loadFXML("initialScreen"));
         stage.setWidth(840);
         stage.setHeight(630);

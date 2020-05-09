@@ -12,13 +12,14 @@ import java.util.ArrayList;
 public class Start extends Application{
     public static Scene scene;
     public static Admin_Protocol_Client adminManager;
+    public static Neo4jDBManager neoDbManager;
     //Entities that are selected by user to be analyzed.
     public static Route route;
     public static Airline airline;
     public static Airport airport;
 
     public void start(Stage stage)throws IOException{
-        adminManager=new Admin_Protocol_Client("localhost",2020); //TODO insert correct server ip and port
+   //     adminManager=new Admin_Protocol_Client("localhost",2020); //TODO insert correct server ip and port
         scene = new Scene(loadFXML("initialScreen"));
         stage.setWidth(840);
         stage.setHeight(630);
@@ -35,7 +36,7 @@ public class Start extends Application{
         return fxmlLoader.load();
     }
     public static void main (String[] args) {
-        //launch();
+        launch();
         /*    System.out.println("Hello my baby!");
         Admin_Protocol_Client client = new Admin_Protocol_Client("localhost",2020);
         client.startAuthHandshake("admin","ciaccio");
@@ -62,7 +63,7 @@ public class Start extends Application{
         client2.close();*/
 
 
-
+/*
         Neo4jDBManager graph = Neo4jDBManager.getInstance();
         Airport a = graph.getAirport_byIataCode("CLT");
         Airport b = graph.getAirport_byIataCode("OAJ");
@@ -70,7 +71,7 @@ public class Start extends Application{
 
         ArrayList<Airport> tmpa = graph.searchAirports_byString("charlotte nc");
 
-        ArrayList<Airline> tmp = graph.searchAirlines_byString("g4");
+        ArrayList<Airline> tmp = graph.searchAirlines_byString("g4");   */
 
         /*Airline r = graph.getAirline_byIdentifier("OO");
         System.out.println("1");

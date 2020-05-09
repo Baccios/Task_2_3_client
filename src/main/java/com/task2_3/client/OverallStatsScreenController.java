@@ -11,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -163,7 +164,31 @@ public class OverallStatsScreenController implements Initializable {
                             }
                         }
                     });
-        }
+        }   //as a character is digited in input the array of matching airport is updated.
+        airportInput.addEventFilter(KeyEvent.KEY_RELEASED,
+                new EventHandler<KeyEvent>() {
+                @Override
+                    public void handle(KeyEvent e) {
+                        System.out.println(airportInput.getText());
+                        Start.neoDbManager.searchAirports_byString(airportInput.getText());
+                    }
+                });
+        airlineInput.addEventFilter(KeyEvent.KEY_RELEASED,
+                new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent e) {
+                        System.out.println(airlineInput.getText());
+                        Start.neoDbManager.searchAirports_byString(airlineInput.getText());
+                    }
+                });
+        airportInput.addEventFilter(KeyEvent.KEY_RELEASED,
+                new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent e) {
+                        System.out.println(airportInput.getText());
+                        Start.neoDbManager.searchAirports_byString(airportInput.getText());
+                    }
+                });
     /*    updateTables();*/
     }
     /*

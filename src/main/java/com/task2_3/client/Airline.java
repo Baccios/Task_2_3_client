@@ -8,27 +8,38 @@ public class Airline {
     private String name;
     private AirlineStatistics stats;
 
+    //These two fields are information retrieved from graph oriented queries on the database, and not from MongoDB analytics
+    private int totalServedRoutes;
+    private int firstPlacesCount;
+
     public Airline(String id){
         this.identifier = id;
         this.name = null;
         this.stats = null;
+        this.totalServedRoutes = -1;
+        this.firstPlacesCount = -1;
     }
 
     public Airline(String id, String name){
         this.identifier = id;
         this.name = name;
         stats = null;
+        this.totalServedRoutes = -1;
+        this.firstPlacesCount = -1;
     }
 
     public Airline(String id, String name, AirlineStatistics stats) {
         this.identifier = id;
         this.name = name;
         this.stats = stats;
+        this.totalServedRoutes = -1;
+        this.firstPlacesCount = -1;
     }
 
     private boolean isComplete(){
         return (this.identifier != null)&&
                 (this.name != null)&&
+                (this.stats != null)&&
                 (this.stats.isComplete());
     }
 
@@ -50,12 +61,14 @@ public class Airline {
     }
 
     public String getName() {
-        checkCompleteAndFetch();
+        if(name == null)
+            checkCompleteAndFetch();
         return name;
     }
 
     public AirlineStatistics getStats() {
-        checkCompleteAndFetch();
+        if(stats == null || !stats.isComplete())
+            checkCompleteAndFetch();
         return stats;
     }
 
@@ -104,5 +117,28 @@ public class Airline {
         this.identifier = tmp.getIdentifier();
         this.name = tmp.getName();
         this.stats = tmp.getStats();
+    }
+
+    private void loadGlobalRoutesStats() {
+        int[] tmp = Neo4jDBManager.getInstance().getFirstPlacesCount_ByAirline(this);
+        if(tmp == null) {
+            return;
+        }
+        firstPlacesCount = tmp[0];
+        totalServedRoutes = tmp[1];
+    }
+
+    public int getTotalServedRoutes() {
+        if(totalServedRoutes == -1) {
+            loadGlobalRoutesStats();
+        }
+        return totalServedRoutes;
+    }
+
+    public int getFirstPlacesCount() {
+        if(firstPlacesCount == -1) {
+            loadGlobalRoutesStats();
+        }
+        return firstPlacesCount;
     }
 }

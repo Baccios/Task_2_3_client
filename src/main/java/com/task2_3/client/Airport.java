@@ -9,12 +9,16 @@ public class Airport {
     private String state;
     private AirportStatistics stats;
 
+    //this field is an information retrieved from graph oriented queries, and not from MongoDB analytics
+    private int twoHopsDestinations;
+
     public Airport(String IATA_code){
         this.IATA_code = IATA_code;
         this.name = null;
         this.city = null;
         this.state = null;
         this.stats = null;
+        this.twoHopsDestinations = -1;
     }
 
     public Airport(String IATA_code, String name, String city, String state) {
@@ -23,6 +27,7 @@ public class Airport {
         this.city = city;
         this.state = state;
         this.stats = null;
+        this.twoHopsDestinations = -1;
     }
 
     public Airport(String IATA_code, String name, String city, String state, AirportStatistics stats) {
@@ -31,6 +36,7 @@ public class Airport {
         this.city = city;
         this.state = state;
         this.stats = stats;
+        this.twoHopsDestinations = -1;
     }
 
     private boolean isComplete(){
@@ -38,6 +44,7 @@ public class Airport {
                 (this.name != null)&&
                 (this.city != null)&&
                 (this.state != null)&&
+                (this.stats != null)&&
                 (this.stats.isComplete());
     }
 
@@ -78,23 +85,27 @@ public class Airport {
         return IATA_code;
     }
 
-    public String getName() {
-        checkCompleteAndFetch();
+public String getName() {
+        if(name == null)
+            checkCompleteAndFetch();
         return name;
     }
 
     public String getCity() {
-        checkCompleteAndFetch();
+        if(city == null)
+            checkCompleteAndFetch();
         return city;
     }
 
     public String getState() {
-        checkCompleteAndFetch();
+        if(state == null)
+            checkCompleteAndFetch();
         return state;
     }
 
     public AirportStatistics getStats() {
-        checkCompleteAndFetch();
+        if(stats == null || !stats.isComplete())
+            checkCompleteAndFetch();
         return stats;
     }
 
@@ -144,5 +155,13 @@ public class Airport {
         this.city = airport.city;
         this.state = airport.state;
         this.stats = airport.stats;
+    }
+
+    public int getTwoHopsDestinations() {
+        if(twoHopsDestinations != -1) {
+            return twoHopsDestinations;
+        }
+        twoHopsDestinations = Neo4jDBManager.getInstance().getTwoHopsDestinationsCount(this);
+        return twoHopsDestinations;
     }
 }

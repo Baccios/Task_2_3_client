@@ -22,6 +22,7 @@ public class Route {
     private boolean isComplete(){
         return (this.origin != null)&&
                 (this.destination != null)&&
+                (this.stats != null)&&
                 (this.stats.isComplete());
     }
 
@@ -68,7 +69,8 @@ public class Route {
     }
 
     public RouteStatistics getStats() {
-        checkCompleteAndFetch();
+        if(stats == null || !stats.isComplete())
+            checkCompleteAndFetch();
         return stats;
     }
 

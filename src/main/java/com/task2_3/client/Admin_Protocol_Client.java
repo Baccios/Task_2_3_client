@@ -63,7 +63,7 @@ public class Admin_Protocol_Client implements AutoCloseable {
 
     /**
      * Initiate the login handshake with the server.
-     * Note that this doesn't return 0, the instance of this class must be closed and reinitialized because
+     * Note that if this doesn't return 0, the instance of this class must be closed and reinitialized because
      * the server will close its side of the socket.
      * @param user username
      * @param psw password

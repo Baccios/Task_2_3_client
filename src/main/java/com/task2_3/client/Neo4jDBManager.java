@@ -1,6 +1,8 @@
 package com.task2_3.client;
 
 import org.neo4j.driver.*;
+import org.neo4j.driver.types.Node;
+import org.neo4j.driver.types.Relationship;
 
 import java.util.*;
 
@@ -346,8 +348,8 @@ public class Neo4jDBManager implements AutoCloseable {
         }
     }
 
-    /*
-    * This function retrieves hint to show to the user based on partial inputs. So for example
+    /**
+    * Retrieve hint to show to the user based on partial inputs. So for example
     * an input origin = "char" can retrieve the "Charlotte, NC" airport. It can takes in input String and
     * Airport object:
     * <ul>
@@ -360,8 +362,8 @@ public class Neo4jDBManager implements AutoCloseable {
     *
     * WHEN THE USER HAS SELECTED BOTH AIRPORTS {@link #getRoute_byRoute(Route route)} HAS TO BE INVOKED
     *
-    * @params origin Origin airport as String or Airport Object
-    * @params destination Destination airport as String or Airport Object
+    * @param origin Origin airport as String or Airport Object
+    * @param destination Destination airport as String or Airport Object
     * */
 
     public ArrayList<Route> searchRoutes_byObject(Object origin, Object destination){
@@ -374,6 +376,147 @@ public class Neo4jDBManager implements AutoCloseable {
             });
         }
     }
+
+    /**
+     * Given an origin and destination airport, this method returns an array of routes having the given destination airport and
+     * an origin airport different from the one specified but placed in the same U.S. state.
+     * Useful to suggest a user alternatives for not existent routes.
+     * @param origin The origin airport
+     * @param destination The destination airport
+     * @return array of routes ordered by mean delay
+     */
+    //TODO: to be tested
+    public ArrayList<Route> searchSimilarRoutes_byOriginAndDest(Airport origin, Airport destination){
+
+        try(Session session = driver.session()){
+            return session.readTransaction(tx -> {
+                return searchSimilarRoutes_byOriginAndDest_query(tx, origin, destination);
+            });
+        }
+    }
+
+    /**
+     * Given an airport, return the number of reachable airports with at most two route hops
+     * @param airport the origin airport
+     * @return the number of reachable airports. -1 in case of error
+     */
+    //TODO: to be tested
+    public int getTwoHopsDestinationsCount(Airport airport) {
+        try(Session session = driver.session()){
+            return session.readTransaction(tx -> {
+                return getTwoHopsDestinationsCount_query(tx, airport);
+            });
+        }
+    }
+
+    /**
+     * Get the number of times the airline is the best (in terms of QoS) for a route, and the total number of routes the airline serves
+     * @param airline the specified airline
+     * @return an array of two integers: the first is the number of first places, the second is total number of routes.
+     *         Returns null in case of error
+     */
+    //TODO: to be tested
+    public int[] getFirstPlacesCount_ByAirline(Airline airline) {
+        try(Session session = driver.session()){
+            return session.readTransaction(tx -> {
+                return getFirstPlacesCount_ByAirline_query(tx, airline);
+            });
+        }
+    }
+
+
+
+    private ArrayList<Route> searchSimilarRoutes_byOriginAndDest_query(Transaction tx, Airport origin, Airport dest) {
+        String query =
+                "MATCH (origin:Airport)<-[:ORIGIN]-(r:Route)-[:DESTINATION]->(dest:Airport {IATA_code: $iata_dest})\n" +
+                "WHERE origin.state = $state" +
+                "RETURN r,origin\n" +
+                "ORDER BY r.meanDelay";
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("iata_dest", dest.getIATA_code());
+        params.put("state", origin.getState());
+        Result res = tx.run(query, params);
+        Record rec;
+        ArrayList<Route> similarRoutes = new ArrayList<>();
+        while (res.hasNext()) {
+            rec = res.single();
+            Node origin_node = rec.get("origin").asNode();
+            Node route_node = rec.get("r").asNode();
+
+            Airport currentOrigin = new Airport(
+                    origin_node.get("IATA_code").asString(),
+                    origin_node.get("name").asString(),
+                    origin_node.get("city").asString(),
+                    origin_node.get("state").asString(),
+                    new AirportStatistics(
+                            origin_node.get("cancellationProb").asDouble(),
+                            origin_node.get("fifteenDelayProb").asDouble(),
+                            origin_node.get("qosIndicator").asDouble(),
+                            origin_node.get("mostLikelyCauseDelay").asString(),
+                            origin_node.get("mostLikelyCauseCanc").asString()
+                    )
+            );
+
+
+            Route currentRoute = new Route(
+                    currentOrigin,
+                    dest,
+                    new RouteStatistics(
+                            route_node.get("cancellationProb").asDouble(),
+                            route_node.get("fifteenDelayProb").asDouble(),
+                            route_node.get("mostLikelyCauseDelay").asString(),
+                            route_node.get("mostLikelyCauseCanc").asString(),
+                            route_node.get("meanDelay").asDouble()
+                    )
+            );
+
+            similarRoutes.add(currentRoute);
+        }
+        return similarRoutes;
+    }
+
+    private int getTwoHopsDestinationsCount_query(Transaction tx, Airport airport) {
+        String query =
+                "MATCH (airport:Airport {IATA_code: $iata})\n" +
+                "MATCH (airport)<-[:ORIGIN]-(:Route)-[:DESTINATION]->(:Airport)<-[:ORIGIN]-(:Route)-[:DESTINATION]->(target:Airport)\n" +
+                "WHERE target.IATA_code <> airport.IATA_code\n" +
+                "RETURN count(distinct target) AS ReachableAirports";
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("iata", airport.getIATA_code());
+        Result res = tx.run(query, params);
+        if(!res.hasNext()) {
+            System.err.println("An error occurred in two hops count query");
+            return -1;
+        }
+        Record rec = res.single();
+        return rec.get(0).asInt();
+    }
+
+    private int[] getFirstPlacesCount_ByAirline_query(Transaction tx, Airline airline) {
+        String query =
+                "MATCH (airline:Airline {identifier: $id})\n" +
+                "MATCH (airline)<-[:SERVED_BY]-(r:Route)\n" +
+                "WITH airline, count(r) AS totalRoutesServed\n" +
+                "\n" +
+                "MATCH (airline)<-[sb:SERVED_BY]-(r:Route)\n" +
+                "OPTIONAL MATCH (r)-[otherSb:SERVED_BY]->(other:Airline)\n" +
+                "WHERE otherSb.qosIndicator > sb.qosIndicator\n" +
+                "WITH airline, totalRoutesServed ,sb AS candidateRoute, size(collect(otherSb)) AS betterAirlines\n" +
+                "\n" +
+                "MATCH (airline)<-[candidateRoute]-()\n" +
+                "WHERE betterAirlines = 0\n" +
+                "RETURN airline, count(betterAirlines) AS bestCarrierCount, totalRoutesServed";
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", airline.getIdentifier());
+        Result res = tx.run(query, params);
+        if(!res.hasNext()) {
+            System.err.println("An error occurred in first places count query");
+            return null;
+        }
+        Record rec = res.single();
+        return new int[] {rec.get(0).asInt(), rec.get(1).asInt()};
+    }
+
 
     private ArrayList<Airport> searchAirport_byKeywords(Transaction tx, String[] keywords){
         String searchAirportQuery = "match(a:Airport) with " +

@@ -36,7 +36,7 @@ public class Start extends Application{
         return fxmlLoader.load();
     }
     public static void main (String[] args) {
-        launch();
+        //launch();
         /*    System.out.println("Hello my baby!");
         Admin_Protocol_Client client = new Admin_Protocol_Client("localhost",2020);
         client.startAuthHandshake("admin","ciaccio");
@@ -63,12 +63,23 @@ public class Start extends Application{
         client2.close();*/
 
 
-/*
+
         Neo4jDBManager graph = Neo4jDBManager.getInstance();
         Airport a = graph.getAirport_byIataCode("CLT");
         Airport b = graph.getAirport_byIataCode("OAJ");
-        graph.searchRoutes_byObject(a, b);
 
+        Airline air = graph.getAirline_byIdentifier("9E");
+        System.out.println("Airline "+air.getIdentifier()+"has "+air.getFirstPlacesCount()+" first places over "+air.getTotalServedRoutes()+" total routes");
+        System.out.println("Airport "+a.getName()+" can reach "+a.getTwoHopsDestinations()+" destinations in at most two hops");
+        ArrayList<Route> list = graph.searchSimilarRoutes_byOriginAndDest(b,a);
+        for (Route r : list) {
+            System.out.println("I suggest "+r.getOrigin().getName()+", "+r.getOrigin().getState()+" --> "+r.getDestination().getName());
+        }
+
+        graph.close();
+
+        /*
+        graph.searchRoutes_byObject(a, b);
         ArrayList<Airport> tmpa = graph.searchAirports_byString("charlotte nc");
 
         ArrayList<Airline> tmp = graph.searchAirlines_byString("g4");   */
@@ -84,5 +95,8 @@ public class Start extends Application{
         System.out.println(ord.getStats().toString());*/
         //graph.getRoute_byOriginAndDestinationIATACode("TYS", "ORD");
         //System.out.println(r.getStats().mostServedAirports.get(0).item.toString());
+
+
+
     }
 }

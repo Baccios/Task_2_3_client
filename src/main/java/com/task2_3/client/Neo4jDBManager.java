@@ -385,7 +385,6 @@ public class Neo4jDBManager implements AutoCloseable {
      * @param destination The destination airport
      * @return array of routes ordered by mean delay
      */
-    //TODO: to be tested
     public ArrayList<Route> searchSimilarRoutes_byOriginAndDest(Airport origin, Airport destination){
 
         try(Session session = driver.session()){
@@ -400,7 +399,6 @@ public class Neo4jDBManager implements AutoCloseable {
      * @param airport the origin airport
      * @return the number of reachable airports. -1 in case of error
      */
-    //TODO: to be tested
     public int getTwoHopsDestinationsCount(Airport airport) {
         try(Session session = driver.session()){
             return session.readTransaction(tx -> {
@@ -415,7 +413,6 @@ public class Neo4jDBManager implements AutoCloseable {
      * @return an array of two integers: the first is the number of first places, the second is total number of routes.
      *         Returns null in case of error
      */
-    //TODO: to be tested
     public int[] getFirstPlacesCount_ByAirline(Airline airline) {
         try(Session session = driver.session()){
             return session.readTransaction(tx -> {
@@ -429,17 +426,18 @@ public class Neo4jDBManager implements AutoCloseable {
     private ArrayList<Route> searchSimilarRoutes_byOriginAndDest_query(Transaction tx, Airport origin, Airport dest) {
         String query =
                 "MATCH (origin:Airport)<-[:ORIGIN]-(r:Route)-[:DESTINATION]->(dest:Airport {IATA_code: $iata_dest})\n" +
-                "WHERE origin.state = $state" +
+                "WHERE origin.state = $state AND origin.IATA_code <> $iata_origin\n" +
                 "RETURN r,origin\n" +
                 "ORDER BY r.meanDelay";
         HashMap<String, Object> params = new HashMap<>();
+        params.put("iata_origin", origin.getIATA_code());
         params.put("iata_dest", dest.getIATA_code());
         params.put("state", origin.getState());
         Result res = tx.run(query, params);
         Record rec;
         ArrayList<Route> similarRoutes = new ArrayList<>();
         while (res.hasNext()) {
-            rec = res.single();
+            rec = res.next();
             Node origin_node = rec.get("origin").asNode();
             Node route_node = rec.get("r").asNode();
 
@@ -514,7 +512,7 @@ public class Neo4jDBManager implements AutoCloseable {
             return null;
         }
         Record rec = res.single();
-        return new int[] {rec.get(0).asInt(), rec.get(1).asInt()};
+        return new int[] {rec.get("bestCarrierCount").asInt(), rec.get("totalRoutesServed").asInt()};
     }
 
 

@@ -739,7 +739,6 @@ public class Neo4jDBManager implements AutoCloseable {
                 Map rec = null;
                 Airport tmpAirline = null;
 
-                int i = 0;
                 while(res.hasNext()){
                     rec = res.next().asMap();
 
@@ -747,8 +746,6 @@ public class Neo4jDBManager implements AutoCloseable {
                             rec.get("airline.identifier").toString(),
                             rec.get("airline.name").toString()
                     ));
-                    System.out.println(tmp.get(i).toString());
-                    i++;
                 }
 
                 return tmp;

@@ -536,7 +536,7 @@ public class Neo4jDBManager implements AutoCloseable {
         ArrayList<Airport> tmpAirport = new ArrayList<>();
         Record rec;
         while(res.hasNext()){
-            rec = res.single();
+            rec = res.next();
             tmpAirport.add(new Airport(
                     rec.get("IATA_code").asString(),
                     rec.get("name").asString(),

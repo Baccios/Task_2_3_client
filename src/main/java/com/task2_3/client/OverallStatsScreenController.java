@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import org.controlsfx.control.textfield.TextFields;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -170,9 +171,13 @@ public class OverallStatsScreenController implements Initializable {
                 @Override
                     public void handle(KeyEvent e) {
                         System.out.println(airportInput.getText());
-                        Start.neoDbManager.searchAirports_byString(airportInput.getText());
+                        ArrayList<Airport> matchingAirports=Start.neoDbManager.searchAirports_byString(airportInput.getText());
+                        for(Airport a: matchingAirports) {
+                            System.out.println(a.getName());
+                        }
                     }
                 });
+        TextFields.bindAutoCompletion(airportInput,"ciao","ciaoo");
         airlineInput.addEventFilter(KeyEvent.KEY_RELEASED,
                 new EventHandler<KeyEvent>() {
                     @Override

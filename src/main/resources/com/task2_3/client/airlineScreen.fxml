@@ -11,7 +11,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="771.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.AirlineScreenController">
     <children>
-        <Label fx:id="airlineLabel" text="AIRLINE STATISTICS" textAlignment="CENTER">
+        <Label text="AIRLINE STATISTICS" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -20,7 +20,7 @@
             </VBox.margin></Label>
         <HBox alignment="TOP_CENTER" prefHeight="24.0" prefWidth="731.0">
             <children>
-                <Label fx:id="labelScheduleDate1" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="308.0" text="AIRLINE NAME" textAlignment="CENTER">
+                <Label fx:id="airlineLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="308.0" text="AIRLINE NAME" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -32,7 +32,7 @@
             <PieChart fx:id="AirportPiechart" prefHeight="314.0" prefWidth="361.0" />
          </children>
       </HBox>
-        <HBox alignment="TOP_CENTER" prefHeight="21.0" prefWidth="347.0">
+        <HBox fx:id="hbox2" alignment="TOP_CENTER" prefHeight="21.0" prefWidth="347.0">
             <children>
                 <TextField alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="116.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="QoS">
                     <HBox.margin>
@@ -58,7 +58,7 @@
                     </font>
                 </TextField>
             </children></HBox>
-        <HBox alignment="TOP_CENTER" prefHeight="46.0" prefWidth="731.0">
+        <HBox fx:id="hbox1" alignment="TOP_CENTER" prefHeight="46.0" prefWidth="731.0">
             <children>
                 <TextField fx:id="qosText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="116.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">
                     <HBox.margin>

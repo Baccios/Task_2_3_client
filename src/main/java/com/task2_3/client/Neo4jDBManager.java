@@ -694,13 +694,13 @@ public class Neo4jDBManager implements AutoCloseable {
         return tx.run(matchAirportQuery, parameters("identifier", id));
     }
 
-    public ArrayList<Airport> getOverallBestAirport(){
-        ArrayList<Airport> tmp = new ArrayList<>();
+    public ArrayList<RankingItem<Airport>> getOverallBestAirport(){
+        ArrayList<RankingItem<Airport>> tmp = new ArrayList<>();
 
         try(Session session = driver.session()){
             return session.readTransaction(tx -> {
                 String query = "match(airport:Airport) " +
-                        "return airport.IATA_code, airport.city, airport.name, airport.state " +
+                        "return airport.IATA_code, airport.city, airport.name, airport.state,airport.qosIndicator " +
                         "order by airport.qosIndicator desc limit 10";
                 Result res = tx.run(query);
                 /*
@@ -710,13 +710,12 @@ public class Neo4jDBManager implements AutoCloseable {
                 Airport tmpAirport = null;
                 while(res.hasNext()){
                     rec = res.next().asMap();
-
-                    tmp.add(new Airport(
+                    tmp.add(new RankingItem<Airport>((Double)rec.get("airport.qosIndicator"),new Airport(
                             rec.get("airport.IATA_code").toString(),
                             rec.get("airport.name").toString(),
                             rec.get("airport.city").toString(),
                             rec.get("airport.state").toString()
-                    ));
+                    )));
                 }
 
                 return tmp;
@@ -724,13 +723,12 @@ public class Neo4jDBManager implements AutoCloseable {
         }
     }
 
-    public ArrayList<Airline> getOverallBestAirline(){
-        ArrayList<Airline> tmp = new ArrayList<>();
+    public ArrayList<RankingItem<Airline>> getOverallBestAirline(){
 
         try(Session session = driver.session()){
             return session.readTransaction(tx -> {
                 String query = "match(airline:Airline) " +
-                        "return airline.identifier, airline.name " +
+                        "return airline.identifier, airline.name, airline.qosIndicator " +
                         "order by airline.qosIndicator desc limit 10";
                 Result res = tx.run(query);
                 /*
@@ -738,14 +736,14 @@ public class Neo4jDBManager implements AutoCloseable {
                  * */
                 Map rec = null;
                 Airport tmpAirline = null;
-
+                ArrayList<RankingItem<Airline>> tmp = new ArrayList<>();
                 while(res.hasNext()){
                     rec = res.next().asMap();
-
-                    tmp.add(new Airline(
+                    System.out.println(rec);
+                    tmp.add(new RankingItem<>((double)rec.get("airline.qosIndicator"),new Airline(
                             rec.get("airline.identifier").toString(),
                             rec.get("airline.name").toString()
-                    ));
+                    )));
                 }
 
                 return tmp;

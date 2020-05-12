@@ -31,8 +31,8 @@ public class OverallStatsScreenController implements Initializable {
     private PieChart AirlinePiechart;
     @FXML
     private PieChart AirportPiechart;
-    private ArrayList<Airline> airlineRows=new ArrayList<>();
-    private ArrayList<Airport> airportRows=new ArrayList<>();
+    private ArrayList<RankingItem<Airline>> bestAirlines=new ArrayList<>();
+    private ArrayList<RankingItem<Airport>> bestAirports=new ArrayList<>();
     private int selectedIndex;
 
     @FXML
@@ -108,33 +108,35 @@ public class OverallStatsScreenController implements Initializable {
                 }
             }
         });*/
-   //TODO retrieve ranking of airports and airlines according to QoS and initialize airlinwRow and airportRow
-        //Only consider the 6 best elements.
-        ObservableList<PieChart.Data> AirlinepieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("aaaaaaaaaaa", 13),
-                        new PieChart.Data("aaaaaaaaaaa", 25),
-                        new PieChart.Data("aaaaaaaaaaa", 10),
-                        new PieChart.Data("aaaaaaaaaaa", 22),
-                        new PieChart.Data("aaaaaaaaaaa", 30));
+
+        ObservableList<PieChart.Data> AirlinepieChartData=FXCollections.observableArrayList();
+        bestAirlines= Start.neoDbManager.getOverallBestAirline();
+        for(RankingItem<Airline> a:bestAirlines){
+            String name=a.item.getName();
+            double qos=a.value;
+            PieChart.Data d=new PieChart.Data(name,qos);
+            AirlinepieChartData.add(d);
+
+        }
         AirlinePiechart.setData(AirlinepieChartData);
-        ObservableList<PieChart.Data> AirportpieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("aaaaaaaaaaa", 13),
-                        new PieChart.Data("aaaaaaaaaaa", 25),
-                        new PieChart.Data("aaaaaaaaaaa", 10),
-                        new PieChart.Data("aaaaaaaaaaa", 22),
-                        new PieChart.Data("aaaaaaaaaaa", 30),
-                        new PieChart.Data("aaaaaaaaaaa", 13));
-        AirportPiechart.setData(AirportpieChartData);
+
+        ObservableList<PieChart.Data> AirportChartData=FXCollections.observableArrayList();
+        bestAirports= Start.neoDbManager.getOverallBestAirport();
+        for(RankingItem<Airport> a:bestAirports){
+            String name=a.item.getName();
+            double qos=a.value;
+            PieChart.Data d=new PieChart.Data(name,qos);
+            AirportChartData.add(d);
+        }
+        AirportPiechart.setData(AirportChartData);
+
         for (final PieChart.Data data : AirportPiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {
                         @Override public void handle(MouseEvent e) {
-                            System.out.println(String.valueOf(data.getPieValue()) + "%");
-                            for(Airport a:airportRows){
-                                if(a.getName().equals(String.valueOf(data.getPieValue()))){
-                                    Start.airport=a;
+                            for(RankingItem<Airport> a:bestAirports){
+                                if(a.item.getName().equals(String.valueOf(data.getName()))){
+                                    Start.airport=a.item;
                                     try{
                                         switchToAirportScreen();
                                     }
@@ -151,11 +153,12 @@ public class OverallStatsScreenController implements Initializable {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {
                         @Override public void handle(MouseEvent e) {
-                            System.out.println(String.valueOf(data.getPieValue()) + "%");
-                            for(Airline a:airlineRows){
-                                if(a.getName().equals(String.valueOf(data.getPieValue()))){
-                                    Start.airline=a;
+
+                            for(RankingItem<Airline> a:bestAirlines){
+                                if(a.item.getName().equals(String.valueOf(data.getName()))){
+                                    Start.airline=a.item;
                                     try{
+                                        System.out.println(String.valueOf(a.item.getName() + "%"));
                                         switchToAirlineScreen();
                                     }
                                     catch(Exception ex){
@@ -166,6 +169,8 @@ public class OverallStatsScreenController implements Initializable {
                         }
                     });
         }
+
+
         //as a character is digited in input the array of matching airport is updated.
         airportInput.addEventFilter(KeyEvent.KEY_RELEASED,
                 new EventHandler<KeyEvent>() {
@@ -208,21 +213,16 @@ public class OverallStatsScreenController implements Initializable {
     }
 */
     //Check if airline inputs are valid and access to statistics
-    private void getInputAirlineStatistics(){
+    @FXML
+    public void getInputAirlineStatistics(){
         if(airlineInput.getText().equals("")){
             errorLabel.setText("You must insert something!");
             errorLabel.setVisible(true);
             return;
         }
         else {
-        //TODO RETRIEVE LIST OF AIRLINES
-            Airline selectedAirline=null;
-            if (selectedAirline == null) {
-                errorLabel.setText("Selected airline doesn't exist.");
-                errorLabel.setVisible(true);
-                return;
-            }
-        Start.airline=selectedAirline;
+            Airline selectedAirline=Start.neoDbManager.getAirline_byIdentifier(airlineInput.getText());
+            Start.airline=selectedAirline;
             try{
                 switchToAirlineScreen();
             }

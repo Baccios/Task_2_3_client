@@ -1,24 +1,24 @@
 
 package com.task2_3.client;
 
-        import javafx.collections.FXCollections;
-        import javafx.collections.ObservableList;
-        import javafx.event.EventHandler;
-        import javafx.fxml.FXML;
-        import javafx.fxml.Initializable;
-        import javafx.scene.Node;
-        import javafx.scene.chart.PieChart;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.TableColumn;
-        import javafx.scene.control.TableView;
-        import javafx.scene.control.TextField;
-        import javafx.scene.input.MouseEvent;
-        import javafx.scene.layout.HBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 
-        import java.io.IOException;
-        import java.net.URL;
-        import java.util.ArrayList;
-        import java.util.ResourceBundle;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class AirlineScreenController implements Initializable {
 
@@ -38,7 +38,7 @@ public class AirlineScreenController implements Initializable {
     public TextField cancProbText;
     @FXML
     PieChart AirportPiechart;
-    private ArrayList<Airport> airportRows=new ArrayList<>();
+    private ArrayList<RankingItem<Airport>> mostServedAirports=new ArrayList<>();
 
     @FXML
     private void switchToOverallStats() throws IOException {
@@ -64,23 +64,23 @@ public class AirlineScreenController implements Initializable {
         meanDelayText.setText(String.valueOf(rs.fifteenDelayProb));
         cancProbText.setText(String.valueOf(rs.cancellationProb));
 
-        ObservableList<PieChart.Data> AirportpieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("aaaaaaaaaaa", 13),
-                        new PieChart.Data("aaaaaaaaaaa", 25),
-                        new PieChart.Data("aaaaaaaaaaa", 10),
-                        new PieChart.Data("aaaaaaaaaaa", 22),
-                        new PieChart.Data("aaaaaaaaaaa", 30),
-                        new PieChart.Data("aaaaaaaaaaa", 13));
+        ObservableList<PieChart.Data> AirportpieChartData=FXCollections.observableArrayList();
+        mostServedAirports= rs.getMostServedAirports();
+        for(RankingItem<Airport> a:mostServedAirports){
+            String name=a.item.getName();
+            double qos=a.value;
+            PieChart.Data d=new PieChart.Data(name,qos);
+            AirportpieChartData.add(d);
+
+        }
         AirportPiechart.setData(AirportpieChartData);
         for (final PieChart.Data data : AirportPiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {
                         @Override public void handle(MouseEvent e) {
-                            System.out.println(String.valueOf(data.getPieValue()) + "%");
-                            for(Airport a:airportRows){
-                                if(a.getName().equals(String.valueOf(data.getPieValue()))){
-                                    Start.airport=a;
+                            for(RankingItem<Airport> a:mostServedAirports){
+                                if(a.item.getName().equals(String.valueOf(data.getName()))){
+                                    Start.airport=a.item;
                                     try{
                                         switchToAirportScreen();
                                     }

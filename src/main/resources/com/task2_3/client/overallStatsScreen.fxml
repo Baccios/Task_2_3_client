@@ -32,7 +32,7 @@
                </font>
             </Label>
             <TextField fx:id="airlineInput" prefHeight="25.0" prefWidth="160.0" />
-            <Button mnemonicParsing="false" onAction="#switchToInitialScreen" text="GO">
+            <Button mnemonicParsing="false" onAction="#getInputAirlineStatistics" text="GO">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

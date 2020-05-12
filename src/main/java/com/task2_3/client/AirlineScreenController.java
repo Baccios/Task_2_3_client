@@ -6,12 +6,14 @@ package com.task2_3.client;
         import javafx.event.EventHandler;
         import javafx.fxml.FXML;
         import javafx.fxml.Initializable;
+        import javafx.scene.Node;
         import javafx.scene.chart.PieChart;
         import javafx.scene.control.Label;
         import javafx.scene.control.TableColumn;
         import javafx.scene.control.TableView;
         import javafx.scene.control.TextField;
         import javafx.scene.input.MouseEvent;
+        import javafx.scene.layout.HBox;
 
         import java.io.IOException;
         import java.net.URL;
@@ -22,6 +24,10 @@ public class AirlineScreenController implements Initializable {
 
     @FXML
     public Label airlineLabel;
+    @FXML
+    public HBox hbox1;
+    @FXML
+    public HBox hbox2;
     @FXML
     public TextField qosText;
     @FXML
@@ -41,13 +47,23 @@ public class AirlineScreenController implements Initializable {
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        airlineLabel.setText(Start.airline.getName());
+        for (Node node : hbox1.getChildren()) {
+            if (node instanceof TextField) {
+                ((TextField)node).setDisable(true);
+            }
+        }
+        for (Node node : hbox2.getChildren()) {
+            if (node instanceof TextField) {
+                ((TextField)node).setDisable(true);
+            }
+        }
+        airlineLabel.setText("Airline: "+Start.airline.getName());
         AirlineStatistics rs=Start.airline.getStats();
         qosText.setText(String.valueOf(rs.getQosIndicator()));
         delayProbText.setText(String.valueOf(rs.fifteenDelayProb));
         meanDelayText.setText(String.valueOf(rs.fifteenDelayProb));
         cancProbText.setText(String.valueOf(rs.cancellationProb));
-        //TODO GET MOST SERVED AIRPORTS BY THIS AIRLINE
+
         ObservableList<PieChart.Data> AirportpieChartData =
                 FXCollections.observableArrayList(
                         new PieChart.Data("aaaaaaaaaaa", 13),

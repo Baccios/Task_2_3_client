@@ -52,10 +52,10 @@ public class OverallStatsScreenController implements Initializable {
         Start.setRoot("initialScreen");
     }@FXML
     private void switchToAirportScreen() throws IOException {
-        Start.setRoot("initialScreen");
+        Start.setRoot("airportScreen");
     }@FXML
     private void switchToAirlineScreen() throws IOException {
-        Start.setRoot("initialScreen");
+        Start.setRoot("airlineScreen");
     }
 
     @FXML
@@ -165,7 +165,8 @@ public class OverallStatsScreenController implements Initializable {
                             }
                         }
                     });
-        }   //as a character is digited in input the array of matching airport is updated.
+        }
+        //as a character is digited in input the array of matching airport is updated.
         airportInput.addEventFilter(KeyEvent.KEY_RELEASED,
                 new EventHandler<KeyEvent>() {
                 @Override
@@ -177,7 +178,7 @@ public class OverallStatsScreenController implements Initializable {
                         }
                     }
                 });
-        TextFields.bindAutoCompletion(airportInput,"ciao","ciaoo");
+        //TextFields.bindAutoCompletion(airportInput,"ciao","ciaoo");
         airlineInput.addEventFilter(KeyEvent.KEY_RELEASED,
                 new EventHandler<KeyEvent>() {
                     @Override
@@ -231,22 +232,16 @@ public class OverallStatsScreenController implements Initializable {
         }
     }
     //Check if airport inputs are valid and access to statistics
-    private void getInputAirportStatistics(){
+    @FXML
+    public  void getInputAirportStatistics(){
         if(airportInput.getText().equals("")){
             errorLabel.setText("You must insert something!");
             errorLabel.setVisible(true);
             return;
         }
         else {
-            Airline selectedAirport=null;
-            //TODO RETRIEVE LIST OF AIRLINES
-            if (selectedAirport == null) {
-                errorLabel.setText("Selected airport doesn't exist.");
-                errorLabel.setVisible(true);
-                return;
-            }
-            //check if the user selects a non existing doctor
-            Start.airline=selectedAirport;
+            Airport selectedAirport=Start.neoDbManager.getAirport_byIataCode(airportInput.getText());
+            Start.airport=selectedAirport;
             try{
                 switchToAirportScreen();
             }

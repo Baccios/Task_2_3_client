@@ -11,7 +11,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="771.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.AirportScreenController">
     <children>
-        <Label fx:id="airportLabel" text="AIRPORT STATISTICS" textAlignment="CENTER">
+        <Label text="AIRPORT STATISTICS" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -21,7 +21,7 @@
         <HBox alignment="TOP_CENTER" prefHeight="23.0" prefWidth="731.0">
             <children>
 
-                <Label fx:id="labelScheduleDate11" alignment="CENTER" prefHeight="27.0" prefWidth="295.0" text="AIRPORT NAME" textAlignment="CENTER">
+                <Label fx:id="airportLabel" alignment="CENTER" prefHeight="27.0" prefWidth="295.0" text="AIRPORT NAME" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -31,10 +31,10 @@
       <HBox alignment="TOP_CENTER" prefHeight="328.0" prefWidth="715.0">
          <children>
             <PieChart fx:id="AirlinePiechart" prefHeight="251.0" prefWidth="373.0" />
-            <PieChart fx:id="AirportPiechart" prefHeight="314.0" prefWidth="361.0" />
+            <PieChart fx:id="RoutePiechart" prefHeight="314.0" prefWidth="361.0" />
          </children>
       </HBox>
-        <HBox prefHeight="21.0" prefWidth="347.0">
+        <HBox fx:id="hbox2" prefHeight="21.0" prefWidth="347.0">
             <children>
             <TextField alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="DELAY PROBABILITY">
                <font>
@@ -57,7 +57,7 @@
                     </font>
                 </TextField>
             </children></HBox>
-        <HBox prefHeight="46.0" prefWidth="731.0">
+        <HBox fx:id="hbox1" prefHeight="46.0" prefWidth="731.0">
             <children>
                 <TextField fx:id="delayProbText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">
                     <HBox.margin>
@@ -72,7 +72,7 @@
                         <Font size="11.0" />
                     </font>
                 </TextField>
-                <TextField fx:id="cancProbText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">
+                <TextField fx:id="cancProbText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold; " text="5">
                     <font>
                         <Font size="11.0" />
                     </font>

@@ -50,7 +50,7 @@
                </font>
             </Label>
             <TextField fx:id="airportInput" prefHeight="25.0" prefWidth="160.0" />
-            <Button mnemonicParsing="false" onAction="#switchToInitialScreen" text="GO">
+            <Button mnemonicParsing="false" onAction="#getInputAirportStatistics" text="GO">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

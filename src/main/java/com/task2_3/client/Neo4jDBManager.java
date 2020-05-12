@@ -421,8 +421,6 @@ public class Neo4jDBManager implements AutoCloseable {
         }
     }
 
-
-
     private ArrayList<Route> searchSimilarRoutes_byOriginAndDest_query(Transaction tx, Airport origin, Airport dest) {
         String query =
                 "MATCH (origin:Airport)<-[:ORIGIN]-(r:Route)-[:DESTINATION]->(dest:Airport {IATA_code: $iata_dest})\n" +
@@ -514,7 +512,6 @@ public class Neo4jDBManager implements AutoCloseable {
         Record rec = res.single();
         return new int[] {rec.get("bestCarrierCount").asInt(), rec.get("totalRoutesServed").asInt()};
     }
-
 
     private ArrayList<Airport> searchAirport_byKeywords(Transaction tx, String[] keywords){
         String searchAirportQuery = "match(a:Airport) with " +
@@ -697,5 +694,65 @@ public class Neo4jDBManager implements AutoCloseable {
         return tx.run(matchAirportQuery, parameters("identifier", id));
     }
 
+    public ArrayList<Airport> getOverallBestAirport(){
+        ArrayList<Airport> tmp = new ArrayList<>();
 
+        try(Session session = driver.session()){
+            return session.readTransaction(tx -> {
+                String query = "match(airport:Airport) " +
+                        "return airport.IATA_code, airport.city, airport.name, airport.state " +
+                        "order by airport.qosIndicator desc limit 10";
+                Result res = tx.run(query);
+                /*
+                 * asMap will permit to access the values by using "fieldName"
+                 * */
+                Map rec = null;
+                Airport tmpAirport = null;
+                while(res.hasNext()){
+                    rec = res.next().asMap();
+
+                    tmp.add(new Airport(
+                            rec.get("airport.IATA_code").toString(),
+                            rec.get("airport.name").toString(),
+                            rec.get("airport.city").toString(),
+                            rec.get("airport.state").toString()
+                    ));
+                }
+
+                return tmp;
+            });
+        }
+    }
+
+    public ArrayList<Airline> getOverallBestAirline(){
+        ArrayList<Airline> tmp = new ArrayList<>();
+
+        try(Session session = driver.session()){
+            return session.readTransaction(tx -> {
+                String query = "match(airline:Airline) " +
+                        "return airline.identifier, airline.name " +
+                        "order by airline.qosIndicator desc limit 10";
+                Result res = tx.run(query);
+                /*
+                 * asMap will permit to access the values by using "fieldName"
+                 * */
+                Map rec = null;
+                Airport tmpAirline = null;
+
+                int i = 0;
+                while(res.hasNext()){
+                    rec = res.next().asMap();
+
+                    tmp.add(new Airline(
+                            rec.get("airline.identifier").toString(),
+                            rec.get("airline.name").toString()
+                    ));
+                    System.out.println(tmp.get(i).toString());
+                    i++;
+                }
+
+                return tmp;
+            });
+        }
+    }
 }

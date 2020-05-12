@@ -37,7 +37,7 @@ public class Start extends Application{
         return fxmlLoader.load();
     }
     public static void main (String[] args) {
-        launch();
+        //launch();
         /*    System.out.println("Hello my baby!");
         Admin_Protocol_Client client = new Admin_Protocol_Client("localhost",2020);
         client.startAuthHandshake("admin","ciaccio");
@@ -98,6 +98,7 @@ public class Start extends Application{
         //System.out.println(r.getStats().mostServedAirports.get(0).item.toString());
 
 */
-
+        Neo4jDBManager graph = Neo4jDBManager.getInstance();
+        graph.getOverallBestAirline();
     }
 }

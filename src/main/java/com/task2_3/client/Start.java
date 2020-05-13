@@ -64,9 +64,11 @@ public class Start extends Application{
         client2.close();*/
 
 
-/*
+
         Neo4jDBManager graph = Neo4jDBManager.getInstance();
-        Airport a = graph.getAirport_byIataCode("CLT");
+        Route r = graph.getRoute_byOriginAndDestinationIATACode("TYS", "ORD");
+        System.out.println(r.toString());
+        /*Airport a = graph.getAirport_byIataCode("CLT");
         Airport b = graph.getAirport_byIataCode("OAJ");
 
         Airline air = graph.getAirline_byIdentifier("9E");
@@ -77,9 +79,8 @@ public class Start extends Application{
             System.out.println("I suggest "+r.getOrigin().getName()+", "+r.getOrigin().getState()+" --> "+r.getDestination().getName());
         }
 
-        graph.close(); */
+        graph.close();
 
-        /*
         graph.searchRoutes_byObject(a, b);
         ArrayList<Airport> tmpa = graph.searchAirports_byString("charlotte nc");
 
@@ -94,11 +95,11 @@ public class Start extends Application{
         Airport ord2 = graph.getAirport_byIataCode("ORD");
         System.out.println("4");
         System.out.println(ord.getStats().toString());
-        //graph.getRoute_byOriginAndDestinationIATACode("TYS", "ORD");
-        //System.out.println(r.getStats().mostServedAirports.get(0).item.toString());
+        graph.getRoute_byOriginAndDestinationIATACode("TYS", "ORD");
+        System.out.println(r.getStats().mostServedAirports.get(0).item.toString());
+        graph.getOverallBestAirline();
 
 */
-        Neo4jDBManager graph = Neo4jDBManager.getInstance();
-        graph.getOverallBestAirline();
+
     }
 }

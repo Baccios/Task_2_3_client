@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -45,6 +46,8 @@ public class OverallStatsScreenController implements Initializable {
     private TextField destinationAirportInput;
     @FXML
     private Label errorLabel;
+
+    private AutoCompletionBinding<String> autoCompletionBinding;
 
 
     @FXML
@@ -183,7 +186,9 @@ public class OverallStatsScreenController implements Initializable {
                         }
                     }
                 });
-        //TextFields.bindAutoCompletion(airportInput,"ciao","ciaoo");
+
+        autoCompletionBinding = TextFields.bindAutoCompletion(airportInput,"ciao","ciaoo");
+
         airlineInput.addEventFilter(KeyEvent.KEY_RELEASED,
                 new EventHandler<KeyEvent>() {
                     @Override

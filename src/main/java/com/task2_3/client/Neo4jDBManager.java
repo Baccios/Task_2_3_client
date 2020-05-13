@@ -58,11 +58,12 @@ public class Neo4jDBManager implements AutoCloseable {
             return session.readTransaction(tx -> {
                 //fetch most served Airline
                 ArrayList<RankingItem<Airline>> mostServedAirline = fetchMostServedAirline_byRoute(tx, route.getOrigin(), route.getDestination());
-
+                System.out.println(route.getDestination().getIATA_code()+route.getDestination().getIATA_code());
                 Result resRoute = matchRouteNode_byOriginAirport(tx, route.getOrigin(), route.getDestination());
                 /*
                  * asMap will permit to access the values by using "fieldName"
                  * */
+                System.out.println(resRoute.list().size());
                 Map rec = resRoute.single().values().get(0).asMap();
 
                 RouteStatistics tmpRouteStats = new RouteStatistics(

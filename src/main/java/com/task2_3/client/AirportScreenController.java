@@ -131,7 +131,7 @@ public class AirportScreenController implements Initializable {
                             for(RankingItem<Route> a:mostServedRoutes){
                                 String routeId=a.item.getOrigin().getIATA_code()+" - "+a.item.getDestination().getIATA_code();
                                 System.out.println(routeId+"   "+String.valueOf(data.getName()));
-                                if(routeId.equals(String.valueOf(data.getPieValue()))){
+                                if(routeId.equals(String.valueOf(data.getName()))){
                                     Start.route=a.item;
                                     try{
                                         System.out.println(String.valueOf(a.item.getDestination().getIATA_code() + "%"));

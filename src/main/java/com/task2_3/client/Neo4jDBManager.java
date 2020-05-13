@@ -63,7 +63,6 @@ public class Neo4jDBManager implements AutoCloseable {
                 /*
                  * asMap will permit to access the values by using "fieldName"
                  * */
-                System.out.println(resRoute.list().size());
                 Map rec = resRoute.single().values().get(0).asMap();
 
                 RouteStatistics tmpRouteStats = new RouteStatistics(
@@ -289,7 +288,7 @@ public class Neo4jDBManager implements AutoCloseable {
     }
 
     private ArrayList<RankingItem<Route>> fetchMostServedRoute_byAirport(Transaction tx, String iataCode) {
-        String mostServedAirlineQuery = "match(origin:Airport)-[p:POSSIBLE_DEPARTURE]->(route:Route)-[:DESTINATION]->(dest: Airport) where origin.IATA_code=\"DFW\" return properties(route), properties(p), dest.IATA_code order by p.percentage desc limit 10";
+        String mostServedAirlineQuery = "match(origin:Airport)-[p:POSSIBLE_DEPARTURE]->(route:Route)-[:DESTINATION]->(dest: Airport) where origin.IATA_code=$iata_code return properties(route), properties(p), dest.IATA_code order by p.percentage desc limit 10";
         Result res = tx.run(mostServedAirlineQuery, parameters("iata_code",iataCode));
         return decompressMostServedRoute(res, iataCode);
     }

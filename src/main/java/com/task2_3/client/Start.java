@@ -66,8 +66,8 @@ public class Start extends Application{
 
 
         Neo4jDBManager graph = Neo4jDBManager.getInstance();
-        Route r = graph.getRoute_byOriginAndDestinationIATACode("TYS", "ORD");
-        System.out.println(r.toString());
+        Airport r = graph.getAirport_byIataCode("ELM");
+        System.out.println(r.getStats().getMostServedRoutes().toString());
         /*Airport a = graph.getAirport_byIataCode("CLT");
         Airport b = graph.getAirport_byIataCode("OAJ");
 

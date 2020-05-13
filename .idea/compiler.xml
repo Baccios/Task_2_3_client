@@ -13,7 +13,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Task_2_3_client" options="--add-modules=javafx.base,org.controlsfx.controls --add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls" />
+      <module name="Task_2_3_client" options="--add-exports javafx.base/com.sun.javafx.event=org.controlsfx.controls" />
     </option>
   </component>
 </project>

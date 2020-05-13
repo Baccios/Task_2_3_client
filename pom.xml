@@ -47,6 +47,9 @@
                 <version>3.8.0</version>
                 <configuration>
                     <release>11</release>
+                    <compilerArgs>
+                        <arg>--add-exports</arg><arg>javafx.base/com.sun.javafx.event=org.controlsfx.controls</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

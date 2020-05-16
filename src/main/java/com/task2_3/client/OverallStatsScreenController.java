@@ -2,16 +2,16 @@ package com.task2_3.client;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -24,10 +24,9 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 public class OverallStatsScreenController implements Initializable {
+    ArrayList<String> s=new ArrayList<>();
     @FXML
-    private TableView airlineTableView;
-    @FXML
-    private TableView airportTableView;
+    private ComboBox<String> companyName;
     @FXML
     private PieChart AirlinePiechart;
     @FXML
@@ -122,6 +121,8 @@ public class OverallStatsScreenController implements Initializable {
 
         }
         AirlinePiechart.setData(AirlinepieChartData);
+        AirlinePiechart.setLegendVisible(false);
+        AirlinePiechart.setTitle("Airlines");
 
         ObservableList<PieChart.Data> AirportChartData=FXCollections.observableArrayList();
         bestAirports= Start.neoDbManager.getOverallBestAirport();
@@ -132,6 +133,8 @@ public class OverallStatsScreenController implements Initializable {
             AirportChartData.add(d);
         }
         AirportPiechart.setData(AirportChartData);
+        AirportPiechart.setLegendVisible(false);
+        AirportPiechart.setTitle("Airport");
 
         for (final PieChart.Data data : AirportPiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
@@ -175,20 +178,32 @@ public class OverallStatsScreenController implements Initializable {
 
 
         //as a character is digited in input the array of matching airport is updated.
-        airportInput.addEventFilter(KeyEvent.KEY_RELEASED,
+        airportInput.addEventFilter(KeyEvent.KEY_PRESSED,
                 new EventHandler<KeyEvent>() {
                 @Override
                     public void handle(KeyEvent e) {
-                        System.out.println(airportInput.getText());
+                        System.out.println("Chiamo handle.."+airportInput.getText());
                         ArrayList<Airport> matchingAirports=Start.neoDbManager.searchAirports_byString(airportInput.getText());
-                        for(Airport a: matchingAirports) {
-                            System.out.println(a.getName());
+                        s=new ArrayList();
+                          for(Airport a: matchingAirports) {
+                            s.add(a.getIATA_code());
+                            System.out.println(a.getIATA_code());
                         }
+            //            autoCompletionBinding.dispose();
+            //            autoCompletionBinding = TextFields.bindAutoCompletion(airportInput,s);
                     }
                 });
-
-        autoCompletionBinding = TextFields.bindAutoCompletion(airportInput,"ciao","ciaoo");
-
+          buildCombox();
+    //    autoCompletionBinding = TextFields.bindAutoCompletion(airportInput);
+    /*    autoCompletionBinding.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                new EventHandler<MouseEvent>() {
+                @Override
+                    public void handle(MouseEvent e) {
+                        System.out.println("evrhjyj:"+airportInput.getText());
+                        getInputAirportStatistics();
+                    }
+                });
+*/
         airlineInput.addEventFilter(KeyEvent.KEY_RELEASED,
                 new EventHandler<KeyEvent>() {
                     @Override
@@ -207,16 +222,10 @@ public class OverallStatsScreenController implements Initializable {
                 });
     /*    updateTables();*/
     }
-    /*
-    private void updateTables() {
-        airlineRows.clear();
-        airportRows.clear();
-        ObservableList<Airline> observableAirlines= FXCollections.observableArrayList();
-        ObservableList<Airport> observableAirports= FXCollections.observableArrayList();
-        //TODO execute query to retrieve rankings according to QOS and assign to observables airportbeans and airlinebeans
 
-    }
-*/
+
+
+
     //Check if airline inputs are valid and access to statistics
     @FXML
     public void getInputAirlineStatistics(){
@@ -239,21 +248,42 @@ public class OverallStatsScreenController implements Initializable {
     //Check if airport inputs are valid and access to statistics
     @FXML
     public  void getInputAirportStatistics(){
-        if(airportInput.getText().equals("")){
-            errorLabel.setText("You must insert something!");
-            errorLabel.setVisible(true);
-            return;
+        Airport selectedAirport=Start.neoDbManager.getAirport_byIataCode(airportInput.getText());
+        Start.airport=selectedAirport;
+        try{
+            switchToAirportScreen();
         }
-        else {
-            Airport selectedAirport=Start.neoDbManager.getAirport_byIataCode(airportInput.getText());
-            Start.airport=selectedAirport;
-            try{
-                switchToAirportScreen();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+        catch(Exception e){
+            e.printStackTrace();
         }
+    }
+    public void buildCombox(){
+        companyName.setEditable(true);
+        addComboListener(companyName);
+}
+
+    private void addComboListener(final ComboBox<String> combo) {
+
+        combo.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println(combo.getValue());
+                ArrayList<Airport> matchingAirports=Start.neoDbManager.searchAirports_byString(combo.getValue());
+                s=new ArrayList();
+                for(Airport a: matchingAirports) {
+                    s.add(a.getIATA_code());
+                    System.out.println(a.getIATA_code());
+                }
+                populateCombox(s);
+            }
+        });
+    }
+
+    public void populateCombox(ArrayList<String> s) {
+        companyName.getItems().removeAll();
+        for(String ss:s)
+            companyName.getItems().add(ss);
     }
 
 }

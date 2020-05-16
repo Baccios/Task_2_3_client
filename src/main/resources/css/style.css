@@ -1,0 +1,4 @@
+.combo-box, .arrow, .arrow-button{
+    -fx-background-color: transparent;
+    disabled:true;
+}

@@ -111,13 +111,14 @@ public String getName() {
 
     @Override
     public String toString() {
-        return "Airport{" +
+        /*return "Airport{" +
                 "IATA_code='" + IATA_code + '\'' +
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", stats=" + stats +
-                '}';
+                '}';*/
+        return this.name + ", " + this.IATA_code;
     }
 
     /*

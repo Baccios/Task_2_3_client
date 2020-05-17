@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
@@ -18,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +28,9 @@ import java.util.ResourceBundle;
 public class OverallStatsScreenController implements Initializable {
     ArrayList<String> s=new ArrayList<>();
     @FXML
-    private ComboBox<String> companyName;
+    AutoCompleteComboBox airportBox;
+
+
     @FXML
     private PieChart AirlinePiechart;
     @FXML
@@ -63,6 +67,8 @@ public class OverallStatsScreenController implements Initializable {
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources){
+
+
    /*     TableColumn airportCol = new TableColumn("Airports");
         airportCol.setCellValueFactory(
                 new PropertyValueFactory<AirportBean,String>("airport")
@@ -109,7 +115,7 @@ public class OverallStatsScreenController implements Initializable {
                     e.printStackTrace();
                 }
             }
-        });*/
+     ryBGpYA3AaYAnR5   });*/
 
         ObservableList<PieChart.Data> AirlinepieChartData=FXCollections.observableArrayList();
         bestAirlines= Start.neoDbManager.getOverallBestAirline();
@@ -189,21 +195,50 @@ public class OverallStatsScreenController implements Initializable {
                             s.add(a.getIATA_code());
                             System.out.println(a.getIATA_code());
                         }
-            //            autoCompletionBinding.dispose();
-            //            autoCompletionBinding = TextFields.bindAutoCompletion(airportInput,s);
+
+                        //autoCompletionBinding.dispose();
+                        autoCompletionBinding = TextFields.bindAutoCompletion(airportInput,s);
                     }
                 });
-          buildCombox();
-    //    autoCompletionBinding = TextFields.bindAutoCompletion(airportInput);
-    /*    autoCompletionBinding.addEventHandler(MouseEvent.MOUSE_PRESSED,
+
+        //TODO combobox sample, repeat this code for every object type
+        airportBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ENTER) {
+                    Airport tmp = (Airport)airportBox.getValue();
+                    System.out.println(tmp.toString());
+                    event.consume();
+                    return;
+                }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
+                    return;
+                }
+                else {
+                    ArrayList<Airport> tmp = Start.neoDbManager.searchAirports_byString(airportBox.getEditor().getText());
+                    airportBox.objectChoices.clear();
+                    for (Airport object : tmp) {
+                        airportBox.objectChoices.add(object);
+                    }
+                    airportBox.show();
+                    if (!airportBox.objectChoices.isEmpty()) {
+                        airportBox.show();
+                    } else {
+                        airportBox.hide();
+                    }
+                }
+            }
+        });
+
+        /*autoCompletionBinding = TextFields.bindAutoCompletion(airportInput);
+        autoCompletionBinding.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 new EventHandler<MouseEvent>() {
                 @Override
                     public void handle(MouseEvent e) {
                         System.out.println("evrhjyj:"+airportInput.getText());
                         getInputAirportStatistics();
                     }
-                });
-*/
+                });*/
+
         airlineInput.addEventFilter(KeyEvent.KEY_RELEASED,
                 new EventHandler<KeyEvent>() {
                     @Override
@@ -258,32 +293,7 @@ public class OverallStatsScreenController implements Initializable {
         }
     }
     public void buildCombox(){
-        companyName.setEditable(true);
-        addComboListener(companyName);
-}
-
-    private void addComboListener(final ComboBox<String> combo) {
-
-        combo.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                System.out.println(combo.getValue());
-                ArrayList<Airport> matchingAirports=Start.neoDbManager.searchAirports_byString(combo.getValue());
-                s=new ArrayList();
-                for(Airport a: matchingAirports) {
-                    s.add(a.getIATA_code());
-                    System.out.println(a.getIATA_code());
-                }
-                populateCombox(s);
-            }
-        });
+        //addComboListener(companyName);
+        //AutoCompleteComboBox a = new AutoCompleteComboBox(Airport.class);
     }
-
-    public void populateCombox(ArrayList<String> s) {
-        companyName.getItems().removeAll();
-        for(String ss:s)
-            companyName.getItems().add(ss);
-    }
-
 }

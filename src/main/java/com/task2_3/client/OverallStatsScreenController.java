@@ -206,14 +206,20 @@ public class OverallStatsScreenController implements Initializable {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
-                    Airport tmp = (Airport)airportBox.getValue();
-                    System.out.println(tmp.toString());
+                    if(airportBox.getValue() == null){
+                        System.out.println("Insert a valid Airport.");
+                    }else{
+                        System.out.println("You have inserted a valid Airport");
+                        Airport tmp = (Airport)airportBox.getValue();
+                        System.out.println(tmp.toString());
+                    }
                     event.consume();
                     return;
                 }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
                     return;
                 }
                 else {
+                    System.out.println("chiamo");
                     ArrayList<Airport> tmp = Start.neoDbManager.searchAirports_byString(airportBox.getEditor().getText());
                     airportBox.objectChoices.clear();
                     for (Airport object : tmp) {

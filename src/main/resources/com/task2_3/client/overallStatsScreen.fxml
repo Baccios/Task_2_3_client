@@ -82,9 +82,8 @@
             </Button>
          </children>
       </HBox>
-        <HBox>
         <AutoCompleteComboBox fx:id="airportBox" prefWidth="150.0"/>
-        </HBox>
+        <AutoCompleteComboBox fx:id="airlineBox" prefWidth="150.0"/>
       <HBox prefHeight="21.0" prefWidth="347.0">
          <children>
               <Button onAction="#switchToInitialScreen" prefHeight="24.0" prefWidth="60.0" text="back">

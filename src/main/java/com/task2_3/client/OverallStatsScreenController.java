@@ -1,7 +1,9 @@
 package com.task2_3.client;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,11 +26,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class OverallStatsScreenController implements Initializable {
     ArrayList<String> s=new ArrayList<>();
     @FXML
     AutoCompleteComboBox airportBox;
+    @FXML
+    AutoCompleteComboBox airlineBox;
 
 
     @FXML
@@ -37,8 +45,12 @@ public class OverallStatsScreenController implements Initializable {
     private PieChart AirportPiechart;
     private ArrayList<RankingItem<Airline>> bestAirlines=new ArrayList<>();
     private ArrayList<RankingItem<Airport>> bestAirports=new ArrayList<>();
-    private int selectedIndex;
-
+    private ScheduledFuture<?> schedFutureAirport;
+    private ScheduledExecutorService sesAirport;
+    private ScheduledFuture<?> schedFutureAirline;
+    private ScheduledExecutorService sesAirline;
+    private ArrayList<Airport> suggestedAirports=new ArrayList<>();
+    private ArrayList<Airline> suggestedAirlines;
     @FXML
     private TextField airlineInput;
     @FXML
@@ -182,84 +194,116 @@ public class OverallStatsScreenController implements Initializable {
                     });
         }
 
-
         //as a character is digited in input the array of matching airport is updated.
-        airportInput.addEventFilter(KeyEvent.KEY_PRESSED,
-                new EventHandler<KeyEvent>() {
-                @Override
-                    public void handle(KeyEvent e) {
-                        System.out.println("Chiamo handle.."+airportInput.getText());
-                        ArrayList<Airport> matchingAirports=Start.neoDbManager.searchAirports_byString(airportInput.getText());
-                        s=new ArrayList();
-                          for(Airport a: matchingAirports) {
-                            s.add(a.getIATA_code());
-                            System.out.println(a.getIATA_code());
-                        }
-
-                        //autoCompletionBinding.dispose();
-                        autoCompletionBinding = TextFields.bindAutoCompletion(airportInput,s);
-                    }
-                });
-
-        //TODO combobox sample, repeat this code for every object type
         airportBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
-                    Airport tmp = (Airport)airportBox.getValue();
-                    System.out.println(tmp.toString());
+                    if(airportBox.getValue() == null){
+                        System.out.println("Insert a valid Airport.");
+                    }else{
+                        System.out.println("You have inserted a valid Airport: "+airportBox.getValue().toString());
+                        for(Airport a:suggestedAirports){
+                            System.out.println(a.getName());
+                            if(airportBox.getValue().toString().equals(a.toString())){
+                                Start.airport=a;
+                                getInputAirportStatistics();
+                            }
+                        }
+                    }
                     event.consume();
                     return;
                 }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
                     return;
                 }
                 else {
-                    ArrayList<Airport> tmp = Start.neoDbManager.searchAirports_byString(airportBox.getEditor().getText());
-                    airportBox.objectChoices.clear();
-                    for (Airport object : tmp) {
-                        airportBox.objectChoices.add(object);
+                    //After releasing a key in input the timer starts: after 1 second we can retrieve the menu. In the meanwhile,if the user inserts a new input the timer is restarted.
+                    if(sesAirport!=null) {
+                        System.out.println(schedFutureAirport.getDelay(TimeUnit.MILLISECONDS));
+                        schedFutureAirport.cancel(true);
+                        System.out.println(schedFutureAirport.getDelay(TimeUnit.MILLISECONDS));
                     }
-                    airportBox.show();
-                    if (!airportBox.objectChoices.isEmpty()) {
-                        airportBox.show();
-                    } else {
-                        airportBox.hide();
-                    }
+                    Task<Void> longRunningTask = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            Platform.runLater(() -> showAirportMenu());
+                            return null;
+                        }
+                    };
+                    Thread t=new Thread(longRunningTask);
+                    sesAirport = Executors.newSingleThreadScheduledExecutor();
+                    schedFutureAirport=sesAirport.schedule(t,1, TimeUnit.SECONDS);
                 }
             }
         });
 
-        /*autoCompletionBinding = TextFields.bindAutoCompletion(airportInput);
-        autoCompletionBinding.addEventHandler(MouseEvent.MOUSE_PRESSED,
-                new EventHandler<MouseEvent>() {
-                @Override
-                    public void handle(MouseEvent e) {
-                        System.out.println("evrhjyj:"+airportInput.getText());
-                        getInputAirportStatistics();
+        airlineBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ENTER) {
+                    if(airlineBox.getValue() == null){
+                        System.out.println("Insert a valid Airline.");
+                    }else{
+                        System.out.println("You have inserted a valid Airline: "+airlineBox.getValue().toString());
+                        for(Airline a:suggestedAirlines){
+                            System.out.println(a.getName());
+                            if(airlineBox.getValue().toString().equals(a.toString())){
+                                Start.airline=a;
+                                getInputAirlineStatistics();
+                            }
+                        }
                     }
-                });*/
-
-        airlineInput.addEventFilter(KeyEvent.KEY_RELEASED,
-                new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent e) {
-                        System.out.println(airlineInput.getText());
-                        Start.neoDbManager.searchAirports_byString(airlineInput.getText());
+                    event.consume();
+                    return;
+                }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
+                    return;
+                }
+                else {
+                    //After releasing a key in input the timer starts: after 1 second we can retrieve the menu. In the meanwhile,if the user inserts a new input the timer is restarted.
+                    if(sesAirline!=null) {
+                        schedFutureAirline.cancel(true);
                     }
-                });
-        airportInput.addEventFilter(KeyEvent.KEY_RELEASED,
-                new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent e) {
-                        System.out.println(airportInput.getText());
-                        Start.neoDbManager.searchAirports_byString(airportInput.getText());
-                    }
-                });
-    /*    updateTables();*/
+                    Task<Void> longRunningTask = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            Platform.runLater(() -> showAirlineMenu());
+                            return null;
+                        }
+                    };
+                    Thread t=new Thread(longRunningTask);
+                    sesAirline = Executors.newSingleThreadScheduledExecutor();
+                    schedFutureAirline=sesAirline.schedule(t,1, TimeUnit.SECONDS);
+                }
+            }
+        });
     }
-
-
-
+    public void showAirportMenu(){
+        suggestedAirports = Start.neoDbManager.searchAirports_byString(airportBox.getEditor().getText());
+        airportBox.objectChoices.clear();
+        for (Airport object : suggestedAirports) {
+            airportBox.objectChoices.add(object);
+            System.out.println(object.getName());
+        }
+        airportBox.show();
+        if (!airportBox.objectChoices.isEmpty()) {
+            airportBox.show();
+        } else {
+            airportBox.hide();
+        }
+    }
+    public void showAirlineMenu(){
+        suggestedAirlines = Start.neoDbManager.searchAirlines_byString(airlineBox.getEditor().getText());
+        airlineBox.objectChoices.clear();
+        for (Airline object : suggestedAirlines) {
+            airlineBox.objectChoices.add(object);
+        }
+        airlineBox.show();
+        if (!airlineBox.objectChoices.isEmpty()) {
+            airlineBox.show();
+        } else {
+            airlineBox.hide();
+        }
+    }
 
     //Check if airline inputs are valid and access to statistics
     @FXML
@@ -283,8 +327,6 @@ public class OverallStatsScreenController implements Initializable {
     //Check if airport inputs are valid and access to statistics
     @FXML
     public  void getInputAirportStatistics(){
-        Airport selectedAirport=Start.neoDbManager.getAirport_byIataCode(airportInput.getText());
-        Start.airport=selectedAirport;
         try{
             switchToAirportScreen();
         }
@@ -292,8 +334,5 @@ public class OverallStatsScreenController implements Initializable {
             e.printStackTrace();
         }
     }
-    public void buildCombox(){
-        //addComboListener(companyName);
-        //AutoCompleteComboBox a = new AutoCompleteComboBox(Airport.class);
-    }
+
 }

@@ -522,7 +522,7 @@ public class Neo4jDBManager implements AutoCloseable {
                 "a.name as name " +
                 "where cond =~ $regexp_pattern " +
                 "return IATA_code, state, name, city " +
-                "limit 6";
+                "limit 10";
         String airportRegExpr = "(?i).*";
         for(String tmp: keywords){
             airportRegExpr += "(?=.*"+ tmp +".*)";

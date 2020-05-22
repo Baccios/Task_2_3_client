@@ -31,11 +31,13 @@ public class AdminAuthenticationScreenController {
         }
         if(ret==1){
             errorLabel.setText("Inserted credentials are wrong!");
+            Admin_Protocol_Client.getInstance().close();
             errorLabel.setVisible(true);
             return;
         }
         if(ret==2){
             errorLabel.setText("Admin already logged");
+            Admin_Protocol_Client.getInstance().close();
             errorLabel.setVisible(true);
             return;
         }

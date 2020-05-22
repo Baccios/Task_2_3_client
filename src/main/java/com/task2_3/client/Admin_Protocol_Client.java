@@ -111,6 +111,11 @@ public class Admin_Protocol_Client implements AutoCloseable {
      * @return true if the request was correctly sent and acknowledged by the server
      */
     public boolean requestCheckout() {
+
+        if(socket.isClosed()) { //the server failed or for any reason already closed its side of the socket
+            return true;
+        }
+
         if(!sendMessage("Request checkout")) {
             return false;
         }

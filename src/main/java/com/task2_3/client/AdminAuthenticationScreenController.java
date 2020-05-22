@@ -26,7 +26,7 @@ public class AdminAuthenticationScreenController {
         Start.adminManager = Admin_Protocol_Client.getInstance();
         int ret=Start.adminManager.startAuthHandshake(userInput.getText(),passwordInput.getText());
         if(ret==0){
-            Start.setRoot("ReservedAreaScreen");
+            Start.setRoot("reservedAreaScreen");
             return;
         }
         if(ret==1){

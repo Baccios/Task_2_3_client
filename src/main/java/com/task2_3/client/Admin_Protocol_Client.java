@@ -13,6 +13,15 @@ public class Admin_Protocol_Client implements AutoCloseable {
     PrintWriter out;
     BufferedReader in;
 
+    private static Admin_Protocol_Client singleton = null;
+
+    public static Admin_Protocol_Client getInstance() {
+        if(singleton == null || singleton.socket.isClosed()) {
+            singleton = new Admin_Protocol_Client("localhost",2020); //TODO insert correct server ip and port
+        }
+        return singleton;
+    }
+
     /**
      * Generate an SSL socket to the host and port specified in the constructor.
      * @return the generated socket
@@ -102,12 +111,22 @@ public class Admin_Protocol_Client implements AutoCloseable {
      * @return true if the request was correctly sent and acknowledged by the server
      */
     public boolean requestCheckout() {
+
+        if(socket.isClosed()) { //the server failed or for any reason already closed its side of the socket
+            return true;
+        }
+
         if(!sendMessage("Request checkout")) {
             return false;
         }
         if(!readAndCheck("Ack checkout")) {
             System.err.println("Something went wrong with checkout request");
             return false;
+        }
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return true;
     }
@@ -279,7 +298,7 @@ public class Admin_Protocol_Client implements AutoCloseable {
      * @param host the host name of the server
      * @param port the port of the server
      */
-    Admin_Protocol_Client(String host, int port) {
+    private Admin_Protocol_Client(String host, int port) {
         this.host = host;
         this.port = port;
         this.socket = getSocket();

@@ -106,11 +106,7 @@ public class Airline {
 
     @Override
     public String toString() {
-        return "Airline{" +
-                "identifier='" + identifier + '\'' +
-                ", name='" + name + '\'' +
-                ", stats=" + stats +
-                '}';
+        return this.getName()+", "+this.getIdentifier();
     }
 
     public void setFields(Airline tmp) {

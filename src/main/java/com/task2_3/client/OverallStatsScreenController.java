@@ -304,27 +304,15 @@ public class OverallStatsScreenController implements Initializable {
             airlineBox.hide();
         }
     }
-
-    //Check if airline inputs are valid and access to statistics
     @FXML
     public void getInputAirlineStatistics(){
-        if(airlineInput.getText().equals("")){
-            errorLabel.setText("You must insert something!");
-            errorLabel.setVisible(true);
-            return;
+        try{
+            switchToAirlineScreen();
         }
-        else {
-            Airline selectedAirline=Start.neoDbManager.getAirline_byIdentifier(airlineInput.getText());
-            Start.airline=selectedAirline;
-            try{
-                switchToAirlineScreen();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+        catch(Exception e){
+            e.printStackTrace();
         }
     }
-    //Check if airport inputs are valid and access to statistics
     @FXML
     public  void getInputAirportStatistics(){
         try{

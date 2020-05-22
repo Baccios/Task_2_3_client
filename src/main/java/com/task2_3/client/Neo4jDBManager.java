@@ -552,7 +552,7 @@ public class Neo4jDBManager implements AutoCloseable {
                 "a.name as name " +
                 "where pattern =~ $regexp_pattern " +
                 "return identifier, name " +
-                "limit 6";
+                "limit 10";
         String airportRegExpr = "(?i).*";
         for(String tmp: keywords){
             airportRegExpr += "(?=.*"+ tmp +".*)";
@@ -563,7 +563,7 @@ public class Neo4jDBManager implements AutoCloseable {
         ArrayList<Airline> tmpAirline = new ArrayList<>();
         Record rec;
         while(res.hasNext()){
-            rec = res.single();
+            rec = res.next();
             tmpAirline.add(new Airline(
                     rec.get("identifier").asString(),
                     rec.get("name").asString()

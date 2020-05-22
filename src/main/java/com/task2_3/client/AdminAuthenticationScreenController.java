@@ -23,6 +23,7 @@ public class AdminAuthenticationScreenController {
             errorLabel.setVisible(true);
             return;
         }
+        Start.adminManager = Admin_Protocol_Client.getInstance();
         int ret=Start.adminManager.startAuthHandshake(userInput.getText(),passwordInput.getText());
         if(ret==0){
             Start.setRoot("ReservedAreaScreen");
@@ -38,7 +39,7 @@ public class AdminAuthenticationScreenController {
             errorLabel.setVisible(true);
             return;
         }
-        System.out.println("Unexpected error during autentication");
+        System.err.println("Unexpected error during authentication");
         System.exit(1);
     }
 }

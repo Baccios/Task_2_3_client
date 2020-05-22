@@ -26,7 +26,6 @@ public class Start extends Application{
     public static Airport airport;
 
     public void start(Stage stage)throws IOException{
-        adminManager=new Admin_Protocol_Client("localhost",2020); //TODO insert correct server ip and port
         neoDbManager=Neo4jDBManager.getInstance();
         scene = new Scene(loadFXML("initialScreen"));
         stage.setWidth(840);

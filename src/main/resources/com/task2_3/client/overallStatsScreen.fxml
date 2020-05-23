@@ -26,64 +26,13 @@
              <PieChart fx:id="AirportPiechart" maxWidth="-Infinity" prefHeight="319.0" prefWidth="404.0" />
          </children>
       </HBox>
-       <HBox alignment="CENTER" prefHeight="25.0" prefWidth="284.0">
-         <children>
-            <Label prefHeight="23.0" prefWidth="151.0" text="Select an airline: ">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
 
 
-            <TextField fx:id="airlineInput" prefHeight="25.0" prefWidth="160.0" />
-            <Button mnemonicParsing="false" onAction="#getInputAirlineStatistics" text="GO">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="Aharoni Bold" size="12.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="25.0" prefWidth="284.0">
-         <children>
-            <Label prefHeight="23.0" prefWidth="151.0" text="Select an airport: ">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="airportInput" prefHeight="25.0" prefWidth="160.0" />
-            <Button mnemonicParsing="false" onAction="#getInputAirportStatistics" text="GO">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="Aharoni Bold" size="12.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="25.0" prefWidth="284.0">
-         <children>
-            <Label prefHeight="23.0" prefWidth="151.0" text="Select a destination airport: ">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </Label>
-            <TextField fx:id="destinationAirportInput" prefHeight="25.0" prefWidth="160.0" />
-            <Button mnemonicParsing="false" onAction="#switchToInitialScreen" text="GO">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="Aharoni Bold" size="12.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
+
         <AutoCompleteComboBox fx:id="airportBox" prefWidth="150.0"/>
         <AutoCompleteComboBox fx:id="airlineBox" prefWidth="150.0"/>
+        <AutoCompleteComboBox fx:id="originAirportBox" prefWidth="150.0"/>
+        <AutoCompleteComboBox fx:id="destinationAirportBox" prefWidth="150.0"/>
       <HBox prefHeight="21.0" prefWidth="347.0">
          <children>
               <Button onAction="#switchToInitialScreen" prefHeight="24.0" prefWidth="60.0" text="back">

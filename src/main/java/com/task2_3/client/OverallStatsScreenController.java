@@ -37,7 +37,10 @@ public class OverallStatsScreenController implements Initializable {
     AutoCompleteComboBox airportBox;
     @FXML
     AutoCompleteComboBox airlineBox;
-
+    @FXML
+    AutoCompleteComboBox originAirportBox;
+    @FXML
+    AutoCompleteComboBox destinationAirportBox;
 
     @FXML
     private PieChart AirlinePiechart;
@@ -49,8 +52,13 @@ public class OverallStatsScreenController implements Initializable {
     private ScheduledExecutorService sesAirport;
     private ScheduledFuture<?> schedFutureAirline;
     private ScheduledExecutorService sesAirline;
+    private ScheduledFuture<?> schedFutureOriginAirport;
+    private ScheduledExecutorService sesOriginAirport;
+    private ScheduledFuture<?> schedFutureDestinationAirport;
+    private ScheduledExecutorService sesDestinationAirport;
     private ArrayList<Airport> suggestedAirports=new ArrayList<>();
-    private ArrayList<Airline> suggestedAirlines;
+    private ArrayList<Airline> suggestedAirlines=new ArrayList<>();
+    private ArrayList<Route> suggestedRoutes=new ArrayList<>();
     @FXML
     private TextField airlineInput;
     @FXML
@@ -68,12 +76,18 @@ public class OverallStatsScreenController implements Initializable {
     @FXML
     private void switchToInitialScreen() throws IOException {
         Start.setRoot("initialScreen");
-    }@FXML
+    }
+    @FXML
     private void switchToAirportScreen() throws IOException {
         Start.setRoot("airportScreen");
-    }@FXML
+    }
+    @FXML
     private void switchToAirlineScreen() throws IOException {
         Start.setRoot("airlineScreen");
+    }
+    @FXML
+    private void switchToRouteScreen() throws IOException {
+        Start.setRoot("routeScreen");
     }
 
     @FXML
@@ -200,17 +214,22 @@ public class OverallStatsScreenController implements Initializable {
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(airportBox.getValue() == null){
-                        System.out.println("Insert a valid Airport.");
-                    }else{
+                        System.out.println("Insert something.");
+                    }
+                    else{
                         System.out.println("You have inserted a valid Airport: "+airportBox.getValue().toString());
                         for(Airport a:suggestedAirports){
                             System.out.println(a.getName());
                             if(airportBox.getValue().toString().equals(a.toString())){
                                 Start.airport=a;
-                                getInputAirportStatistics();
+                                try{switchToAirportScreen();}
+                                catch(Exception e){
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
+                    System.out.println("You have inserted invalid Airport");
                     event.consume();
                     return;
                 }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
@@ -242,16 +261,20 @@ public class OverallStatsScreenController implements Initializable {
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(airlineBox.getValue() == null){
-                        System.out.println("Insert a valid Airline.");
+                        System.out.println("Insert something.");
                     }else{
-                        System.out.println("You have inserted a valid Airline: "+airlineBox.getValue().toString());
+                        System.out.println("You have inserted Airline: "+airlineBox.getValue().toString());
                         for(Airline a:suggestedAirlines){
                             System.out.println(a.getName());
                             if(airlineBox.getValue().toString().equals(a.toString())){
                                 Start.airline=a;
-                                getInputAirlineStatistics();
+                                try{switchToAirlineScreen();}
+                                catch(Exception e){
+                                    e.printStackTrace();
+                                }
                             }
                         }
+                        System.out.println("You have inserted invalid Airline");
                     }
                     event.consume();
                     return;
@@ -276,7 +299,110 @@ public class OverallStatsScreenController implements Initializable {
                 }
             }
         });
+
+        originAirportBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ENTER) {
+                    if(originAirportBox.getValue() == null || destinationAirportBox.getValue() == null){
+                        System.out.println("Insert something.");
+                    }else{
+                        System.out.println("You have inserted Route: "+originAirportBox.getValue().toString()+" - "+destinationAirportBox.getValue().toString());
+                        for(Route a:suggestedRoutes){
+                            System.out.println(a.getOrigin().getName()+" - "+a.getDestination().getName());
+                            if((originAirportBox.getValue().toString().equals(a.getOrigin().getName())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().getName()))){
+                                Start.route=a;
+                                try{switchToRouteScreen();}
+                                catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        System.out.println("Invalid route");
+                    }
+                    event.consume();
+                    return;
+                }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
+                    return;
+                }
+                else {
+                    //After releasing a key in input the timer starts: after 1 second we can retrieve the menu. In the meanwhile,if the user inserts a new input the timer is restarted.
+                    if(sesOriginAirport!=null) {
+                        schedFutureOriginAirport.cancel(true);
+                    }
+                    Task<Void> longRunningTask = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            Platform.runLater(() -> showOriginAirportMenu());
+                            return null;
+                        }
+                    };
+                    Thread t=new Thread(longRunningTask);
+                    sesOriginAirport = Executors.newSingleThreadScheduledExecutor();
+                    schedFutureOriginAirport=sesOriginAirport.schedule(t,1, TimeUnit.SECONDS);
+                }
+            }
+        });
+
+        destinationAirportBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ENTER) {
+                    if(originAirportBox.getValue() == null || destinationAirportBox.getValue() == null){
+                        System.out.println("Insert something.");
+                    }else{
+                        System.out.println("You have inserted Route: "+originAirportBox.getValue().toString()+" - "+destinationAirportBox.getValue().toString());
+                        for(Route a:suggestedRoutes){
+                            System.out.println(a.getOrigin().getName()+" - "+a.getDestination().getName());
+                            if((originAirportBox.getValue().toString().equals(a.getOrigin().getName())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().getName()))){
+                                Start.route=a;
+                                try{switchToRouteScreen();}
+                                catch(Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        System.out.println("Invalid route");
+                    }
+                    event.consume();
+                    return;
+                }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
+                    return;
+                }
+                else {
+                    //After releasing a key in input the timer starts: after 1 second we can retrieve the menu. In the meanwhile,if the user inserts a new input the timer is restarted.
+                    if(sesDestinationAirport!=null) {
+                        schedFutureDestinationAirport.cancel(true);
+                    }
+                    Task<Void> longRunningTask = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            Platform.runLater(() -> showDestinationAirportMenu());
+                            return null;
+                        }
+                    };
+                    Thread t=new Thread(longRunningTask);
+                    sesDestinationAirport = Executors.newSingleThreadScheduledExecutor();
+                    schedFutureDestinationAirport=sesDestinationAirport.schedule(t,1, TimeUnit.SECONDS);
+                }
+            }
+        });
     }
+
+    public void showAirlineMenu(){
+        suggestedAirlines = Start.neoDbManager.searchAirlines_byString(airlineBox.getEditor().getText());
+        airlineBox.objectChoices.clear();
+        for (Airline object : suggestedAirlines) {
+            airlineBox.objectChoices.add(object);
+        }
+        airlineBox.show();
+        if (!airlineBox.objectChoices.isEmpty()) {
+            airlineBox.show();
+        } else {
+            airlineBox.hide();
+        }
+    }
+
     public void showAirportMenu(){
         suggestedAirports = Start.neoDbManager.searchAirports_byString(airportBox.getEditor().getText());
         airportBox.objectChoices.clear();
@@ -291,36 +417,36 @@ public class OverallStatsScreenController implements Initializable {
             airportBox.hide();
         }
     }
-    public void showAirlineMenu(){
-        suggestedAirlines = Start.neoDbManager.searchAirlines_byString(airlineBox.getEditor().getText());
-        airlineBox.objectChoices.clear();
-        for (Airline object : suggestedAirlines) {
-            airlineBox.objectChoices.add(object);
+
+    public void showOriginAirportMenu(){
+        suggestedRoutes = Start.neoDbManager.searchRoutes_byObject(originAirportBox.getEditor().getText(),destinationAirportBox.getEditor().getText());
+        originAirportBox.objectChoices.clear();
+        for (Route object : suggestedRoutes) {
+            originAirportBox.objectChoices.add(object.getOrigin());
+            System.out.println(object.getOrigin().getName());
         }
-        airlineBox.show();
-        if (!airlineBox.objectChoices.isEmpty()) {
-            airlineBox.show();
+        originAirportBox.show();
+        if (!originAirportBox.objectChoices.isEmpty()) {
+            originAirportBox.show();
         } else {
-            airlineBox.hide();
+            originAirportBox.hide();
         }
     }
-    @FXML
-    public void getInputAirlineStatistics(){
-        try{
-            switchToAirlineScreen();
+
+    public void showDestinationAirportMenu(){
+        suggestedRoutes = Start.neoDbManager.searchRoutes_byObject(originAirportBox.getEditor().getText(),destinationAirportBox.getEditor().getText());
+        destinationAirportBox.objectChoices.clear();
+        for (Route object : suggestedRoutes) {
+            destinationAirportBox.objectChoices.add(object.getDestination());
+            System.out.println(object.getDestination().getName());
         }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    public  void getInputAirportStatistics(){
-        try{
-            switchToAirportScreen();
-        }
-        catch(Exception e){
-            e.printStackTrace();
+        destinationAirportBox.show();
+        if (!destinationAirportBox.objectChoices.isEmpty()) {
+            destinationAirportBox.show();
+        } else {
+            destinationAirportBox.hide();
         }
     }
+
 
 }

@@ -606,6 +606,7 @@ public class Neo4jDBManager implements AutoCloseable {
                 originKeyword = originStr.split(" ");
 
             if(originKeyword != null){
+                System.out.println("entro");
                 searchRouteQuery += "originCond =~ $origin_regexp ";
 
                 String originRegExpr = "(?i).*";
@@ -616,7 +617,7 @@ public class Neo4jDBManager implements AutoCloseable {
 
                 params.put("origin_regexp", originRegExpr);
 
-                if(destination != null) searchRouteQuery += "and ";
+                if(destination != null && !destination.equals("")) searchRouteQuery += "and ";
             }
         }
 
@@ -644,14 +645,16 @@ public class Neo4jDBManager implements AutoCloseable {
 
         searchRouteQuery += "return properties(originAir), properties(destinationAir) limit 6";
 
-        System.out.println(searchRouteQuery);
-
         Result res = tx.run(searchRouteQuery, params);
 
         ArrayList<Route> tmpRoute = new ArrayList<>();
         Record tmpRouteRecord;
         Map tmpOriginMap;
         Map tmpDestinationMap;
+
+        //System.out.println(searchRouteQuery);
+        //System.out.println((String)params.get("origin_regexp"));
+
         while(res.hasNext()){
             tmpRouteRecord = res.next();
 

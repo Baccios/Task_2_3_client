@@ -309,8 +309,9 @@ public class OverallStatsScreenController implements Initializable {
                     }else{
                         System.out.println("You have inserted Route: "+originAirportBox.getValue().toString()+" - "+destinationAirportBox.getValue().toString());
                         for(Route a:suggestedRoutes){
-                            System.out.println(a.getOrigin().getName()+" - "+a.getDestination().getName());
-                            if((originAirportBox.getValue().toString().equals(a.getOrigin().getName())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().getName()))){
+                            System.out.println(a.getOrigin().toString()+" - "+a.getDestination().toString());
+                            System.out.println(originAirportBox.getValue().toString()+"-"+destinationAirportBox.getValue().toString());
+                            if((originAirportBox.getValue().toString().equals(a.getOrigin().toString())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().toString()))){
                                 Start.route=a;
                                 try{switchToRouteScreen();}
                                 catch (Exception e){
@@ -353,8 +354,9 @@ public class OverallStatsScreenController implements Initializable {
                     }else{
                         System.out.println("You have inserted Route: "+originAirportBox.getValue().toString()+" - "+destinationAirportBox.getValue().toString());
                         for(Route a:suggestedRoutes){
-                            System.out.println(a.getOrigin().getName()+" - "+a.getDestination().getName());
-                            if((originAirportBox.getValue().toString().equals(a.getOrigin().getName())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().getName()))){
+                            System.out.println(a.getOrigin().toString()+" - "+a.getDestination().toString());
+                            System.out.println(originAirportBox.getValue().toString()+"-"+destinationAirportBox.getValue().toString());
+                            if((originAirportBox.getValue().toString().equals(a.getOrigin().toString())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().toString()))){
                                 Start.route=a;
                                 try{switchToRouteScreen();}
                                 catch(Exception e){
@@ -421,9 +423,10 @@ public class OverallStatsScreenController implements Initializable {
     public void showOriginAirportMenu(){
         suggestedRoutes = Start.neoDbManager.searchRoutes_byObject(originAirportBox.getEditor().getText(),destinationAirportBox.getEditor().getText());
         originAirportBox.objectChoices.clear();
+        System.out.println("Lista suggested routes");
         for (Route object : suggestedRoutes) {
             originAirportBox.objectChoices.add(object.getOrigin());
-            System.out.println(object.getOrigin().getName());
+            System.out.println("ln:429   "+object.getOrigin().toString()+"-"+object.getDestination().toString());
         }
         originAirportBox.show();
         if (!originAirportBox.objectChoices.isEmpty()) {
@@ -436,9 +439,10 @@ public class OverallStatsScreenController implements Initializable {
     public void showDestinationAirportMenu(){
         suggestedRoutes = Start.neoDbManager.searchRoutes_byObject(originAirportBox.getEditor().getText(),destinationAirportBox.getEditor().getText());
         destinationAirportBox.objectChoices.clear();
+        System.out.println("Suggested routes: ");
         for (Route object : suggestedRoutes) {
             destinationAirportBox.objectChoices.add(object.getDestination());
-            System.out.println(object.getDestination().getName());
+            System.out.println("ln:446   "+object.getOrigin().toString()+"-"+object.getDestination().toString());
         }
         destinationAirportBox.show();
         if (!destinationAirportBox.objectChoices.isEmpty()) {
@@ -447,6 +451,4 @@ public class OverallStatsScreenController implements Initializable {
             destinationAirportBox.hide();
         }
     }
-
-
 }

@@ -48,7 +48,6 @@ public class Route {
         return "Route{" +
                 "origin=" + origin.getIATA_code() +
                 ", destination=" + destination.getIATA_code() +
-                ", stats=" + stats +
                 '}';
     }
 

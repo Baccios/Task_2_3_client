@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -34,13 +35,13 @@ import java.util.concurrent.TimeUnit;
 public class OverallStatsScreenController implements Initializable {
     ArrayList<String> s=new ArrayList<>();
     @FXML
-    AutoCompleteComboBox airportBox;
+    AutoCompleteComboBox<Airport> airportBox;
     @FXML
-    AutoCompleteComboBox airlineBox;
+    AutoCompleteComboBox<Airline> airlineBox;
     @FXML
-    AutoCompleteComboBox originAirportBox;
+    AutoCompleteComboBox<Airport> originAirportBox;
     @FXML
-    AutoCompleteComboBox destinationAirportBox;
+    AutoCompleteComboBox<Airport> destinationAirportBox;
 
     @FXML
     private PieChart AirlinePiechart;
@@ -58,6 +59,8 @@ public class OverallStatsScreenController implements Initializable {
     private ScheduledExecutorService sesDestinationAirport;
     private ArrayList<Airport> suggestedAirports=new ArrayList<>();
     private ArrayList<Airline> suggestedAirlines=new ArrayList<>();
+    private ArrayList<Airport> suggestedOrigin = new ArrayList<>();
+    private ArrayList<Airport> suggestedDestination = new ArrayList<>();
     private ArrayList<Route> suggestedRoutes=new ArrayList<>();
     @FXML
     private TextField airlineInput;
@@ -209,7 +212,7 @@ public class OverallStatsScreenController implements Initializable {
         }
 
         //as a character is digited in input the array of matching airport is updated.
-        airportBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+        airportBox.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
@@ -217,7 +220,18 @@ public class OverallStatsScreenController implements Initializable {
                         System.out.println("Insert something.");
                     }
                     else{
-                        System.out.println("You have inserted a valid Airport: "+airportBox.getValue().toString());
+                        if(!airportBox.isValid()){
+                            System.out.println("Invalid Airport");
+                            event.consume();
+                            return;
+                        }
+                        System.out.println("You have inserted a valid Airport: "+airportBox.getSelectedObject().toString());
+
+                        Start.airport = airportBox.getSelectedObject();
+                        try{switchToAirportScreen();}
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }/*
                         for(Airport a:suggestedAirports){
                             System.out.println(a.getName());
                             if(airportBox.getValue().toString().equals(a.toString())){
@@ -227,9 +241,8 @@ public class OverallStatsScreenController implements Initializable {
                                     e.printStackTrace();
                                 }
                             }
-                        }
+                        }*/
                     }
-                    System.out.println("You have inserted invalid Airport");
                     event.consume();
                     return;
                 }else if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT){
@@ -256,25 +269,26 @@ public class OverallStatsScreenController implements Initializable {
             }
         });
 
-        airlineBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+        airlineBox.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(airlineBox.getValue() == null){
                         System.out.println("Insert something.");
                     }else{
-                        System.out.println("You have inserted Airline: "+airlineBox.getValue().toString());
-                        for(Airline a:suggestedAirlines){
-                            System.out.println(a.getName());
-                            if(airlineBox.getValue().toString().equals(a.toString())){
-                                Start.airline=a;
-                                try{switchToAirlineScreen();}
-                                catch(Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
+                        if(!airlineBox.isValid()){
+                            System.out.println("Invalid Airline");
+                            event.consume();
+                            return;
                         }
-                        System.out.println("You have inserted invalid Airline");
+
+                        System.out.println("You have inserted Airline: "+airlineBox.getSelectedObject().toString());
+
+                        Start.airline = airlineBox.getSelectedObject();
+                        try{switchToAirlineScreen();}
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     event.consume();
                     return;
@@ -300,25 +314,24 @@ public class OverallStatsScreenController implements Initializable {
             }
         });
 
-        originAirportBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+        originAirportBox.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(originAirportBox.getValue() == null || destinationAirportBox.getValue() == null){
                         System.out.println("Insert something.");
                     }else{
-                        System.out.println("You have inserted Route: "+originAirportBox.getValue().toString()+" - "+destinationAirportBox.getValue().toString());
-                        for(Route a:suggestedRoutes){
-                            System.out.println(a.getOrigin().getName()+" - "+a.getDestination().getName());
-                            if((originAirportBox.getValue().toString().equals(a.getOrigin().getName())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().getName()))){
-                                Start.route=a;
-                                try{switchToRouteScreen();}
-                                catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
+                        if(!originAirportBox.isValid() || !destinationAirportBox.isValid()){
+                            System.out.println("Invalid route");
+                            event.consume();
+                            return;
                         }
-                        System.out.println("Invalid route");
+
+                        Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(originAirportBox.getSelectedObject(), destinationAirportBox.getSelectedObject());
+                        try{switchToRouteScreen();}
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     event.consume();
                     return;
@@ -344,25 +357,24 @@ public class OverallStatsScreenController implements Initializable {
             }
         });
 
-        destinationAirportBox.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+        destinationAirportBox.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(originAirportBox.getValue() == null || destinationAirportBox.getValue() == null){
                         System.out.println("Insert something.");
                     }else{
-                        System.out.println("You have inserted Route: "+originAirportBox.getValue().toString()+" - "+destinationAirportBox.getValue().toString());
-                        for(Route a:suggestedRoutes){
-                            System.out.println(a.getOrigin().getName()+" - "+a.getDestination().getName());
-                            if((originAirportBox.getValue().toString().equals(a.getOrigin().getName())) && (destinationAirportBox.getValue().toString().equals(a.getDestination().getName()))){
-                                Start.route=a;
-                                try{switchToRouteScreen();}
-                                catch(Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
+                        if(!originAirportBox.isValid() || !destinationAirportBox.isValid()){
+                            System.out.println("Invalid route");
+                            event.consume();
+                            return;
                         }
-                        System.out.println("Invalid route");
+
+                        Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(originAirportBox.getSelectedObject(), destinationAirportBox.getSelectedObject());
+                        try{switchToRouteScreen();}
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     event.consume();
                     return;
@@ -390,6 +402,8 @@ public class OverallStatsScreenController implements Initializable {
     }
 
     public void showAirlineMenu(){
+        if(airlineBox.getEditor().getText().equals("")) return;
+
         suggestedAirlines = Start.neoDbManager.searchAirlines_byString(airlineBox.getEditor().getText());
         airlineBox.objectChoices.clear();
         for (Airline object : suggestedAirlines) {
@@ -408,7 +422,6 @@ public class OverallStatsScreenController implements Initializable {
         airportBox.objectChoices.clear();
         for (Airport object : suggestedAirports) {
             airportBox.objectChoices.add(object);
-            System.out.println(object.getName());
         }
         airportBox.show();
         if (!airportBox.objectChoices.isEmpty()) {
@@ -419,11 +432,12 @@ public class OverallStatsScreenController implements Initializable {
     }
 
     public void showOriginAirportMenu(){
-        suggestedRoutes = Start.neoDbManager.searchRoutes_byObject(originAirportBox.getEditor().getText(),destinationAirportBox.getEditor().getText());
+        if(originAirportBox.getEditor().getText().equals("")) return;
+
+        suggestedOrigin = Start.neoDbManager.searchOriginAirportOfRoute_byKeywords(originAirportBox.getEditor().getText(), destinationAirportBox.getEditor().getText());
         originAirportBox.objectChoices.clear();
-        for (Route object : suggestedRoutes) {
-            originAirportBox.objectChoices.add(object.getOrigin());
-            System.out.println(object.getOrigin().getName());
+        for (Airport object : suggestedOrigin) {
+            originAirportBox.objectChoices.add(object);
         }
         originAirportBox.show();
         if (!originAirportBox.objectChoices.isEmpty()) {
@@ -434,11 +448,12 @@ public class OverallStatsScreenController implements Initializable {
     }
 
     public void showDestinationAirportMenu(){
-        suggestedRoutes = Start.neoDbManager.searchRoutes_byObject(originAirportBox.getEditor().getText(),destinationAirportBox.getEditor().getText());
+        if(destinationAirportBox.getEditor().getText().equals("")) return;
+
+        suggestedDestination = Start.neoDbManager.searchDestinationAirportOfRoute_byKeywords(originAirportBox.getEditor().getText(), destinationAirportBox.getEditor().getText());
         destinationAirportBox.objectChoices.clear();
-        for (Route object : suggestedRoutes) {
-            destinationAirportBox.objectChoices.add(object.getDestination());
-            System.out.println(object.getDestination().getName());
+        for (Airport object : suggestedDestination) {
+            destinationAirportBox.objectChoices.add(object);
         }
         destinationAirportBox.show();
         if (!destinationAirportBox.objectChoices.isEmpty()) {

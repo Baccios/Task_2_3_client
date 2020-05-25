@@ -18,7 +18,7 @@
                 <Font name="System Bold" size="18.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="10.0" />
+                <Insets bottom="30.0" />
             </VBox.margin></Label>
       <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="432.0">
          <children>
@@ -44,13 +44,13 @@
          <children>
             <Label fx:id="originAirportLabel" prefHeight="27.0" prefWidth="308.0" text="ORIGIN_AIRPORT" textAlignment="CENTER">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
 
             <Label fx:id="destinationAirportLabel" alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="295.0" text="DESTINATION_AIRPORT " textAlignment="CENTER">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
          </children>

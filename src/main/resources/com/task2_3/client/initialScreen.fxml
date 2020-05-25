@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="163.0" fitWidth="240.0">
          <image>
-            <Image url="@../../../../../../../../Desktop/logo.jpg" />
+            <Image url="@../../../Images/logo.jpg" />
          </image>
          <VBox.margin>
             <Insets bottom="100.0" />
@@ -29,11 +29,6 @@
             <Font name="Aharoni Bold" size="22.0" />
          </font>
       </Button>
-      <ImageView fitHeight="69.0" fitWidth="71.0">
-         <image>
-            <Image url="@../../../Images/icons8-airplane-mode-on-64.png" />
-         </image>
-      </ImageView>
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

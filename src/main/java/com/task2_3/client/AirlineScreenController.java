@@ -74,6 +74,8 @@ public class AirlineScreenController implements Initializable {
 
         }
         AirportPiechart.setData(AirportpieChartData);
+        AirportPiechart.setTitle("Most served airports:");
+        AirportPiechart.setLegendVisible(false);
         for (final PieChart.Data data : AirportPiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {

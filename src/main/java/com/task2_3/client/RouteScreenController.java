@@ -60,8 +60,8 @@ public class RouteScreenController implements Initializable {
             }
         }
 
-        originAirportLabel.setText(Start.route.getOrigin().getName());
-        destinationAirportLabel.setText(Start.route.getDestination().getName());
+        originAirportLabel.setText("Origin airport:  "+Start.route.getOrigin().getName());
+        destinationAirportLabel.setText("Destination airport:  "+Start.route.getDestination().getName());
         RouteStatistics rs=Start.route.getStats();
         delayProbText.setText(String.valueOf(rs.fifteenDelayProb));
         meanDelayText.setText(String.valueOf(rs.getMeanDelay()));
@@ -79,6 +79,8 @@ public class RouteScreenController implements Initializable {
 
         }
         AirlinePiechart.setData(AirlinepieChartData);
+        AirlinePiechart.setLegendVisible(false);
+        AirlinePiechart.setTitle("Most efficient airlines:");
 
         for (final PieChart.Data data : AirlinePiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,

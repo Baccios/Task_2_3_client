@@ -88,6 +88,9 @@ public class AirportScreenController implements Initializable {
 
         }
         AirlinePiechart.setData(AirlinepieChartData);
+        AirlinePiechart.setTitle("Most served airlines:");
+        AirlinePiechart.setLegendVisible(false);
+
 
         ObservableList<PieChart.Data> RoutepieChartData=FXCollections.observableArrayList();
         mostServedRoutes= rs.getMostServedRoutes();
@@ -99,6 +102,8 @@ public class AirportScreenController implements Initializable {
             RoutepieChartData.add(d);
         }
         RoutePiechart.setData(RoutepieChartData);
+        RoutePiechart.setTitle("Most served routes:");
+        RoutePiechart.setLegendVisible(false);
 
         for (final PieChart.Data data : AirlinePiechart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,

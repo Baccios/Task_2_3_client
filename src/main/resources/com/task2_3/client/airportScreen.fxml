@@ -30,8 +30,8 @@
         </HBox>
       <HBox alignment="TOP_CENTER" prefHeight="328.0" prefWidth="715.0">
          <children>
-            <PieChart fx:id="AirlinePiechart" prefHeight="251.0" prefWidth="373.0" />
-            <PieChart fx:id="RoutePiechart" prefHeight="314.0" prefWidth="361.0" />
+            <PieChart fx:id="AirlinePiechart" labelLineLength="40.0" prefHeight="251.0" prefWidth="373.0" />
+            <PieChart fx:id="RoutePiechart" labelLineLength="40.0" prefHeight="314.0" prefWidth="361.0" />
          </children>
       </HBox>
         <HBox fx:id="hbox2" prefHeight="21.0" prefWidth="347.0">

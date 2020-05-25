@@ -1,49 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+        <?import javafx.geometry.Insets?>
+        <?import javafx.scene.chart.PieChart?>
+        <?import javafx.scene.control.Button?>
+        <?import javafx.scene.control.Label?>
+        <?import javafx.scene.control.TextField?>
+        <?import javafx.scene.image.Image?>
+        <?import javafx.scene.image.ImageView?>
+        <?import javafx.scene.layout.HBox?>
+        <?import javafx.scene.layout.VBox?>
+        <?import javafx.scene.text.Font?>
 
-<?import com.task2_3.client.AutoCompleteComboBox?>
+        <?import com.task2_3.client.AutoCompleteComboBox?>
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="806.0" spacing="20.0" stylesheets="@../../../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.OverallStatsScreenController">
-    <children>
-        <Label fx:id="labelScheduleDate" text="OVERALL STATISTICS" textAlignment="CENTER">
-            <font>
-                <Font name="System Bold" size="20.0" />
-            </font>
-            <VBox.margin>
-                <Insets bottom="10.0" />
-            </VBox.margin></Label>
-      <HBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="319.0" prefWidth="789.0">
-         <children>
-            <PieChart fx:id="AirlinePiechart" prefHeight="319.0" prefWidth="383.0" />
-             <PieChart fx:id="AirportPiechart" maxWidth="-Infinity" prefHeight="319.0" prefWidth="404.0" />
-         </children>
-      </HBox>
+<children>
+    <Label fx:id="labelScheduleDate" text="OVERALL STATISTICS" textAlignment="CENTER">
+        <font>
+            <Font name="System Bold" size="20.0" />
+        </font>
+        <VBox.margin>
+            <Insets bottom="10.0" />
+        </VBox.margin></Label>
+    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="319.0" prefWidth="789.0">
+        <children>
+            <PieChart fx:id="AirlinePiechart" labelLineLength="40.0" prefHeight="319.0" prefWidth="383.0" />
+            <PieChart fx:id="AirportPiechart" labelLineLength="40.0" maxWidth="-Infinity" prefHeight="319.0" prefWidth="404.0" />
+        </children>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
 
-
-
-        <AutoCompleteComboBox fx:id="airportBox" prefWidth="150.0"/>
-        <AutoCompleteComboBox fx:id="airlineBox" prefWidth="150.0"/>
-        <AutoCompleteComboBox fx:id="originAirportBox" prefWidth="150.0"/>
-        <AutoCompleteComboBox fx:id="destinationAirportBox" prefWidth="150.0"/>
-      <HBox prefHeight="21.0" prefWidth="347.0">
-         <children>
-              <Button onAction="#switchToInitialScreen" prefHeight="24.0" prefWidth="60.0" text="back">
-                  <font>
-                      <Font name="Aharoni Bold" size="11.0" />
-                  </font>
+            <Label text="Select an airport:" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="10.0" />
+                </font>
+            </Label>
+            <AutoCompleteComboBox fx:id="airportBox" prefWidth="220.0">
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </AutoCompleteComboBox>
+        </children>
+        <VBox.margin>
+            <Insets bottom="-50.0" />
+        </VBox.margin>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
+            <Label text="Select an airline:" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="10.0" />
+                </font>
+            </Label>
+            <AutoCompleteComboBox fx:id="airlineBox" prefWidth="220.0">
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </AutoCompleteComboBox>
+        </children>
+        <VBox.margin>
+            <Insets bottom="-50.0" />
+        </VBox.margin>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
+            <Label text="Select a route:" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="10.0" />
+                </font>
+            </Label>
+            <ImageView fitHeight="25.0" fitWidth="25.0">
+                <image>
+                    <Image url="@../../../Images/icons8-airplane-take-off-50.png" />
+                </image>
+                <HBox.margin>
+                    <Insets left="30.0" />
+                </HBox.margin>
+            </ImageView>
+            <AutoCompleteComboBox fx:id="originAirportBox" prefWidth="220.0">
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </AutoCompleteComboBox>
+            <ImageView fitHeight="25.0" fitWidth="25.0">
+                <image>
+                    <Image url="@../../../Images/icons8-airplane-landing-50.png" />
+                </image>
+                <HBox.margin>
+                    <Insets left="50.0" />
+                </HBox.margin>
+            </ImageView>
+            <AutoCompleteComboBox fx:id="destinationAirportBox" prefWidth="220.0">
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </AutoCompleteComboBox>
+        </children>
+    </HBox>
+    <HBox prefHeight="21.0" prefWidth="347.0">
+        <children>
+            <Button onAction="#switchToInitialScreen" prefHeight="24.0" prefWidth="60.0" text="back">
+                <font>
+                    <Font name="Aharoni Bold" size="11.0" />
+                </font>
             </Button>
-         </children>
-      </HBox>
-    </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+        </children>
+    </HBox>
+</children>
+<padding>
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+</padding>
 </VBox>

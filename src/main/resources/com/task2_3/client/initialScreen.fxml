@@ -19,12 +19,12 @@
          </VBox.margin>
       </ImageView>
 
-      <Button fx:id="accessButton" alignment="CENTER" onAction="#switchToOverallStats" prefHeight="43.0" prefWidth="202.0" text="ACCESS ">
+      <Button fx:id="accessButton" alignment="CENTER" onAction="#switchToOverallStats" prefHeight="43.0" prefWidth="202.0" style="-fx-background-color: grey;" text="ACCESS " textFill="WHITE">
          <font>
             <Font name="Aharoni Bold" size="22.0" />
          </font>
       </Button>
-      <Button fx:id="reservedAreaButton" onAction="#switchToAdminAuthentication" prefHeight="43.0" prefWidth="202.0" text="RESERVED AREA ">
+      <Button fx:id="reservedAreaButton" onAction="#switchToAdminAuthentication" prefHeight="43.0" prefWidth="202.0" style="-fx-background-color: gray;" text="RESERVED AREA " textFill="WHITE">
          <font>
             <Font name="Aharoni Bold" size="22.0" />
          </font>

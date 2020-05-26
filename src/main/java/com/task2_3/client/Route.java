@@ -102,4 +102,7 @@ public class Route {
         this.destination = route.destination;
         this.stats = route.stats;
     }
+    public RouteBean toBean(){
+        return new RouteBean(this.origin.getName(),this.destination.getName());
+    }
 }

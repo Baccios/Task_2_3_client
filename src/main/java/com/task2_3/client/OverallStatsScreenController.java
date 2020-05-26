@@ -85,7 +85,7 @@ public class OverallStatsScreenController implements Initializable {
 
     @FXML
     private void switchToHintsScreen() throws IOException {
-        Start.setRoot("hintScreen");
+        Start.setRoot("hintsScreen");
     }
 
     @FXML
@@ -380,9 +380,9 @@ public class OverallStatsScreenController implements Initializable {
                         Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(tmpOrigin, tmpDest);
                         try{
                             if(Start.route == null){
-                            Start.hintOrigin = tmpOrigin;
-                            Start.hintDestination = tmpDest;
-                            switchToHintsScreen();
+                                Start.hintOrigin = tmpOrigin;
+                                Start.hintDestination = tmpDest;
+                                switchToHintsScreen();
                             }
                             else {
                                 switchToRouteScreen();

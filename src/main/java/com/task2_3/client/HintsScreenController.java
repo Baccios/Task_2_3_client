@@ -46,6 +46,8 @@ public class HintsScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         routeBeanRows=FXCollections.observableArrayList();
         routeRows=Start.neoDbManager.searchSimilarRoutes_byOriginAndDest(Start.hintOrigin,Start.hintDestination);
+        System.out.println(Start.hintOrigin.getName()+Start.hintDestination.getName());
+        System.out.println(routeRows.size());
         for(Route r: routeRows){
             routeBeanRows.add(r.toBean());
             System.out.println(r.toString());

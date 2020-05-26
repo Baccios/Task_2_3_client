@@ -55,13 +55,13 @@ public class HintsScreenController implements Initializable {
 
         TableColumn originAirportCol = new TableColumn("Origin airport");
         originAirportCol.setCellValueFactory(
-                new PropertyValueFactory<RouteBean, String>("origin")
+                new PropertyValueFactory<RouteBean, String>("originAirport")
         );
         originAirportCol.setStyle("-fx-alignment:CENTER");
 
         TableColumn destinationAirportCol = new TableColumn("Destination airport");
         destinationAirportCol.setCellValueFactory(
-                new PropertyValueFactory<RouteBean, String>("destination")
+                new PropertyValueFactory<RouteBean, String>("destinationAirport")
         );
         destinationAirportCol.setStyle("-fx-alignment:CENTER");
 

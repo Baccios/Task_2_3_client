@@ -326,11 +326,14 @@ public class OverallStatsScreenController implements Initializable {
                             event.consume();
                             return;
                         }
-
-                        Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(originAirportBox.getSelectedObject(), destinationAirportBox.getSelectedObject());
+                        Airport tmpOrigin = originAirportBox.getSelectedObject();
+                        Airport tmpDest = destinationAirportBox.getSelectedObject();
+                        Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(tmpOrigin, tmpDest);
                         try{
                             if(Start.route == null){
-                                System.out.println("Bacciottino è fruzzolino");
+                                System.out.println("Bacciottino è fruzzolino e Guggiante è fruzzolante");
+                                Start.hintOrigin = tmpOrigin;
+                                Start.hintDestination = tmpDest;
                                 //switchToHintsScreen();
                             }
                             else {
@@ -378,10 +381,14 @@ public class OverallStatsScreenController implements Initializable {
                             return;
                         }
 
-                        Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(originAirportBox.getSelectedObject(), destinationAirportBox.getSelectedObject());
+                        Airport tmpOrigin = originAirportBox.getSelectedObject();
+                        Airport tmpDest = destinationAirportBox.getSelectedObject();
+                        Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(tmpOrigin, tmpDest);
                         try{
                             if(Start.route == null){
                             System.out.println("Bacciottino è fruzzolino");
+                            Start.hintOrigin = tmpOrigin;
+                            Start.hintDestination = tmpDest;
                             //switchToHintsScreen();
                             }
                             else {

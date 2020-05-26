@@ -25,6 +25,10 @@ public class Start extends Application{
     public static Airline airline;
     public static Airport airport;
 
+    //variables to pass parameters between initial screen and hints screen
+    public static Airport hintOrigin;
+    public static Airport hintDestination;
+
     public void start(Stage stage)throws IOException{
         neoDbManager=Neo4jDBManager.getInstance();
         scene = new Scene(loadFXML("initialScreen"));

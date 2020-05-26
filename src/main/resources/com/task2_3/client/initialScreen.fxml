@@ -10,12 +10,12 @@
 
 <VBox alignment="CENTER" prefHeight="500.0" prefWidth="520.0" spacing="20.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.InitialScreenController">
    <children>
-      <ImageView fitHeight="163.0" fitWidth="240.0">
+      <ImageView fitHeight="233.0" fitWidth="336.0">
          <image>
             <Image url="@../../../Images/logo.jpg" />
          </image>
          <VBox.margin>
-            <Insets bottom="100.0" />
+            <Insets bottom="80.0" />
          </VBox.margin>
       </ImageView>
 

@@ -5,8 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -39,7 +40,7 @@ public class RouteScreenController implements Initializable {
     @FXML
     public TextField cancCauseText;
     @FXML
-    PieChart AirlinePiechart;
+    BarChart airlineBarChart;
     ArrayList<RankingItem<Airline>> bestAirlines=new ArrayList<>();;
     private ArrayList<Airline> airlineRows=new ArrayList<>();
     @FXML
@@ -51,47 +52,65 @@ public class RouteScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
         for (Node node : hbox1.getChildren()) {
             if (node instanceof TextField) {
-                ((TextField)node).setDisable(true);
+                System.out.println(((TextField) node).getText());
+                ((TextField)node).setEditable(false);
+                ((TextField)node).setCursor(Cursor.DEFAULT);
             }
         }
         for (Node node : hbox2.getChildren()) {
             if (node instanceof TextField) {
-                ((TextField)node).setDisable(true);
+                ((TextField)node).setEditable(false);
+                ((TextField)node).setCursor(Cursor.DEFAULT);
+
             }
         }
 
         originAirportLabel.setText("Origin airport:  "+Start.route.getOrigin().getName());
         destinationAirportLabel.setText("Destination airport:  "+Start.route.getDestination().getName());
         RouteStatistics rs=Start.route.getStats();
-        delayProbText.setText(String.valueOf(rs.fifteenDelayProb));
-        meanDelayText.setText(String.valueOf(rs.getMeanDelay()));
+
+        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb))+"%");
+        cancProbText.setText(String.format("%.2f", (rs.cancellationProb))+"%");
+        meanDelayText.setText(String.format("%.2f", (rs.getMeanDelay()))+"%");
         delayCauseText.setText(rs.getMostLikelyCauseDelay());
-        cancProbText.setText(String.valueOf(rs.cancellationProb));
         cancCauseText.setText(rs.getMostLikelyCauseCanc());
 
-        ObservableList<PieChart.Data> AirlinepieChartData=FXCollections.observableArrayList();
+        CategoryAxis x=new CategoryAxis();
+        x.setLabel("airlines");
+        NumberAxis y=new NumberAxis();
+        y.setLabel("qos");
+        XYChart.Series XYdata=new XYChart.Series();
+
         bestAirlines= rs.getBestAirlines();
+        double totalQos=0;
+        for(RankingItem<Airline> a:bestAirlines){
+            totalQos+=a.value;
+        }
         for(RankingItem<Airline> a:bestAirlines){
             String name=a.item.getName();
             double qos=a.value;
-            PieChart.Data d=new PieChart.Data(name,qos);
-            AirlinepieChartData.add(d);
+            double percentage=(qos*100)/totalQos;
+            String percentageStr = " ("+String.format("%.0f", percentage)+"%)";
+            qos=(qos==-1)?10:qos;
+            String s=name+percentageStr;
 
+            XYChart.Data b=new XYChart.Data(s,qos);
+            XYdata.getData().add(b);
         }
-        AirlinePiechart.setData(AirlinepieChartData);
-        AirlinePiechart.setLegendVisible(false);
-        AirlinePiechart.setTitle("Most efficient airlines:");
-
-        for (final PieChart.Data data : AirlinePiechart.getData()) {
+        airlineBarChart.setTitle("Most efficient airlines:");
+        airlineBarChart.setLegendVisible(false);
+        airlineBarChart.getData().add(XYdata);
+        ObservableList<XYChart.Data> s=XYdata.getData();
+        for(int i=0;i<s.size();i++){
+            XYChart.Data data=s.get(i);
+            System.out.println(data);
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                     new EventHandler<MouseEvent>() {
                         @Override public void handle(MouseEvent e) {
-
                             for(RankingItem<Airline> a:bestAirlines){
-                                if(a.item.getName().equals(String.valueOf(data.getName()))){
+                                if(a.value==(double)data.getYValue()){
                                     Start.airline=a.item;
                                     try{
-                                        System.out.println(String.valueOf(a.item.getName() + "%"));
                                         switchToAirlineScreen();
                                     }
                                     catch(Exception ex){
@@ -102,6 +121,8 @@ public class RouteScreenController implements Initializable {
                         }
                     });
         }
+
+
 
     }
     @FXML

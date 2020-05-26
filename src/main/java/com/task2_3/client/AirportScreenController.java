@@ -78,8 +78,8 @@ public class AirportScreenController implements Initializable {
         }
         airportLabel.setText("Airport: "+Start.airport.getName());
         AirportStatistics rs=Start.airport.getStats();
-        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb))+"%");
-        cancProbText.setText(String.format("%.2f", (rs.cancellationProb))+"%");
+        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb*100))+"%");
+        cancProbText.setText(String.format("%.2f", (rs.cancellationProb*100))+"%");
         delayCauseText.setText(rs.getMostLikelyCauseDelay());
         cancCauseText.setText(rs.getMostLikelyCauseCanc());
         twoHopsDestinationsText.setText(String.valueOf(Start.airport.getTwoHopsDestinations()));

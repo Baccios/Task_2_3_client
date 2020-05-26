@@ -71,8 +71,8 @@ public class AirlineScreenController implements Initializable {
         airlineLabel.setText("Airline: "+Start.airline.getName());
         AirlineStatistics rs=Start.airline.getStats();
         qosText.setText(String.format("%.2f", (rs.qosIndicator)));
-        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb))+"%");
-        cancProbText.setText(String.format("%.2f", (rs.cancellationProb))+"%");
+        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb*100))+"%");
+        cancProbText.setText(String.format("%.2f", (rs.cancellationProb*100))+"%");
         totalServedRoutesText.setText(String.valueOf(Start.airline.getTotalServedRoutes()));
         firstPlacesCounterText.setText(String.valueOf(Start.airline.getFirstPlacesCount()));
 

@@ -69,9 +69,9 @@ public class RouteScreenController implements Initializable {
         destinationAirportLabel.setText("Destination airport:  "+Start.route.getDestination().getName());
         RouteStatistics rs=Start.route.getStats();
 
-        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb))+"%");
-        cancProbText.setText(String.format("%.2f", (rs.cancellationProb))+"%");
-        meanDelayText.setText(String.format("%.2f", (rs.getMeanDelay()))+"%");
+        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb*100))+"%");
+        cancProbText.setText(String.format("%.2f", (rs.cancellationProb*100))+"%");
+        meanDelayText.setText(String.format("%.2f", (rs.getMeanDelay()))+" min");
         delayCauseText.setText(rs.getMostLikelyCauseDelay());
         cancCauseText.setText(rs.getMostLikelyCauseCanc());
 

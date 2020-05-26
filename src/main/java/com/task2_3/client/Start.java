@@ -36,6 +36,9 @@ public class Start extends Application{
         stage.setHeight(680);
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.setOnCloseRequest(event -> {
+            Neo4jDBManager.getInstance().close();
+        });
         stage.show();
     }
     static void setRoot(String fxml) throws IOException {

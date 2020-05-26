@@ -89,12 +89,9 @@ public class RouteScreenController implements Initializable {
         for(RankingItem<Airline> a:bestAirlines){
             String name=a.item.getName();
             double qos=a.value;
-            double percentage=(qos*100)/totalQos;
-            String percentageStr = " ("+String.format("%.0f", percentage)+"%)";
             qos=(qos==-1)?10:qos;
-            String s=name+percentageStr;
 
-            XYChart.Data b=new XYChart.Data(s,qos);
+            XYChart.Data b=new XYChart.Data(name,qos);
             XYdata.getData().add(b);
         }
         airlineBarChart.setTitle("Most efficient airlines:");

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="771.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.AirlineScreenController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1014.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.AirlineScreenController">
     <children>
         <Label text="AIRLINE STATISTICS" textAlignment="CENTER">
             <font>
@@ -35,9 +35,9 @@
             <Insets />
          </VBox.margin>
       </HBox>
-        <HBox fx:id="hbox2" alignment="TOP_CENTER" prefHeight="21.0" prefWidth="347.0">
+        <HBox fx:id="hbox2" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="1065.0">
             <children>
-                <TextField alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="116.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="QoS">
+                <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="41.0" prefWidth="106.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="QoS">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
@@ -45,25 +45,30 @@
                         <Font size="11.0" />
                     </font>
                 </TextField>
-                <TextField alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="131.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="DELAY PROBABILITY">
+                <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="42.0" prefWidth="131.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="DELAY PROBABILITY">
                     <font>
                         <Font size="11.0" />
                     </font>
                 </TextField>
-                <TextField alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="172.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="MEAN DELAY">
+                <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="41.0" prefWidth="187.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="CANCELLATION PROBABILITY">
                     <font>
                         <Font size="11.0" />
                     </font>
                 </TextField>
-                <TextField alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="187.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="CANCELLATION PROBABILITY">
-                    <font>
-                        <Font size="11.0" />
-                    </font>
-                </TextField>
+            <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="42.0" prefWidth="187.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="AMOUNT OF SERVED ROUTES">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextField>
+            <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="42.0" prefWidth="260.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="FIRST PLACE COUNTER">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextField>
             </children></HBox>
-        <HBox fx:id="hbox1" alignment="TOP_CENTER" prefHeight="46.0" prefWidth="731.0">
+        <HBox fx:id="hbox1" alignment="CENTER" minWidth="-Infinity" prefHeight="31.0" prefWidth="994.0">
             <children>
-                <TextField fx:id="qosText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="116.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">
+                <TextField fx:id="qosText" alignment="CENTER" maxWidth="-Infinity" prefHeight="31.0" prefWidth="106.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
@@ -71,35 +76,40 @@
                         <Font size="11.0" />
                     </font>
                 </TextField>
-                <TextField fx:id="delayProbText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="131.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">
+                <TextField fx:id="delayProbText" alignment="CENTER" maxWidth="-Infinity" prefHeight="50.0" prefWidth="131.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">
                     <font>
                         <Font size="11.0" />
                     </font>
                 </TextField>
-                <TextField fx:id="meanDelayText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="172.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="security">
+                <TextField fx:id="cancProbText" alignment="CENTER" maxWidth="-Infinity" prefHeight="48.0" prefWidth="187.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="weather">
                     <font>
                         <Font size="11.0" />
                     </font>
                 </TextField>
-                <TextField fx:id="cancProbText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="187.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="weather">
-                    <font>
-                        <Font size="11.0" />
-                    </font>
-                </TextField>
+            <TextField fx:id="totalServedRoutesText" alignment="CENTER" maxWidth="-Infinity" prefHeight="49.0" prefWidth="187.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="weather">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="firstPlacesCounterText" alignment="CENTER" maxWidth="-Infinity" prefHeight="50.0" prefWidth="260.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="weather">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextField>
             </children>
             <VBox.margin>
                 <Insets top="-20.0" />
             </VBox.margin>
         </HBox>
-        <HBox prefHeight="21.0" prefWidth="347.0">
-            <children>
-                <Button onAction="#switchToOverallStats" prefHeight="24.0" prefWidth="60.0" text="back">
-                    <font>
-                        <Font name="Aharoni Bold" size="11.0" />
-                    </font>
-                </Button>
-            </children>
-        </HBox>
+      <HBox fx:id="hbox21" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="34.0" prefWidth="1087.0">
+         <children>
+            <Button maxHeight="-Infinity" onAction="#switchToOverallStats" prefHeight="45.0" prefWidth="86.0" text="back">
+               <font>
+                  <Font name="Aharoni Bold" size="17.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

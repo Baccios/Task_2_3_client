@@ -293,7 +293,7 @@ public class Neo4jDBManager implements AutoCloseable {
     }
 
     private ArrayList<RankingItem<Route>> fetchMostServedRoute_byAirport(Transaction tx, String iataCode) {
-        String mostServedAirlineQuery = "match(origin:Airport)-[p:POSSIBLE_DEPARTURE]->(route:Route)-[:DESTINATION]->(dest: Airport) where origin.IATA_code=$iata_code return properties(route), properties(p), dest.IATA_code order by p.percentage desc limit 6";
+        String mostServedAirlineQuery = "match(origin:Airport)-[p:POSSIBLE_DEPARTURE]->(route:Route)-[:DESTINATION]->(dest: Airport) where origin.IATA_code=$iata_code return properties(route), properties(p), dest.IATA_code order by p.percentage desc limit 5";
         Result res = tx.run(mostServedAirlineQuery, parameters("iata_code",iataCode));
         return decompressMostServedRoute(res, iataCode);
     }
@@ -303,13 +303,13 @@ public class Neo4jDBManager implements AutoCloseable {
          * Using properties(airport) it returns every property of the node
          * Using only "return airport" would return only the key
          * */
-        String mostServedAirlineQuery = "MATCH (airline:Airline)-[s:SERVES]->(airport:Airport) where airport.IATA_code=$iata_code RETURN properties(airline), properties(s) order by s.percentage desc limit 6";
+        String mostServedAirlineQuery = "MATCH (airline:Airline)-[s:SERVES]->(airport:Airport) where airport.IATA_code=$iata_code RETURN properties(airline), properties(s) order by s.percentage desc limit 5";
         Result res = tx.run(mostServedAirlineQuery, parameters("iata_code",iataCode));
         return decompressMostServedAirline(res);
     }
 
     private ArrayList<RankingItem<Airport>> fetchMostServedAirport_byAirline(Transaction tx, String identifier){
-        String mostServedAirportQuery = "MATCH (airline:Airline)-[s:SERVES]->(airport:Airport) where airline.identifier=$identifier RETURN properties(airport), properties(s) order by s.percentage desc limit 6";
+        String mostServedAirportQuery = "MATCH (airline:Airline)-[s:SERVES]->(airport:Airport) where airline.identifier=$identifier RETURN properties(airport), properties(s) order by s.percentage desc limit 5";
         Result res = tx.run(mostServedAirportQuery, parameters("identifier",identifier));
         return decompressMostServedAirport(res);
     }
@@ -659,7 +659,7 @@ public class Neo4jDBManager implements AutoCloseable {
                     }
                 }
 
-                searchRouteQuery += "return distinct properties(originAir) limit 6";
+                searchRouteQuery += "return distinct properties(originAir) limit 5";
 
                 Result res = tx.run(searchRouteQuery, params);
 
@@ -756,7 +756,7 @@ public class Neo4jDBManager implements AutoCloseable {
                     }
                 }
 
-                searchRouteQuery += "return distinct properties(destinationAir) limit 6";
+                searchRouteQuery += "return distinct properties(destinationAir) limit 5";
 
                 Result res = tx.run(searchRouteQuery, params);
 
@@ -814,7 +814,7 @@ public class Neo4jDBManager implements AutoCloseable {
             return session.readTransaction(tx -> {
                 String query = "match(airport:Airport) " +
                         "return airport.IATA_code, airport.city, airport.name, airport.state,airport.qosIndicator " +
-                        "order by airport.qosIndicator desc limit 6";
+                        "order by airport.qosIndicator desc limit 5";
                 Result res = tx.run(query);
                 /*
                  * asMap will permit to access the values by using "fieldName"
@@ -842,7 +842,7 @@ public class Neo4jDBManager implements AutoCloseable {
             return session.readTransaction(tx -> {
                 String query = "match(airline:Airline) " +
                         "return airline.identifier, airline.name, airline.qosIndicator " +
-                        "order by airline.qosIndicator desc limit 6";
+                        "order by airline.qosIndicator desc limit 5";
                 Result res = tx.run(query);
                 /*
                  * asMap will permit to access the values by using "fieldName"

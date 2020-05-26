@@ -6,6 +6,7 @@ package com.task2_3.client;
         import javafx.event.EventHandler;
         import javafx.fxml.FXML;
         import javafx.fxml.Initializable;
+        import javafx.scene.Cursor;
         import javafx.scene.Node;
         import javafx.scene.chart.PieChart;
         import javafx.scene.control.Label;
@@ -37,6 +38,8 @@ public class AirportScreenController implements Initializable {
     @FXML
     public TextField cancCauseText;
     @FXML
+    public TextField twoHopsDestinationsText;;
+    @FXML
     public PieChart AirlinePiechart;
     @FXML
     public PieChart RoutePiechart;
@@ -63,27 +66,37 @@ public class AirportScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
         for (Node node : hbox1.getChildren()) {
             if (node instanceof TextField) {
-                ((TextField)node).setDisable(true);
+                ((TextField)node).setEditable(false);
+                ((TextField)node).setCursor(Cursor.DEFAULT);
             }
         }
         for (Node node : hbox2.getChildren()) {
             if (node instanceof TextField) {
-                ((TextField)node).setDisable(true);
+                ((TextField)node).setEditable(false);
+                ((TextField)node).setCursor(Cursor.DEFAULT);
             }
         }
         airportLabel.setText("Airport: "+Start.airport.getName());
         AirportStatistics rs=Start.airport.getStats();
-        delayProbText.setText(String.valueOf(rs.fifteenDelayProb));
+        delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb))+"%");
+        cancProbText.setText(String.format("%.2f", (rs.cancellationProb))+"%");
         delayCauseText.setText(rs.getMostLikelyCauseDelay());
-        cancProbText.setText(String.valueOf(rs.cancellationProb));
         cancCauseText.setText(rs.getMostLikelyCauseCanc());
+        twoHopsDestinationsText.setText(String.valueOf(Start.airport.getTwoHopsDestinations()));
 
         ObservableList<PieChart.Data> AirlinepieChartData=FXCollections.observableArrayList();
         mostServedAirlines= rs.getMostServedAirlines();
+        double totalQos=0;
+        for(RankingItem<Airline> a:mostServedAirlines){
+            totalQos+=a.value;
+        }
         for(RankingItem<Airline> a:mostServedAirlines){
             String name=a.item.getName();
             double qos=a.value;
-            PieChart.Data d=new PieChart.Data(name,qos);
+            double percentage=(qos*100)/totalQos;
+            String percentageStr = " ("+String.format("%.0f", percentage)+"%)";
+            String s=name+percentageStr;
+            PieChart.Data d=new PieChart.Data(s,qos);
             AirlinepieChartData.add(d);
 
         }
@@ -94,11 +107,17 @@ public class AirportScreenController implements Initializable {
 
         ObservableList<PieChart.Data> RoutepieChartData=FXCollections.observableArrayList();
         mostServedRoutes= rs.getMostServedRoutes();
+        totalQos=0;
+        for(RankingItem<Route> a:mostServedRoutes){
+            totalQos+=a.value;
+        }
         for(RankingItem<Route> a:mostServedRoutes){
             String name=a.item.getOrigin().getIATA_code()+" - "+a.item.getDestination().getIATA_code();
             double qos=a.value;
-            System.out.println(name+" "+qos);
-            PieChart.Data d=new PieChart.Data(name,qos);
+            double percentage=(qos*100)/totalQos;
+            String percentageStr = " ("+String.format("%.0f", percentage)+"%)";
+            String s=name+percentageStr;
+            PieChart.Data d=new PieChart.Data(s,qos);
             RoutepieChartData.add(d);
         }
         RoutePiechart.setData(RoutepieChartData);
@@ -112,7 +131,7 @@ public class AirportScreenController implements Initializable {
                             System.out.println(mostServedAirlines.size());
 
                             for(RankingItem<Airline> a:mostServedAirlines){
-                                if(a.item.getName().equals(String.valueOf(data.getName()))){
+                                if(a.value==data.getPieValue()){
                                     Start.airline=a.item;
                                     try{
                                         System.out.println(String.valueOf(a.item.getName() + "%"));
@@ -135,8 +154,7 @@ public class AirportScreenController implements Initializable {
 
                             for(RankingItem<Route> a:mostServedRoutes){
                                 String routeId=a.item.getOrigin().getIATA_code()+" - "+a.item.getDestination().getIATA_code();
-                                System.out.println(routeId+"   "+String.valueOf(data.getName()));
-                                if(routeId.equals(String.valueOf(data.getName()))){
+                                if(a.value==data.getPieValue()){
                                     Start.route=a.item;
                                     try{
                                         System.out.println(String.valueOf(a.item.getDestination().getIATA_code() + "%"));

@@ -400,19 +400,21 @@ public class Neo4jDBManager implements AutoCloseable {
     private ArrayList<Route> searchSimilarRoutes_byOriginAndDest_query(Transaction tx, Airport origin, Airport dest) {
         String query =
                 "MATCH (origin:Airport)<-[:ORIGIN]-(r:Route)-[:DESTINATION]->(dest:Airport {IATA_code: $iata_dest})\n" +
-                "WHERE origin.state = $state AND origin.IATA_code <> $iata_origin\n" +
-                "RETURN r,origin\n" +
+                "WHERE (origin.state = $origin_state AND dest.IATA_code = $iata_dest) OR (dest.state = $dest_state AND origin.IATA_code = $iata_origin)\n" +
+                "RETURN r,origin,dest\n" +
                 "ORDER BY r.meanDelay";
         HashMap<String, Object> params = new HashMap<>();
         params.put("iata_origin", origin.getIATA_code());
         params.put("iata_dest", dest.getIATA_code());
-        params.put("state", origin.getState());
+        params.put("origin_state", origin.getState());
+        params.put("dest_state", dest.getState());
         Result res = tx.run(query, params);
         Record rec;
         ArrayList<Route> similarRoutes = new ArrayList<>();
         while (res.hasNext()) {
             rec = res.next();
             Node origin_node = rec.get("origin").asNode();
+            Node dest_node = rec.get("dest").asNode();
             Node route_node = rec.get("r").asNode();
 
             Airport currentOrigin = new Airport(
@@ -429,10 +431,24 @@ public class Neo4jDBManager implements AutoCloseable {
                     )
             );
 
+            Airport currentDest = new Airport(
+                    dest_node.get("IATA_code").asString(),
+                    dest_node.get("name").asString(),
+                    dest_node.get("city").asString(),
+                    dest_node.get("state").asString(),
+                    new AirportStatistics(
+                            dest_node.get("cancellationProb").asDouble(),
+                            dest_node.get("fifteenDelayProb").asDouble(),
+                            dest_node.get("qosIndicator").asDouble(),
+                            dest_node.get("mostLikelyCauseDelay").asString(),
+                            dest_node.get("mostLikelyCauseCanc").asString()
+                    )
+            );
+
 
             Route currentRoute = new Route(
                     currentOrigin,
-                    dest,
+                    currentDest,
                     new RouteStatistics(
                             route_node.get("cancellationProb").asDouble(),
                             route_node.get("fifteenDelayProb").asDouble(),

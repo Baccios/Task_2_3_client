@@ -225,7 +225,7 @@ public class OverallStatsScreenController implements Initializable {
                             event.consume();
                             return;
                         }
-                        System.out.println("You have inserted a valid Airport: "+airportBox.getSelectedObject().toString());
+                        System.out.println("You have inserted a valid Airport: " + airportBox.getSelectedObject().toString());
 
                         Start.airport = airportBox.getSelectedObject();
                         try{switchToAirportScreen();}
@@ -328,7 +328,15 @@ public class OverallStatsScreenController implements Initializable {
                         }
 
                         Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(originAirportBox.getSelectedObject(), destinationAirportBox.getSelectedObject());
-                        try{switchToRouteScreen();}
+                        try{
+                            if(Start.route == null){
+                                System.out.println("Bacciottino è fruzzolino");
+                                //switchToHintsScreen();
+                            }
+                            else {
+                                switchToRouteScreen();
+                            }
+                        }
                         catch (Exception e){
                             e.printStackTrace();
                         }
@@ -371,7 +379,15 @@ public class OverallStatsScreenController implements Initializable {
                         }
 
                         Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(originAirportBox.getSelectedObject(), destinationAirportBox.getSelectedObject());
-                        try{switchToRouteScreen();}
+                        try{
+                            if(Start.route == null){
+                            System.out.println("Bacciottino è fruzzolino");
+                            //switchToHintsScreen();
+                            }
+                            else {
+                                switchToRouteScreen();
+                            }
+                        }
                         catch (Exception e){
                             e.printStackTrace();
                         }
@@ -434,7 +450,7 @@ public class OverallStatsScreenController implements Initializable {
     public void showOriginAirportMenu(){
         if(originAirportBox.getEditor().getText().equals("")) return;
 
-        suggestedOrigin = Start.neoDbManager.searchOriginAirportOfRoute_byKeywords(originAirportBox.getEditor().getText(), destinationAirportBox.getEditor().getText());
+        suggestedOrigin = Start.neoDbManager.searchAirports_byString(originAirportBox.getEditor().getText());
         originAirportBox.objectChoices.clear();
         for (Airport object : suggestedOrigin) {
             originAirportBox.objectChoices.add(object);
@@ -450,7 +466,7 @@ public class OverallStatsScreenController implements Initializable {
     public void showDestinationAirportMenu(){
         if(destinationAirportBox.getEditor().getText().equals("")) return;
 
-        suggestedDestination = Start.neoDbManager.searchDestinationAirportOfRoute_byKeywords(originAirportBox.getEditor().getText(), destinationAirportBox.getEditor().getText());
+        suggestedDestination = Start.neoDbManager.searchAirports_byString(destinationAirportBox.getEditor().getText());
         destinationAirportBox.objectChoices.clear();
         for (Airport object : suggestedDestination) {
             destinationAirportBox.objectChoices.add(object);

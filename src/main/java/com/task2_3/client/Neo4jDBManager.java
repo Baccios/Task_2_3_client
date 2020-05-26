@@ -63,6 +63,11 @@ public class Neo4jDBManager implements AutoCloseable {
                 /*
                  * asMap will permit to access the values by using "fieldName"
                  * */
+                if(!resRoute.hasNext()){
+                    System.out.println("Route doesn't exits");
+                    return null;
+                }
+
                 Map rec = resRoute.single().values().get(0).asMap();
 
                 RouteStatistics tmpRouteStats = new RouteStatistics(

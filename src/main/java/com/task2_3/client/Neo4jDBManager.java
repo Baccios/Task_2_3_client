@@ -355,7 +355,8 @@ public class Neo4jDBManager implements AutoCloseable {
 
     /**
      * Given an origin and destination airport, this method returns an array of routes having the given destination airport and
-     * an origin airport different from the one specified but placed in the same U.S. state.
+     * an origin airport different from the one specified but placed in the same U.S. state. Also returns routes having given origin
+     * airport and destination airport in the same U.S. state.
      * Useful to suggest a user alternatives for not existent routes.
      * @param origin The origin airport
      * @param destination The destination airport

@@ -63,17 +63,7 @@ public class OverallStatsScreenController implements Initializable {
     private ArrayList<Airport> suggestedDestination = new ArrayList<>();
     private ArrayList<Route> suggestedRoutes=new ArrayList<>();
     @FXML
-    private TextField airlineInput;
-    @FXML
-    private TextField airportInput;
-    @FXML
-    private TextField originAirportInput;
-    @FXML
-    private TextField destinationAirportInput;
-    @FXML
     private Label errorLabel;
-
-    private AutoCompletionBinding<String> autoCompletionBinding;
 
 
     @FXML
@@ -91,6 +81,11 @@ public class OverallStatsScreenController implements Initializable {
     @FXML
     private void switchToRouteScreen() throws IOException {
         Start.setRoot("routeScreen");
+    }
+
+    @FXML
+    private void switchToHintsScreen() throws IOException {
+        Start.setRoot("hintScreen");
     }
 
     @FXML
@@ -331,10 +326,9 @@ public class OverallStatsScreenController implements Initializable {
                         Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(tmpOrigin, tmpDest);
                         try{
                             if(Start.route == null){
-                                System.out.println("Bacciottino è fruzzolino e Guggiante è fruzzolante");
                                 Start.hintOrigin = tmpOrigin;
                                 Start.hintDestination = tmpDest;
-                                //switchToHintsScreen();
+                                switchToHintsScreen();
                             }
                             else {
                                 switchToRouteScreen();
@@ -386,10 +380,9 @@ public class OverallStatsScreenController implements Initializable {
                         Start.route = Start.neoDbManager.getRoute_byOriginAndDestinationAirport(tmpOrigin, tmpDest);
                         try{
                             if(Start.route == null){
-                            System.out.println("Bacciottino è fruzzolino");
                             Start.hintOrigin = tmpOrigin;
                             Start.hintDestination = tmpDest;
-                            //switchToHintsScreen();
+                            switchToHintsScreen();
                             }
                             else {
                                 switchToRouteScreen();

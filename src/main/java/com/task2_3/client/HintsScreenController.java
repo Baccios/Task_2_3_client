@@ -92,4 +92,9 @@ public class HintsScreenController implements Initializable {
     private void switchToRouteScreen() throws IOException {
         Start.setRoot("routeScreen");
     }
+    @FXML
+    private void switchToOverallStats() throws IOException {
+        Start.setRoot("overallStatsScreen");
+    }
+
 }

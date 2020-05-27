@@ -52,7 +52,6 @@ public class RouteScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
         for (Node node : hbox1.getChildren()) {
             if (node instanceof TextField) {
-                System.out.println(((TextField) node).getText());
                 ((TextField)node).setEditable(false);
                 ((TextField)node).setCursor(Cursor.DEFAULT);
             }

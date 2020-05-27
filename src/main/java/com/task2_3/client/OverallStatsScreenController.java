@@ -339,7 +339,7 @@ public class OverallStatsScreenController implements Initializable {
                         if(!airportBox.isValid()){
                             System.out.println("Invalid Airport");
                             event.consume();
-                            errorLabel.setText("Inserted airport doesn't exist");
+                            errorLabel.setText("Inserted airport doesn't exist!");
                             errorLabel.setVisible(true);
                             return;
                         }
@@ -382,10 +382,11 @@ public class OverallStatsScreenController implements Initializable {
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(airlineBox.getValue() == null){
-                        System.out.println("Insert something.");
+                        errorLabel.setText("Insert something.");
+                        errorLabel.setVisible(true);
                     }else{
                         if(!airlineBox.isValid()){
-                            errorLabel.setText("Inserted airline doesn't exist");
+                            errorLabel.setText("Inserted airline doesn't exist!");
                             errorLabel.setVisible(true);
                             event.consume();
                             return;
@@ -428,10 +429,12 @@ public class OverallStatsScreenController implements Initializable {
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(originAirportBox.getValue() == null || destinationAirportBox.getValue() == null){
-                        System.out.println("Insert something.");
+                        errorLabel.setText("Insert something.");
+                        errorLabel.setVisible(true);
                     }else{
                         if(!originAirportBox.isValid() || !destinationAirportBox.isValid()){
-                            System.out.println("Invalid route");
+                            errorLabel.setText("Inserted airport doesn't exist!");
+                            errorLabel.setVisible(true);
                             event.consume();
                             return;
                         }
@@ -481,10 +484,12 @@ public class OverallStatsScreenController implements Initializable {
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     if(originAirportBox.getValue() == null || destinationAirportBox.getValue() == null){
-                        System.out.println("Insert something.");
+                        errorLabel.setText("Insert something.");
+                        errorLabel.setVisible(true);
                     }else{
                         if(!originAirportBox.isValid() || !destinationAirportBox.isValid()){
-                            System.out.println("Invalid route");
+                            errorLabel.setText("Inserted airport doesn't exist!");
+                            errorLabel.setVisible(true);
                             event.consume();
                             return;
                         }

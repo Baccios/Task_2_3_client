@@ -10,7 +10,7 @@
 
 <VBox alignment="CENTER" prefHeight="500.0" prefWidth="520.0" spacing="20.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.InitialScreenController">
    <children>
-      <ImageView fitHeight="233.0" fitWidth="336.0">
+      <ImageView fitHeight="264.0" fitWidth="405.0">
          <image>
             <Image url="@../../../Images/logo.jpg" />
          </image>
@@ -19,12 +19,12 @@
          </VBox.margin>
       </ImageView>
 
-      <Button fx:id="accessButton" alignment="CENTER" onAction="#switchToOverallStats" prefHeight="43.0" prefWidth="202.0" style="-fx-background-color: grey;" text="ACCESS " textFill="WHITE">
+      <Button fx:id="accessButton" alignment="CENTER" onAction="#switchToOverallStats" prefHeight="43.0" prefWidth="284.0" style="-fx-background-color: grey;" text="ACCESS " textFill="WHITE">
          <font>
             <Font name="Aharoni Bold" size="22.0" />
          </font>
       </Button>
-      <Button fx:id="reservedAreaButton" onAction="#switchToAdminAuthentication" prefHeight="43.0" prefWidth="202.0" style="-fx-background-color: gray;" text="RESERVED AREA " textFill="WHITE">
+      <Button fx:id="reservedAreaButton" onAction="#switchToAdminAuthentication" prefHeight="43.0" prefWidth="284.0" style="-fx-background-color: gray;" text="RESERVED AREA " textFill="WHITE">
          <font>
             <Font name="Aharoni Bold" size="22.0" />
          </font>

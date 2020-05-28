@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,6 +49,11 @@ public class RouteScreenController implements Initializable {
         Start.setRoot("overallStatsScreen");
     }
     @FXML
+    private void switchToAirportScreen() throws IOException {
+        Start.setRoot("airportScreen");
+    }
+
+    @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources){
         for (Node node : hbox1.getChildren()) {
@@ -65,7 +71,34 @@ public class RouteScreenController implements Initializable {
         }
 
         originAirportLabel.setText("Origin airport:  "+Start.route.getOrigin().getName());
+        originAirportLabel.setOnMouseEntered( e -> originAirportLabel.setTextFill(Color.rgb(0, 79, 242)));
+        originAirportLabel.setCursor(Cursor.HAND);
+        originAirportLabel.setOnMouseExited(e -> originAirportLabel.setTextFill(Color.BLACK));
+
+            originAirportLabel.setOnMouseClicked(e -> {
+                Start.airport = Start.route.getOrigin();
+                try {
+                    switchToAirportScreen();
+                }
+                catch(Exception ex){
+                    ex.printStackTrace();
+                }
+            });
+
+
         destinationAirportLabel.setText("Destination airport:  "+Start.route.getDestination().getName());
+        destinationAirportLabel.setOnMouseEntered( e -> destinationAirportLabel.setTextFill(Color.rgb(0, 79, 242)));
+        destinationAirportLabel.setCursor(Cursor.HAND);
+        destinationAirportLabel.setOnMouseExited(e -> destinationAirportLabel.setTextFill(Color.BLACK));
+        destinationAirportLabel.setOnMouseClicked(e -> {
+            Start.airport=Start.route.getDestination();
+            try {
+                switchToAirportScreen();
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+            }});
+
         RouteStatistics rs=Start.route.getStats();
 
         delayProbText.setText(String.format("%.2f", (rs.fifteenDelayProb*100))+"%");
@@ -73,6 +106,7 @@ public class RouteScreenController implements Initializable {
         meanDelayText.setText(String.format("%.2f", (rs.getMeanDelay()))+" min");
         delayCauseText.setText(rs.getMostLikelyCauseDelay());
         cancCauseText.setText(rs.getMostLikelyCauseCanc());
+
 
         CategoryAxis x=new CategoryAxis();
         x.setLabel("airlines");

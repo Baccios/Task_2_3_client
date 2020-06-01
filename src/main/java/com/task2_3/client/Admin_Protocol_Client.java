@@ -17,7 +17,7 @@ public class Admin_Protocol_Client implements AutoCloseable {
 
     public static Admin_Protocol_Client getInstance() {
         if(singleton == null || singleton.socket.isClosed()) {
-            singleton = new Admin_Protocol_Client("localhost",2020); //TODO insert correct server ip and port
+            singleton = new Admin_Protocol_Client("172.16.1.9",2020);
         }
         return singleton;
     }

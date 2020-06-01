@@ -58,12 +58,14 @@ public class AirlineScreenController implements Initializable {
         for (Node node : hbox1.getChildren()) {
             if (node instanceof TextField) {
                 ((TextField)node).setEditable(false);
+                ((TextField)node).setDisable(true);
                 ((TextField)node).setCursor(Cursor.DEFAULT);
             }
         }
         for (Node node : hbox2.getChildren()) {
             if (node instanceof TextField) {
                 ((TextField)node).setEditable(false);
+                ((TextField)node).setDisable(true);
                 ((TextField)node).setCursor(Cursor.DEFAULT);
             }
         }

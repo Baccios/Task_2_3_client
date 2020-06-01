@@ -18,10 +18,10 @@
             <VBox.margin>
                 <Insets bottom="100.0" />
             </VBox.margin></Label>
-        <HBox alignment="TOP_CENTER" prefHeight="23.0" prefWidth="731.0">
+        <HBox alignment="CENTER" prefHeight="23.0" prefWidth="731.0">
             <children>
 
-                <Label fx:id="airportLabel" alignment="CENTER" prefHeight="27.0" prefWidth="295.0" text="AIRPORT NAME" textAlignment="CENTER">
+                <Label fx:id="airportLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="295.0" text="AIRPORT NAME" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>

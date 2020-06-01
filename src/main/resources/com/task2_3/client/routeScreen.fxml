@@ -85,7 +85,7 @@
             <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="41.0" prefWidth="211.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="CANCELLATION PROBABILITY" />
             <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="42.0" prefWidth="301.0" style="-fx-background-color: blue; -fx-background-radius: 0; -fx-text-fill: yellow; -fx-border-color: black; -fx-font-weight: bold;" text="MOST LIKELY CAUSE OF CANCELLATION" />
          </children></HBox>
-      <HBox fx:id="hbox1" alignment="TOP_CENTER" prefHeight="46.0" prefWidth="731.0">
+      <HBox fx:id="hbox1" alignment="TOP_CENTER" prefHeight="46.0" prefWidth="731.0" se>
          <children>
 
              <TextField fx:id="delayProbText" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="139.0" style="-fx-background-color: white; -fx-background-radius: 0; -fx-text-fill: black; -fx-border-color: black; -fx-font-weight: bold;" text="5">

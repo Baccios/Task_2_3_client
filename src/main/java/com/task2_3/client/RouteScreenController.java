@@ -66,6 +66,12 @@ public class RouteScreenController implements Initializable {
             if (node instanceof TextField) {
                 ((TextField)node).setEditable(false);
                 ((TextField)node).setCursor(Cursor.DEFAULT);
+            }
+        }
+        for (Node node : hbox2.getChildren()) {
+            if (node instanceof TextField) {
+                ((TextField)node).setEditable(false);
+                ((TextField)node).setCursor(Cursor.DEFAULT);
 
             }
         }

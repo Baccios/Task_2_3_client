@@ -32,8 +32,8 @@ public class Start extends Application{
     public void start(Stage stage)throws IOException{
         neoDbManager=Neo4jDBManager.getInstance();
         scene = new Scene(loadFXML("initialScreen"));
-        stage.setWidth(1340);
-        stage.setHeight(680);
+        stage.setWidth(1920);
+        stage.setHeight(1080);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setOnCloseRequest(event -> {

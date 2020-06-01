@@ -31,7 +31,7 @@
             <Insets bottom="20.0" />
          </VBox.margin>
         </HBox>
-      <HBox prefHeight="328.0" prefWidth="200.0" style="-fx-background-color: #d9dad9;">
+      <HBox alignment="CENTER" prefHeight="328.0" prefWidth="200.0" style="-fx-background-color: #d9dad9;">
          <children>
             <VBox prefHeight="328.0" prefWidth="1274.0">
                <children>

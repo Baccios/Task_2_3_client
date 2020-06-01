@@ -11,7 +11,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="385.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.AdminAuthenticationScreenController">
     <children>
-        <Label prefHeight="35.0" prefWidth="336.0" text="ACCESS TO RESERVED AREA" textAlignment="CENTER">
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="366.0" text="ACCESS TO RESERVED AREA" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

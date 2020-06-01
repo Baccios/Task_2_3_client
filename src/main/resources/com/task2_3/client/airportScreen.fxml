@@ -11,7 +11,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1340.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.AirportScreenController">
     <children>
-        <Label text="AIRPORT STATISTICS" textAlignment="CENTER">
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="225.0" text="AIRPORT STATISTICS" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>

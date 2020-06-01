@@ -11,7 +11,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="755.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task2_3.client.ReservedAreaScreenController">
     <children>
-        <Label fx:id="labelScheduleDate" text="RESERVED AREA" textAlignment="CENTER">
+        <Label fx:id="labelScheduleDate" alignment="CENTER" prefHeight="34.0" prefWidth="213.0" text="RESERVED AREA" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="23.0" />
             </font>
@@ -31,32 +31,32 @@
                 <Insets bottom="20.0" />
             </VBox.margin>
         </Label>
-        <Button mnemonicParsing="false" onAction="#switchToChangeAdminCredentialsScreen" prefHeight="34.0" prefWidth="365.0" text="CHANGE ADMINISTRATOR CREDENTIALS">
+        <Button mnemonicParsing="false" onAction="#switchToChangeAdminCredentialsScreen" prefHeight="34.0" prefWidth="450.0" text="CHANGE ADMINISTRATOR CREDENTIALS">
             <font>
                 <Font name="Aharoni Bold" size="18.0" />
             </font>
         </Button>
-        <Button mnemonicParsing="false" onAction="#switchToForceUpdateScreen" prefHeight="34.0" prefWidth="365.0" text="FORCE UPDATE">
+        <Button mnemonicParsing="false" onAction="#switchToForceUpdateScreen" prefHeight="34.0" prefWidth="450.0" text="FORCE UPDATE">
             <font>
                 <Font name="Aharoni Bold" size="18.0" />
             </font>
         </Button>
-        <Button mnemonicParsing="false" onAction="#switchToForceScrapingScreen" prefHeight="34.0" prefWidth="365.0" text="FORCE SCRAPING">
+        <Button mnemonicParsing="false" onAction="#switchToForceScrapingScreen" prefHeight="34.0" prefWidth="450.0" text="FORCE SCRAPING">
             <font>
                 <Font name="Aharoni Bold" size="18.0" />
             </font>
         </Button>
-        <Button mnemonicParsing="false" onAction="#switchToSetLimitScreen" prefHeight="34.0" prefWidth="365.0" text="SET STORAGE LIMIT">
+        <Button mnemonicParsing="false" onAction="#switchToSetLimitScreen" prefHeight="34.0" prefWidth="450.0" text="SET STORAGE LIMIT">
             <font>
                 <Font name="Aharoni Bold" size="18.0" />
             </font>
         </Button>
-        <Button mnemonicParsing="false" onAction="#switchToSetReplicaParametersScreen" prefHeight="34.0" prefWidth="365.0" text="SET SERVER REPLICA PARAMETERS">
+        <Button mnemonicParsing="false" onAction="#switchToSetReplicaParametersScreen" prefHeight="34.0" prefWidth="450.0" text="SET SERVER REPLICA PARAMETERS">
             <font>
                 <Font name="Aharoni Bold" size="18.0" />
             </font>
         </Button>
-        <Button mnemonicParsing="false" onAction="#switchToSetStartingYearScreen" prefHeight="34.0" prefWidth="365.0" text="SET STARTING YEAR">
+        <Button mnemonicParsing="false" onAction="#switchToSetStartingYearScreen" prefHeight="34.0" prefWidth="450.0" text="SET STARTING YEAR">
             <font>
                 <Font name="Aharoni Bold" size="18.0" />
             </font>

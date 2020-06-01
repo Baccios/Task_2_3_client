@@ -33,6 +33,7 @@ public class Start extends Application{
         neoDbManager=Neo4jDBManager.getInstance();
         scene = new Scene(loadFXML("initialScreen"));
         stage.setMinHeight(720);
+        stage.setMinWidth(1080);
         stage.setMaximized(true);
         stage.setScene(scene);
         stage.setResizable(true);
